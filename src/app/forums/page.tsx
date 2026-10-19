@@ -38,6 +38,8 @@ export default async function ForumsPage({ searchParams }: { searchParams: Promi
   const following = sp.view === "following";
   const limit = Math.min(Math.max(Number(sp.limit) || PAGE, PAGE), 100);
   const base: Search = { cat: sp.cat, tab: sp.tab, view: sp.view };
+  // Sidebar links switch what you browse, so they leave the Saved list but keep the sort order.
+  const browse: Search = { ...base, tab: tab === "saved" ? undefined : sp.tab };
 
   const supabase = await createClient();
   const viewer = await getViewer();
@@ -166,13 +168,13 @@ export default async function ForumsPage({ searchParams }: { searchParams: Promi
       <div className="wrap page-cols">
         <aside className="col-side" aria-label="Forum categories">
           <div className="m-card" style={{ padding: 12 }}>
-            <Link className={`m-side${!cat && !following ? " on" : ""}`} href={href(base, { cat: undefined, view: undefined, limit: undefined })}>
+            <Link className={`m-side${!cat && !following && tab !== "saved" ? " on" : ""}`} href={href(browse, { cat: undefined, view: undefined, limit: undefined })}>
               <span className="m-ic" style={{ background: "#EEF2F8" }}>
                 <Icon name="chat" size={17} />
               </span>
               All discussions<span className="m-n">{count(stats.discussions)}</span>
             </Link>
-            <Link className={`m-side${following ? " on" : ""}`} href={href(base, { cat: undefined, view: "following", limit: undefined })}>
+            <Link className={`m-side${following ? " on" : ""}`} href={href(browse, { cat: undefined, view: "following", limit: undefined })}>
               <span className="m-ic" style={{ background: "#EEF2F8" }}>
                 <Icon name="heart" size={17} />
               </span>
@@ -197,7 +199,7 @@ export default async function ForumsPage({ searchParams }: { searchParams: Promi
                       <Link
                         key={c.id}
                         className={`m-side${on ? " on" : ""}`}
-                        href={href(base, { cat: c.id, view: undefined, limit: undefined })}
+                        href={href(browse, { cat: c.id, view: undefined, limit: undefined })}
                         aria-current={on ? "page" : undefined}
                       >
                         <span className="m-ic" style={{ background: c.tint }}>
