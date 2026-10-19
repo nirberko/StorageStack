@@ -287,5 +287,13 @@ textarea.x-input { min-height: 90px; padding: 12px 14px; font-weight: 500; font-
   .x-sec { padding: 20px; }
   .x-h1 { font-size: 28px !important; }
   .p-card { padding: 20px !important; }
-  .m-search { order: 3; max-width: none; flex-basis: 100%; }
+  .m-header { position: static; }
+  .m-header-in { gap: 12px; }
+  .m-header-in > :last-child { order: 2; margin-left: auto; }
+  .m-nav { order: 3; flex-wrap: nowrap; overflow-x: auto; width: 100%; scrollbar-width: none; }
+  .m-nav a { white-space: nowrap; }
+  .m-search { order: 4; max-width: none; flex-basis: 100%; }
+  .m-header .m-btn { padding: 0 12px; }
+  .m-logo { font-size: 17px; }
+  .m-hero > svg { opacity: 0.25 !important; }
 }

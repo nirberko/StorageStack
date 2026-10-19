@@ -21,8 +21,9 @@ export function toCard(raw: RawThread): ThreadCardData {
     repliers.push({ name: r.author.full_name, color: r.author.avatar_color });
     if (repliers.length === 3) break;
   }
-  const { replies: _replies, ...rest } = raw;
-  return { ...rest, repliers };
+  const rest: Partial<RawThread> = { ...raw };
+  delete rest.replies;
+  return { ...(rest as Omit<RawThread, "replies">), repliers };
 }
 
 export async function getCategories(supabase: DB): Promise<(Category & { topics: number })[]> {

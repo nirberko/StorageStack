@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# StorageStack
 
-## Getting Started
+The self storage community: forums for investors, operators and developers, plus a Deal Room
+for facilities for sale, capital raises, partnerships and loans.
 
-First, run the development server:
+Built with **Next.js 15** (App Router, Server Components, Server Actions) and **Supabase**
+(Postgres, Auth, Storage, Row Level Security). The UI implements design **A2 — Classic Community,
+modernized** and its Deal Room screens.
+
+## What's in it
+
+| Area | Routes |
+| --- | --- |
+| Home | `/` |
+| Forums (design A2) | `/forums` (topics, sort tabs, following, saved), `/forums/[id]`, `/forums/new` |
+| Deal Room | `/deals` (deal types, filters, capital partners), `/deals/[id]`, `/deals/new` (6-step wizard) |
+| Your deals | `/deals/mine` (approve or decline requests, close deals), `/deals/alerts`, `/deals/partners/join` |
+| Members | `/u/[id]` profiles, `/settings` |
+| Other | `/search`, `/login`, `/signup`, `/tools`, `/learn`, `/guidelines` |
+
+### Privacy model
+
+- Deal **addresses** live in `deal_private` and **documents** in the private `deal-docs` storage bucket.
+  Both are readable only by the poster and members whose request the poster approved (or any verified
+  member, if the poster chose that). This is enforced by Postgres RLS and storage policies, not the UI.
+- Counters (likes, replies, interest) are maintained by triggers; members can only write the columns
+  they own (column-level grants), so they cannot pin threads or inflate counts.
+
+## Run it locally
+
+Requirements: Node 20+, Docker (for the local Supabase stack).
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run db:start          # starts Supabase locally, applies migrations and seed data
+cp .env.example .env.local
+# paste the API URL and anon key printed by db:start into .env.local
+npm run dev               # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The seed creates sample discussions, deals and members from the design mockups, plus a demo login:
+`demo@storagestack.dev` / `storagestack-demo` (local only).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Useful scripts:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `npm run db:reset` — rebuild the local database from migrations and `supabase/seed.sql`
+- `npm run db:types` — regenerate `src/lib/database.types.ts` after changing the schema
+- `npm run lint`, `npm run typecheck`, `npm run build`
 
-## Learn More
+## Deploy
 
-To learn more about Next.js, take a look at the following resources:
+1. Create a Supabase project and link it: `npx supabase link --project-ref <ref>`.
+2. Push the schema: `npx supabase db push` (do not run the seed in production).
+3. In Supabase Auth settings set the Site URL to your domain and add `https://<domain>/auth/confirm`
+   as a redirect URL.
+4. Deploy the Next.js app (e.g. Vercel) with `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   and `NEXT_PUBLIC_SITE_URL`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project layout
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/app/            routes, server actions (src/app/actions)
+src/components/     UI: shell, forum, deals
+src/lib/            Supabase clients, queries, config, formatting, generated DB types
+supabase/           config, migrations, seed
+```
