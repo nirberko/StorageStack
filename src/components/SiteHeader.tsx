@@ -17,7 +17,7 @@ export async function SiteHeader() {
           <SearchBox />
         </Suspense>
         {viewer ? (
-          <UserMenu id={viewer.id} name={viewer.profile.full_name} color={viewer.profile.avatar_color} />
+          <UserMenu id={viewer.id} name={viewer.profile.full_name} color={viewer.profile.avatar_color} isAdmin={viewer.profile.is_admin} />
         ) : (
           <div style={{ display: "flex", gap: 6 }}>
             <Link className="m-btn m-btn-g" href="/login">

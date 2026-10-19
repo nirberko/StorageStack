@@ -6,7 +6,7 @@ import { Avatar } from "@/components/Avatar";
 import { Icon } from "@/components/Icon";
 import { signOut } from "@/app/actions/auth";
 
-export function UserMenu({ id, name, color }: { id: string; name: string; color: string }) {
+export function UserMenu({ id, name, color, isAdmin }: { id: string; name: string; color: string; isAdmin: boolean }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -59,6 +59,11 @@ export function UserMenu({ id, name, color }: { id: string; name: string; color:
           <Link href="/settings" style={item} onClick={() => setOpen(false)}>
             <Icon name="shield" /> Settings
           </Link>
+          {isAdmin && (
+            <Link href="/admin" style={item} onClick={() => setOpen(false)}>
+              <Icon name="shieldCheck" /> Admin panel
+            </Link>
+          )}
           <form action={signOut}>
             <button type="submit" style={item}>
               <Icon name="logout" /> Log out

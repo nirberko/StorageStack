@@ -2,9 +2,8 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { Icon } from "@/components/Icon";
+import { TOPIC_GROUPS } from "@/lib/config";
 import type { Category } from "@/lib/types";
-
-const GROUPS = ["Start here", "Buy & build", "Operate", "Money & legal"];
 
 /**
  * Topic dropdown grouped by section. Follows the select-only combobox pattern: the button keeps
@@ -15,7 +14,7 @@ export function TopicSelect({
 }: { categories: Category[]; value: string; onChange: (id: string) => void; labelId: string }) {
   const listId = useId();
   const [open, setOpen] = useState(false);
-  const ordered = GROUPS.flatMap((g) => categories.filter((c) => c.group_name === g));
+  const ordered = TOPIC_GROUPS.flatMap((g) => categories.filter((c) => c.group_name === g));
   const [active, setActive] = useState(() => Math.max(0, ordered.findIndex((c) => c.id === value)));
   const rootRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
@@ -102,7 +101,7 @@ export function TopicSelect({
 
       {open && (
         <div ref={listRef} id={listId} role="listbox" aria-labelledby={labelId} className="topic-list">
-          {GROUPS.map((g) => {
+          {TOPIC_GROUPS.map((g) => {
             const items = ordered.map((c, i) => ({ c, i })).filter(({ c }) => c.group_name === g);
             if (items.length === 0) return null;
             const groupId = `${listId}-g-${g.replace(/\W+/g, "")}`;

@@ -1,3 +1,4 @@
+import { notFound, redirect } from "next/navigation";
 import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 import type { Profile } from "@/lib/types";
@@ -14,3 +15,14 @@ export const getViewer = cache(async (): Promise<{ id: string; email: string; pr
   if (!profile) return null;
   return { id: user.id, email: user.email ?? "", profile };
 });
+
+/**
+ * The signed-in admin. Visitors go to log in; members who are not admins get a 404.
+ * Call it from every admin page as well as the layout: layouts are not re-rendered on client navigation.
+ */
+export async function requireAdmin(next = "/admin") {
+  const viewer = await getViewer();
+  if (!viewer) redirect(`/login?next=${encodeURIComponent(next)}`);
+  if (!viewer.profile.is_admin) notFound();
+  return viewer;
+}

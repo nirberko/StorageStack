@@ -373,14 +373,14 @@ isOneToOne: false
                   ]
                 },"profiles": {
                   Row: {
-                    "avatar_color": string,"bio": string,"created_at": string,"full_name": string,"headline": string,"id": string,"is_moderator": boolean,"location": string,"post_count": number,"verified": boolean
+                    "avatar_color": string,"bio": string,"created_at": string,"full_name": string,"headline": string,"id": string,"is_admin": boolean,"is_moderator": boolean,"location": string,"post_count": number,"verified": boolean
                   }
                   ComputedFields: never
                   Insert: {
-                    "avatar_color"?: string,"bio"?: string,"created_at"?: string,"full_name"?: string,"headline"?: string,"id": string,"is_moderator"?: boolean,"location"?: string,"post_count"?: number,"verified"?: boolean
+                    "avatar_color"?: string,"bio"?: string,"created_at"?: string,"full_name"?: string,"headline"?: string,"id": string,"is_admin"?: boolean,"is_moderator"?: boolean,"location"?: string,"post_count"?: number,"verified"?: boolean
                   }
                   Update: {
-                    "avatar_color"?: string,"bio"?: string,"created_at"?: string,"full_name"?: string,"headline"?: string,"id"?: string,"is_moderator"?: boolean,"location"?: string,"post_count"?: number,"verified"?: boolean
+                    "avatar_color"?: string,"bio"?: string,"created_at"?: string,"full_name"?: string,"headline"?: string,"id"?: string,"is_admin"?: boolean,"is_moderator"?: boolean,"location"?: string,"post_count"?: number,"verified"?: boolean
                   }
                   Relationships: [
                     
@@ -535,7 +535,27 @@ isOneToOne: false
                 }
           }
           Functions: {
-            "can_see_private":
+            "admin_delete_category":
+{ Args: { "p_id": string,"p_move_to"?: string }; Returns: undefined
+                           },
+"admin_delete_member":
+{ Args: { "p_user_id": string }; Returns: undefined
+                           },
+"admin_members":
+{ Args: { "p_filter"?: string,"p_limit"?: number,"p_offset"?: number,"p_query"?: string }; Returns: {
+              "avatar_color": string,"created_at": string,"email": string,"full_name": string,"headline": string,"id": string,"is_admin": boolean,"is_moderator": boolean,"last_sign_in_at": string,"post_count": number,"suspended": boolean,"total": number,"verified": boolean
+            }[]
+                           },
+"admin_set_suspended":
+{ Args: { "p_suspended": boolean,"p_user_id": string }; Returns: undefined
+                           },
+"admin_update_member":
+{ Args: { "p_is_admin"?: boolean,"p_is_moderator"?: boolean,"p_user_id": string,"p_verified"?: boolean }; Returns: undefined
+                           },
+"assert_admin":
+{ Args: Record<PropertyKey, never>; Returns: undefined
+                           },
+"can_see_private":
 { Args: { "p_deal_id": number }; Returns: boolean
                            },
 "community_stats":
@@ -549,6 +569,9 @@ isOneToOne: false
                            },
 "increment_thread_views":
 { Args: { "p_thread_id": number }; Returns: undefined
+                           },
+"is_admin":
+{ Args: Record<PropertyKey, never>; Returns: boolean
                            },
 "mark_answer":
 { Args: { "p_is_answer": boolean,"p_reply_id": number }; Returns: undefined

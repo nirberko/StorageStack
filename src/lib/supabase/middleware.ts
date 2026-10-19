@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import type { Database } from "@/lib/database.types";
 
 // Pages that need a signed-in member. Everything else is readable by visitors.
-const PROTECTED = ["/deals/new", "/deals/mine", "/deals/alerts", "/deals/partners/join", "/forums/new", "/settings"];
+const PROTECTED = ["/deals/new", "/deals/mine", "/deals/alerts", "/deals/partners/join", "/forums/new", "/settings", "/admin"];
 
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });

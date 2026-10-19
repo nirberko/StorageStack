@@ -5,6 +5,7 @@ import { Icon } from "@/components/Icon";
 import { EventHost, FollowCategoryButton } from "@/components/forum/FollowButton";
 import { ThreadCard } from "@/components/forum/ThreadCard";
 import { getViewer } from "@/lib/auth";
+import { TOPIC_GROUPS } from "@/lib/config";
 import { compact, count, initials } from "@/lib/format";
 import { ICONS } from "@/lib/icons";
 import { getCategories, getThreadMarks, getTopContributors, THREAD_CARD_SELECT, toCard } from "@/lib/queries/forum";
@@ -21,7 +22,6 @@ const TABS = [
   { id: "saved", label: "Saved" },
 ];
 
-const GROUPS = ["Start here", "Buy & build", "Operate", "Money & legal"];
 const PAGE = 10;
 
 function href(base: Search, patch: Partial<Search>) {
@@ -186,7 +186,7 @@ export default async function ForumsPage({ searchParams }: { searchParams: Promi
               </span>
               Saved<span className="m-n">{savedIds.length}</span>
             </Link>
-            {GROUPS.map((g) => (
+            {TOPIC_GROUPS.map((g) => (
               <div key={g}>
                 <div className="m-sec" style={{ paddingBottom: 6 }}>
                   {g}

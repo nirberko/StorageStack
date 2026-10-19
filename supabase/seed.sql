@@ -1,5 +1,6 @@
 -- Local development seed. Content mirrors the StorageStack design mockups.
--- Demo login: demo@storagestack.dev / storagestack-demo (local only).
+-- Demo logins (local only): demo@storagestack.dev / storagestack-demo,
+-- and admin@storagestack.dev / storagestack-admin for the admin panel.
 
 create function pg_temp.mk_user(
   p_id uuid, p_email text, p_name text, p_headline text, p_color text,
@@ -45,8 +46,10 @@ select pg_temp.mk_user('00000000-0000-4000-a000-000000000015', 'miguel@example.c
 select pg_temp.mk_user('00000000-0000-4000-a000-000000000016', 'office@okafor.example', 'Okafor Family Office', 'Family office · Atlanta, GA', '#FBF1DD');
 select pg_temp.mk_user('00000000-0000-4000-a000-000000000017', 'liam@example.com', 'Liam Novak', 'Investor · Chicago, IL', '#D4F2E4');
 select pg_temp.mk_user('00000000-0000-4000-a000-000000000099', 'demo@storagestack.dev', 'Demo Member', 'Investor · exploring storage', '#EADFFF', false, 'storagestack-demo');
+select pg_temp.mk_user('00000000-0000-4000-a000-000000000098', 'admin@storagestack.dev', 'Demo Admin', 'StorageStack team', '#E6EBF3', true, 'storagestack-admin');
 
 update public.profiles set is_moderator = true where id = '00000000-0000-4000-a000-000000000001';
+update public.profiles set is_admin = true where id = '00000000-0000-4000-a000-000000000098';
 update public.profiles set bio = 'Building and converting storage since 2016. Wrote the big-box conversion recap in the forum.',
   location = 'Raleigh, NC' where id = '00000000-0000-4000-a000-000000000004';
 

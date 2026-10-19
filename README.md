@@ -16,6 +16,7 @@ modernized** and its Deal Room screens.
 | Deal Room | `/deals` (deal types, filters, capital partners), `/deals/[id]`, `/deals/new` (6-step wizard) |
 | Your deals | `/deals/mine` (approve or decline requests, close deals), `/deals/alerts`, `/deals/partners/join` |
 | Members | `/u/[id]` profiles, `/settings` |
+| Admin (admins only) | `/admin/members` (search, verify, roles, suspend, delete), `/admin/topics` (add, edit, reorder, delete forum topics) |
 | Other | `/search`, `/login`, `/signup`, `/tools`, `/learn`, `/guidelines` |
 
 ### Privacy model
@@ -25,6 +26,10 @@ modernized** and its Deal Room screens.
   member, if the poster chose that). This is enforced by Postgres RLS and storage policies, not the UI.
 - Counters (likes, replies, interest) are maintained by triggers; members can only write the columns
   they own (column-level grants), so they cannot pin threads or inflate counts.
+- Admins are members with `profiles.is_admin`. Admin changes go through `security definer` functions and
+  RLS policies that check `is_admin()` in Postgres, so the admin panel is not the only gate. Members cannot
+  set `is_admin` on themselves. Admins cannot demote, suspend or delete themselves, and must remove another
+  admin's access before suspending or deleting them.
 
 ## Run it locally
 
@@ -38,8 +43,9 @@ cp .env.example .env.local
 npm run dev               # http://localhost:3000
 ```
 
-The seed creates sample discussions, deals and members from the design mockups, plus a demo login:
-`demo@storagestack.dev` / `storagestack-demo` (local only).
+The seed creates sample discussions, deals and members from the design mockups, plus demo logins
+(local only): `demo@storagestack.dev` / `storagestack-demo`, and `admin@storagestack.dev` /
+`storagestack-admin` for the admin panel.
 
 Useful scripts:
 
@@ -51,6 +57,8 @@ Useful scripts:
 
 1. Create a Supabase project and link it: `npx supabase link --project-ref <ref>`.
 2. Push the schema: `npx supabase db push` (do not run the seed in production).
+   Then make yourself an admin in the SQL editor:
+   `update profiles set is_admin = true where id = (select id from auth.users where email = 'you@example.com');`
 3. In Supabase Auth settings set the Site URL to your domain and add `https://<domain>/auth/confirm`
    as a redirect URL.
 4. Deploy the Next.js app (e.g. Vercel) with `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
