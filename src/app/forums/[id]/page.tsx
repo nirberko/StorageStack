@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { bodyToHtml } from "@/lib/richtext";
 import { notFound } from "next/navigation";
 import { Avatar } from "@/components/Avatar";
 import { Icon } from "@/components/Icon";
@@ -130,9 +131,7 @@ export default async function ThreadPage({ params }: { params: Promise<{ id: str
             <h1 className="x-h1" style={{ margin: "18px 0 0", fontSize: 32, lineHeight: 1.15, fontWeight: 800, letterSpacing: "-0.03em" }}>
               {thread.title}
             </h1>
-            <p className="x-p" style={{ marginTop: 16 }}>
-              {thread.body}
-            </p>
+            <div className="x-rich" style={{ marginTop: 16 }} dangerouslySetInnerHTML={{ __html: bodyToHtml(thread.body) }} />
 
             {stats.length > 0 && (
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 18 }}>
@@ -156,7 +155,7 @@ export default async function ThreadPage({ params }: { params: Promise<{ id: str
             <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 20, paddingTop: 14, borderTop: "1px solid #EEF1F5", flexWrap: "wrap" }}>
               <span style={{ fontSize: 13, color: "#5E6B7E", display: "inline-flex", alignItems: "center", gap: 5, marginRight: 10 }}>
                 <Icon name="eye" size={15} />
-                {compact(thread.views + 1)} views
+                {compact(thread.views + 1)} {thread.views + 1 === 1 ? "view" : "views"}
               </span>
               <a href="#replies" style={{ fontSize: 13, fontWeight: 700, color: "#1E2B3F" }}>
                 {thread.reply_count} {thread.reply_count === 1 ? "reply" : "replies"}

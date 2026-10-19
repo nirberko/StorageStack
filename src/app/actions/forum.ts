@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { fail, NEEDS_LOGIN, setMembership, withUser, type ActionResult } from "@/app/actions/shared";
-import type { Metric } from "@/lib/types";
+import { sanitizeRich, toPlainText } from "@/lib/richtext";
 
 export async function toggleThreadLike(threadId: number, on: boolean): Promise<ActionResult> {
   const { user } = await withUser();
@@ -47,14 +47,9 @@ export async function createThread(_prev: ThreadFormState, formData: FormData): 
   };
   if (!fields.category_id) return { error: "Pick a topic for your discussion.", fields };
   if (fields.title.length < 8) return { error: "Give your discussion a title of at least 8 characters.", fields };
-  if (!fields.body) return { error: "Add some details so people can help.", fields };
-
-  const stats: Metric[] = [];
-  for (let i = 0; i < 4; i++) {
-    const l = String(formData.get(`stat_l_${i}`) ?? "").trim();
-    const v = String(formData.get(`stat_v_${i}`) ?? "").trim();
-    if (l && v) stats.push({ l, v });
-  }
+  const body = fields.body ? sanitizeRich(fields.body) : "";
+  if (!toPlainText(body)) return { error: "Add some details so people can help.", fields };
+  if (body.length > 20000) return { error: "Your post is too long. Please shorten it a little.", fields };
 
   const tags = fields.tags
     .split(",")
@@ -64,7 +59,7 @@ export async function createThread(_prev: ThreadFormState, formData: FormData): 
 
   const { data, error } = await supabase
     .from("threads")
-    .insert({ category_id: fields.category_id, author_id: user.id, title: fields.title, body: fields.body, tags, stats })
+    .insert({ category_id: fields.category_id, author_id: user.id, title: fields.title, body, tags })
     .select("id")
     .single();
   if (error || !data) return { error: error?.message ?? "Could not post your discussion.", fields };

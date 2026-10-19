@@ -297,3 +297,40 @@ textarea.x-input { min-height: 90px; padding: 12px 14px; font-weight: 500; font-
   .m-logo { font-size: 17px; }
   .m-hero > svg { opacity: 0.25 !important; }
 }
+
+/* ---- Rich text (post bodies and the editor) -------------------------------- */
+
+.x-rich { font-size: 15px; line-height: 1.7; color: var(--body); overflow-wrap: anywhere; }
+.x-rich > :first-child { margin-top: 0; }
+.x-rich > :last-child { margin-bottom: 0; }
+.x-rich p { margin: 0 0 12px; }
+.x-rich h2 { margin: 22px 0 8px; font-size: 19px; font-weight: 800; letter-spacing: -0.01em; color: var(--ink); line-height: 1.3; }
+.x-rich h3 { margin: 18px 0 6px; font-size: 16px; font-weight: 800; color: var(--ink); line-height: 1.35; }
+.x-rich ul, .x-rich ol { margin: 0 0 12px; padding-left: 22px; }
+.x-rich li { margin: 4px 0; }
+.x-rich li p { margin: 0; }
+.x-rich blockquote { margin: 0 0 12px; padding: 10px 16px; border-radius: 12px; background: var(--bg); color: var(--muted); }
+.x-rich blockquote p:last-child { margin-bottom: 0; }
+.x-rich a { color: var(--orange); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+.x-rich code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; background: var(--bg-3); padding: 1px 5px; border-radius: 6px; }
+.x-rich pre { margin: 0 0 12px; background: var(--navy); color: #e6ebf3; padding: 12px 14px; border-radius: 12px; overflow-x: auto; }
+.x-rich pre code { background: none; padding: 0; color: inherit; }
+.x-rich hr { border: 0; border-top: 1px solid var(--line); margin: 18px 0; }
+
+.rich-box { border: 1px solid var(--input-line); border-radius: 12px; background: #fff; overflow: hidden; }
+.rich-box:focus-within { border-color: var(--orange); box-shadow: 0 0 0 3px rgba(219, 82, 11, 0.14); }
+.rich-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 2px; padding: 6px; border-bottom: 1px solid var(--line-3); background: #fafbfd; }
+.rich-btn { min-width: 36px; height: 36px; padding: 0 8px; border: 0; border-radius: 9px; background: transparent; color: var(--muted); font-weight: 800; font-size: 13px; display: inline-grid; place-items: center; }
+.rich-btn:hover:not(:disabled) { background: var(--bg-3); color: var(--navy); }
+.rich-btn.on { background: var(--orange-soft); color: var(--orange-ink); }
+.rich-btn:disabled { opacity: 0.35; }
+.rich-sep { width: 1px; height: 20px; background: var(--line); margin: 0 4px; }
+.rich-area { min-height: 220px; padding: 14px 16px; outline: none; }
+.rich-area p.is-editor-empty:first-child::before { content: attr(data-placeholder); color: #8a96a8; float: left; height: 0; pointer-events: none; }
+
+.tag-box { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-height: 48px; padding: 6px 10px; border: 1px solid var(--input-line); border-radius: 12px; background: #fff; cursor: text; }
+.tag-box:focus-within { border-color: var(--orange); box-shadow: 0 0 0 3px rgba(219, 82, 11, 0.14); }
+.tag-box input { flex: 1; min-width: 140px; border: 0; outline: none; font: inherit; font-size: 15px; color: var(--ink); background: transparent; min-height: 34px; }
+.tag-chip { display: inline-flex; align-items: center; gap: 4px; padding: 0 4px 0 12px; min-height: 32px; border-radius: 999px; background: var(--orange-soft); color: var(--orange-ink); font-size: 13px; font-weight: 700; }
+.tag-chip button { width: 24px; height: 24px; border: 0; border-radius: 50%; background: transparent; color: inherit; display: grid; place-items: center; }
+.tag-chip button:hover { background: rgba(181, 68, 10, 0.12); }

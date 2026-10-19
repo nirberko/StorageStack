@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useActionState, useState } from "react";
 import { createThread, type ThreadFormState } from "@/app/actions/forum";
 import { Icon } from "@/components/Icon";
+import { RichEditor } from "@/components/forum/thread/RichEditor";
+import { TagInput } from "@/components/forum/thread/TagInput";
 import type { Category } from "@/lib/types";
 
 const GROUPS = ["Start here", "Buy & build", "Operate", "Money & legal"];
@@ -12,7 +14,6 @@ export function NewThreadForm({ categories, initialCat }: { categories: Category
   const [state, action, pending] = useActionState<ThreadFormState, FormData>(createThread, {});
   const f = state.fields ?? {};
   const [cat, setCat] = useState(f.category_id || initialCat || "");
-  const [showNumbers, setShowNumbers] = useState(false);
 
   return (
     <form action={action}>
@@ -76,57 +77,29 @@ export function NewThreadForm({ categories, initialCat }: { categories: Category
           <span className="d-help">Ask a clear question or say what you are sharing. Specific titles get better answers.</span>
         </div>
         <div>
-          <label className="d-label" htmlFor="body">
+          <span className="d-label" id="body-label">
             Details
-          </label>
-          <textarea
-            id="body"
+          </span>
+          <RichEditor
             name="body"
-            className="d-input"
-            defaultValue={f.body}
-            required
-            maxLength={20000}
+            labelId="body-label"
+            initialHtml={f.body}
             placeholder="Give people the context they need: the market, the numbers, what you have tried and what you are unsure about."
-            style={{ minHeight: 220 }}
           />
         </div>
         <div>
           <label className="d-label" htmlFor="tags">
             Tags <span style={{ fontWeight: 600, color: "#5E6B7E" }}>(optional)</span>
           </label>
-          <input id="tags" name="tags" className="d-input" defaultValue={f.tags} placeholder="e.g. Deal review, Ohio" />
-          <span className="d-help">Separate with commas. Up to 4.</span>
+          <TagInput
+            name="tags"
+            id="tags"
+            initial={(f.tags ?? "").split(",").map((t) => t.trim()).filter(Boolean)}
+          />
+          <span className="d-help" id="tags-help">
+            Press Enter or a comma after each tag. Up to 4.
+          </span>
         </div>
-      </div>
-
-      <div className="p-sec">
-        {!showNumbers ? (
-          <button type="button" className="m-btn m-btn-s" onClick={() => setShowNumbers(true)}>
-            <Icon name="plus" size={16} strokeWidth={2.4} />
-            Add key numbers
-          </button>
-        ) : (
-          <>
-            <span className="d-label">Key numbers</span>
-            <span className="d-help" style={{ margin: "-4px 0 12px" }}>
-              Shown as chips on your post, like &ldquo;Asking $2.4M&rdquo; or &ldquo;Occupancy 84%&rdquo;.
-            </span>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 10 }}>
-              {[0, 1, 2, 3].map((i) => (
-                <div key={i} style={{ display: "flex", gap: 8 }}>
-                  <label className="sr-only" htmlFor={`stat_l_${i}`}>
-                    Label {i + 1}
-                  </label>
-                  <input id={`stat_l_${i}`} name={`stat_l_${i}`} className="d-input" placeholder="Label" maxLength={24} style={{ flex: "1 1 50%" }} />
-                  <label className="sr-only" htmlFor={`stat_v_${i}`}>
-                    Value {i + 1}
-                  </label>
-                  <input id={`stat_v_${i}`} name={`stat_v_${i}`} className="d-input" placeholder="Value" maxLength={16} style={{ flex: "1 1 50%", fontWeight: 700 }} />
-                </div>
-              ))}
-            </div>
-          </>
-        )}
       </div>
 
       <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, paddingTop: 20, borderTop: "1px solid #EEF1F5" }}>

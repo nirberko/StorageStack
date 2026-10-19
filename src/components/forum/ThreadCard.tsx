@@ -4,6 +4,7 @@ import { Icon } from "@/components/Icon";
 import { Verified } from "@/components/Verified";
 import { LikeButton, SaveButton } from "@/components/forum/ThreadActions";
 import { compact, timeAgo } from "@/lib/format";
+import { toPlainText } from "@/lib/richtext";
 import type { Author, Category, Metric, Thread } from "@/lib/types";
 
 export type ThreadCardData = Thread & {
@@ -57,7 +58,7 @@ export function ThreadCard({ thread: t, liked, saved }: { thread: ThreadCardData
           {t.title}
         </Link>
       </div>
-      <p className="m-ex">{t.body}</p>
+      <p className="m-ex">{toPlainText(t.body)}</p>
       {stats.length > 0 && (
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 14 }}>
           {stats.map((s, i) => (
