@@ -175,6 +175,32 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"deal_reports": {
+                  Row: {
+                    "created_at": string,"deal_id": number,"reason": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"deal_id": number,"reason"?: string,"user_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"deal_id"?: number,"reason"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "deal_reports_deal_id_fkey"
+      columns: ["deal_id"]
+isOneToOne: false
+      referencedRelation: "deals"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "deal_reports_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"deal_requests": {
                   Row: {
                     "amount": number | null,"created_at": string,"deal_id": number,"message": string,"status": Database["public"]['Enums']["request_status"],"user_id": string

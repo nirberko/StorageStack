@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { toggleDealRequest, toggleDealSave, togglePartnerConnect } from "@/app/actions/deals";
 import { Icon } from "@/components/Icon";
 import { useToggle } from "@/lib/useToggle";
@@ -23,9 +24,9 @@ export function DealRequestButton({ dealId, requested, label, own }: { dealId: n
   const t = useToggle(requested, (on) => toggleDealRequest(dealId, on));
   if (own) {
     return (
-      <a className="d-req" href="/deals/mine">
+      <Link className="d-req" href="/deals/mine">
         Your deal
-      </a>
+      </Link>
     );
   }
   return (
