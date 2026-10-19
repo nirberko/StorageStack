@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { getViewer } from "@/lib/auth";
+import { HeaderShell } from "@/components/HeaderShell";
 import { Logo } from "@/components/Logo";
 import { NavLinks } from "@/components/NavLinks";
 import { SearchBox } from "@/components/SearchBox";
@@ -9,27 +10,36 @@ import { UserMenu } from "@/components/UserMenu";
 export async function SiteHeader() {
   const viewer = await getViewer();
   return (
-    <header className="m-header">
-      <div className="wrap m-header-in">
-        <Logo />
-        <NavLinks />
-        <Suspense fallback={<div className="m-search" />}>
-          <SearchBox />
-        </Suspense>
-        {viewer ? (
+    <HeaderShell
+      logo={<Logo />}
+      menu={
+        <>
+          <NavLinks />
+          <Suspense fallback={<div className="m-search" />}>
+            <SearchBox />
+          </Suspense>
+          {!viewer && (
+            <Link className="m-btn m-btn-s m-show-sm" href="/login">
+              Log in
+            </Link>
+          )}
+        </>
+      }
+      account={
+        viewer ? (
           <UserMenu id={viewer.id} name={viewer.profile.full_name} color={viewer.profile.avatar_color} isAdmin={viewer.profile.is_admin} />
         ) : (
           <div style={{ display: "flex", gap: 6 }}>
-            <Link className="m-btn m-btn-g" href="/login">
+            <Link className="m-btn m-btn-g m-hide-sm" href="/login">
               Log in
             </Link>
             <Link className="m-btn m-btn-o" href="/signup">
               Join free
             </Link>
           </div>
-        )}
-      </div>
-    </header>
+        )
+      }
+    />
   );
 }
 
