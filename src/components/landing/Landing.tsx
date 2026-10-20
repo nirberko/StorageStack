@@ -27,7 +27,8 @@ const ARROW = "M5 12h14M13 6l6 6-6 6";
 /** The home page for visitors who are not logged in: hero, what membership includes, and a closing call to join. */
 export async function Landing() {
   const supabase = await createClient();
-  const [threadsRes, dealsRes, partnersRes] = await Promise.all([
+  const [userRes, threadsRes, dealsRes, partnersRes] = await Promise.all([
+    supabase.auth.getUser(),
     supabase
       .from("threads")
       .select(`id, title, author:profiles!threads_author_id_fkey(${AUTHOR_FIELDS}), category:categories(name, tint, ink)`)
@@ -50,6 +51,7 @@ export async function Landing() {
   const threads = (threadsRes.data ?? []) as unknown as LandingThread[];
   const deals = (dealsRes.data ?? []) as unknown as LandingDeal[];
   const partners = (partnersRes.data ?? []) as unknown as LandingPartner[];
+  const signedIn = !!userRes.data.user;
 
   // One recent thread per author, so the hero shows three different people.
   const seen = new Set<string>();
@@ -73,12 +75,20 @@ export async function Landing() {
           </nav>
           <Logo />
           <div className="l-head-end">
-            <Link className="l-login" href="/login">
-              Log in
-            </Link>
-            <Link className="l-btn-line" href="/signup">
-              Join free
-            </Link>
+            {signedIn ? (
+              <Link className="l-btn-line" href="/forums">
+                Go to StorageStack <Icon d={ARROW} size={16} strokeWidth={2.4} />
+              </Link>
+            ) : (
+              <>
+                <Link className="l-login" href="/login">
+                  Log in
+                </Link>
+                <Link className="l-btn-line" href="/signup">
+                  Join free
+                </Link>
+              </>
+            )}
           </div>
         </header>
       </div>
