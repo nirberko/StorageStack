@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <style>
+    .n { fill: #0B1F3A } .nt { fill: #516074 }
+    @media (prefers-color-scheme: dark) { .n { fill: #FFFFFF } .nt { fill: #B6BCC4 } }
+  </style>
+  <path class="n" d="M6 46.1V45.5A3.5 3.5 0 0 1 9.5 42H54.5A3.5 3.5 0 0 1 58 45.5V46.1Z"/>
+  <path class="n" d="M6 47.9H58V54.5A3.5 3.5 0 0 1 54.5 58H9.5A3.5 3.5 0 0 1 6 54.5Z"/>
+  <rect class="nt" x="30" y="47.9" width="4" height="4.7"/>
+  <path class="n" d="M13 28.1V27.5A3.5 3.5 0 0 1 16.5 24H47.5A3.5 3.5 0 0 1 51 27.5V28.1Z"/>
+  <path class="n" d="M13 29.9H51V36.5A3.5 3.5 0 0 1 47.5 40H16.5A3.5 3.5 0 0 1 13 36.5Z"/>
+  <rect class="nt" x="30" y="29.9" width="4" height="4.7"/>
+  <path fill="#F26B1D" d="M20 10.1V9.5A3.5 3.5 0 0 1 23.5 6H40.5A3.5 3.5 0 0 1 44 9.5V10.1Z"/>
+  <path fill="#F26B1D" d="M20 11.9H44V18.5A3.5 3.5 0 0 1 40.5 22H23.5A3.5 3.5 0 0 1 20 18.5Z"/>
+  <rect fill="#F3955F" x="30" y="11.9" width="4" height="4.7"/>
+</svg>
