@@ -2,15 +2,14 @@ import Link from "next/link";
 import { Icon } from "@/components/Icon";
 import { DealCard, type DealCardData } from "@/components/deals/DealCard";
 import { ThreadCard } from "@/components/forum/ThreadCard";
-import { getViewer } from "@/lib/auth";
 import { count, money } from "@/lib/format";
-import { DEAL_CARD_SELECT, getDealMarks } from "@/lib/queries/deals";
-import { getCategories, getThreadMarks, THREAD_CARD_SELECT, toCard } from "@/lib/queries/forum";
+import { DEAL_CARD_SELECT } from "@/lib/queries/deals";
+import { getCategories, THREAD_CARD_SELECT, toCard } from "@/lib/queries/forum";
 import { createClient } from "@/lib/supabase/server";
 
-export default async function HomePage() {
+/** The home page for visitors who are not signed in. */
+export async function MarketingHome() {
   const supabase = await createClient();
-  const viewer = await getViewer();
 
   const [threadsRes, dealsRes, categories, communityRes, dealStatsRes] = await Promise.all([
     supabase.from("threads").select(THREAD_CARD_SELECT).order("last_activity_at", { ascending: false }).limit(4),
@@ -25,10 +24,6 @@ export default async function HomePage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const threads = (threadsRes.data ?? []).map((r: any) => toCard(r));
   const deals = (dealsRes.data ?? []) as unknown as DealCardData[];
-  const [threadMarks, dealMarks] = await Promise.all([
-    getThreadMarks(supabase, viewer?.id, threads.map((t) => t.id)),
-    getDealMarks(supabase, viewer?.id, deals.map((d) => d.id)),
-  ]);
   const community = (communityRes.data ?? { members: 0, discussions: 0 }) as { members: number; discussions: number };
   const dealStats = (dealStatsRes.data ?? { active: 0, total_value: 0 }) as { active: number; total_value: number };
 
@@ -50,15 +45,8 @@ export default async function HomePage() {
             <h1>The self storage community</h1>
             <p>Learn from people who have bought, built and run storage facilities. Then find your next deal, investor or partner in the Deal Room.</p>
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 26 }}>
-              <Link className="m-btn m-btn-o" href={viewer ? "/forums/new" : "/signup"} style={{ minHeight: 48, padding: "0 22px" }}>
-                {viewer ? (
-                  <>
-                    <Icon name="plus" size={18} strokeWidth={2.4} />
-                    Start a discussion
-                  </>
-                ) : (
-                  "Join free"
-                )}
+              <Link className="m-btn m-btn-o" href="/signup" style={{ minHeight: 48, padding: "0 22px" }}>
+                Join free
               </Link>
               <Link className="m-btn m-btn-w" href="/deals" style={{ minHeight: 48 }}>
                 Browse the Deal Room
@@ -91,7 +79,7 @@ export default async function HomePage() {
             </Link>
           </div>
           {threads.map((t) => (
-            <ThreadCard key={t.id} thread={t} liked={threadMarks.liked.has(t.id)} saved={threadMarks.saved.has(t.id)} />
+            <ThreadCard key={t.id} thread={t} liked={false} saved={false} />
           ))}
         </main>
 
@@ -103,7 +91,7 @@ export default async function HomePage() {
             </Link>
           </div>
           {deals.map((d) => (
-            <DealCard key={d.id} deal={d} saved={dealMarks.saved.has(d.id)} requested={dealMarks.requested.has(d.id)} viewerId={viewer?.id} />
+            <DealCard key={d.id} deal={d} saved={false} requested={false} />
           ))}
           <div className="m-card" style={{ padding: 20 }}>
             <h3 style={{ margin: "0 0 12px", fontSize: 15, fontWeight: 800 }}>Popular topics</h3>
