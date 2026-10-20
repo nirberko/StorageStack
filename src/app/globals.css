@@ -439,18 +439,17 @@ a.h-step:hover { color: var(--orange-ink); }
 .l-in { max-width: 1280px; margin: 0 auto; padding-left: 24px; padding-right: 24px; }
 .l-banner { background: var(--orange-soft); color: var(--orange-ink); font-size: 14px; font-weight: 600; text-align: center; padding: 11px 16px; }
 .l-banner a { color: var(--navy); font-weight: 800; }
-.l-bar { position: sticky; top: 0; z-index: 30; background: rgba(255, 255, 255, 0.9); border-bottom: 1px solid var(--line); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
-.l-head { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 16px; padding-top: 14px; padding-bottom: 14px; }
+.l-bar { position: sticky; top: 0; z-index: 30; background: rgba(255, 255, 255, 0.9); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.l-head { display: flex; align-items: center; gap: 28px; padding-top: 14px; padding-bottom: 14px; }
 .l-nav { display: flex; gap: 2px; }
-.l-nav a { padding: 10px 12px; font-weight: 600; font-size: 15px; color: var(--muted); }
-.l-nav a:hover { color: var(--navy); }
-.l-head-end { display: flex; gap: 8px; justify-content: flex-end; align-items: center; }
-.l-login { padding: 10px 12px; font-weight: 700; }
-.l-btn-line { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 12px; border: 1.5px solid var(--navy); font-weight: 700; color: var(--navy); }
-.l-btn-line:hover { color: var(--navy); background: var(--bg-3); }
+.l-nav a { padding: 9px 12px; border-radius: 10px; font-weight: 600; font-size: 15px; color: var(--muted); }
+.l-nav a:hover { color: var(--navy); background: var(--bg-3); }
+.l-head-end { display: flex; gap: 8px; align-items: center; margin-left: auto; }
+.l-login { padding: 10px 12px; font-weight: 700; color: var(--navy); }
 .l-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 54px; padding: 0 26px; border: 0; border-radius: 14px; background: var(--orange); color: #fff; font-size: 16px; font-weight: 800; white-space: nowrap; box-shadow: 0 8px 20px rgba(219, 82, 11, 0.25); }
 .l-btn:hover { color: #fff; background: var(--orange-hover); }
 .l-btn.sm { min-height: 48px; padding: 0 22px; font-size: 15px; box-shadow: none; }
+.l-btn.xs { min-height: 44px; padding: 0 18px; border-radius: 12px; font-size: 15px; box-shadow: 0 6px 14px rgba(219, 82, 11, 0.22); }
 
 .l-hero { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px; padding-top: 56px; padding-bottom: 72px; }
 .l-h1 { font-size: clamp(38px, 5.4vw, 68px); line-height: 1.06; letter-spacing: -0.035em; font-weight: 800; color: var(--navy); max-width: 960px; }
@@ -566,7 +565,7 @@ a.h-step:hover { color: var(--orange-ink); }
   @keyframes l-rise { from { transform: translateY(105%); } to { transform: none; } }
   @keyframes l-roll { from { height: 0; } to { height: 46px; } }
   @keyframes l-grow { from { opacity: 0.4; transform: scale(0.92); } to { opacity: 1; transform: none; } }
-  @keyframes l-bar { to { background: rgba(255, 255, 255, 0.9); box-shadow: 0 8px 24px rgba(11, 31, 58, 0.08); border-bottom-color: var(--line); } }
+  @keyframes l-bar { to { background: rgba(255, 255, 255, 0.9); box-shadow: 0 8px 24px rgba(11, 31, 58, 0.08); } }
   @keyframes l-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(22, 133, 90, 0); } 50% { box-shadow: 0 0 0 6px rgba(22, 133, 90, 0.18); } }
 
   /* On load: the hero. */
@@ -582,7 +581,7 @@ a.h-step:hover { color: var(--orange-ink); }
 
   /* On scroll: browsers with scroll-driven animations play these; others show everything at once. */
   @supports (animation-timeline: view()) {
-    .l-bar { background: rgba(255, 255, 255, 0); border-bottom-color: transparent; animation: l-bar linear both; animation-timeline: scroll(); animation-range: 0 140px; }
+    .l-bar { background: rgba(255, 255, 255, 0); animation: l-bar linear both; animation-timeline: scroll(); animation-range: 0 140px; }
     .l-sv { animation: l-pop linear both; animation-timeline: view(); animation-range: entry 0% cover 28%; }
     .l-sv2 { animation-range: entry 8% cover 36%; }
     .l-sv3 { animation-range: entry 16% cover 44%; }

@@ -120,16 +120,16 @@ export async function Landing() {
 
       <div className="l-bar">
         <header className="l-in l-head">
+          <Logo />
           <nav className="l-nav" aria-label="Main">
             <Link href="/forums">Forums</Link>
             <Link href="/deals">Deal Room</Link>
             <Link href="/tools">Tools</Link>
             <Link href="/learn">Learn</Link>
           </nav>
-          <Logo />
           <div className="l-head-end">
             {signedIn ? (
-              <Link className="l-btn-line" href="/forums">
+              <Link className="l-btn xs l-nudge" href="/forums">
                 Go to StorageStack <Icon d={ARROW} size={16} strokeWidth={2.4} />
               </Link>
             ) : (
@@ -137,8 +137,8 @@ export async function Landing() {
                 <Link className="l-login" href="/login">
                   Log in
                 </Link>
-                <Link className="l-btn-line" href="/signup">
-                  Join free
+                <Link className="l-btn xs l-nudge" href="/signup">
+                  Join free <Icon d={ARROW} size={16} strokeWidth={2.4} />
                 </Link>
               </>
             )}
