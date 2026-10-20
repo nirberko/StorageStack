@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useActionState } from "react";
 import { signIn, signUp, type AuthState } from "@/app/actions/auth";
 
-export function AuthForm({ mode, next, linkError }: { mode: "login" | "signup"; next: string; linkError?: boolean }) {
+export function AuthForm({ mode, next, linkError, email }: { mode: "login" | "signup"; next: string; linkError?: boolean; email?: string }) {
   const [state, action, pending] = useActionState<AuthState, FormData>(mode === "login" ? signIn : signUp, {});
   const isSignup = mode === "signup";
 
@@ -34,7 +34,7 @@ export function AuthForm({ mode, next, linkError }: { mode: "login" | "signup"; 
         <label className="d-label" htmlFor="email">
           Email
         </label>
-        <input id="email" name="email" type="email" className="d-input" autoComplete="email" required />
+        <input id="email" name="email" type="email" className="d-input" autoComplete="email" defaultValue={email} required />
       </div>
       <div>
         <label className="d-label" htmlFor="password">
