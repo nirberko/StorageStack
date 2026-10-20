@@ -521,15 +521,16 @@ a.h-step:hover { color: var(--orange-ink); }
 .l-calc span { color: var(--subtle); font-weight: 600; }
 .l-calc b { font-weight: 800; color: var(--navy); }
 
-.l-cta { position: relative; overflow: hidden; background-color: var(--navy); background-image: radial-gradient(var(--navy-2) 1.2px, transparent 1.2px); background-size: 22px 22px; border-radius: 32px; padding: clamp(40px, 6vw, 80px) clamp(24px, 5vw, 64px) 0; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 18px; }
+.l-cta { position: relative; overflow: clip; background-color: var(--navy); background-image: radial-gradient(var(--navy-2) 1.2px, transparent 1.2px); background-size: 22px 22px; border-radius: 32px; padding: clamp(40px, 6vw, 80px) clamp(24px, 5vw, 64px) 0; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 18px; }
 .l-cta h2 { font-size: clamp(32px, 4.4vw, 56px); line-height: 1.08; letter-spacing: -0.03em; font-weight: 800; color: #fff; max-width: 760px; }
 .l-cta p { font-size: 18px; line-height: 1.55; color: var(--on-navy); max-width: 560px; }
 .l-cta .l-signup { max-width: 500px; }
 .l-cta .l-signup input { border: 0; }
 .l-cta .l-note { color: var(--on-navy); }
-.l-town { position: relative; align-self: stretch; height: 190px; margin-top: 36px; }
-.l-town > div { position: absolute; inset: 0; }
-.l-town > div > div { position: absolute; }
+.l-town { align-self: stretch; display: flex; align-items: flex-end; justify-content: center; gap: 1.25%; margin-top: 36px; }
+.l-town svg { display: block; height: auto; overflow: visible; }
+.l-town-side { width: 28.3%; }
+.l-town-main { width: 40.9%; }
 
 .l-foot { border-top: 1px solid var(--line); }
 .l-foot-in { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; padding-top: 28px; padding-bottom: 28px; }
@@ -544,7 +545,7 @@ a.h-step:hover { color: var(--orange-ink); }
   .l-tile.wide { grid-column: auto; }
   .l-tile.tall { grid-row: auto; }
 }
-@media (max-width: 900px) { .l-town-side { display: none; } }
+@media (max-width: 900px) { .l-town .l-town-side { display: none; } .l-town-main { width: min(100%, 456px); } }
 @media (max-width: 760px) { .l-nav { display: none; } .l-login { display: none; } }
 
 /* Hover uses the separate `translate` property so it never fights the entrance animations on `transform`. */
@@ -563,7 +564,7 @@ a.h-step:hover { color: var(--orange-ink); }
   @keyframes l-mark { from { background-size: 0% 100%; } to { background-size: 100% 100%; } }
   @keyframes l-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
   @keyframes l-rise { from { transform: translateY(105%); } to { transform: none; } }
-  @keyframes l-roll { from { height: 0; } to { height: 46px; } }
+  @keyframes l-roll { from { transform: scaleY(2.55); } to { transform: none; } }
   @keyframes l-grow { from { opacity: 0.4; transform: scale(0.92); } to { opacity: 1; transform: none; } }
   @keyframes l-bar { to { background: rgba(255, 255, 255, 0.9); box-shadow: 0 8px 24px rgba(11, 31, 58, 0.08); } }
   @keyframes l-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(22, 133, 90, 0); } 50% { box-shadow: 0 0 0 6px rgba(22, 133, 90, 0.18); } }
@@ -593,6 +594,8 @@ a.h-step:hover { color: var(--orange-ink); }
     /* The town sits at the very end of the page, so its ranges must finish once it is fully on screen. */
     .l-rise { animation: l-rise linear both; animation-timeline: view(); animation-range: entry 0% entry 85%; }
     .l-rise2 { animation-range: entry 15% entry 100%; }
-    .l-roll { animation: l-roll linear both; animation-timeline: view(); animation-range: contain 0% contain 8%; }
+    /* The rolling door is an SVG group, so it follows the whole town's view timeline. */
+    .l-town { view-timeline-name: --town; }
+    .l-roll { transform-box: fill-box; transform-origin: top; animation: l-roll linear both; animation-timeline: --town; animation-range: contain 0% contain 8%; }
   }
 }

@@ -453,31 +453,104 @@ function RaiseCard({ deal }: { deal: LandingDeal }) {
   );
 }
 
+/** Horizontal slat lines across a roll-up door. */
+function Slats({ x, y, w, h }: { x: number; y: number; w: number; h: number }) {
+  const ys = [];
+  for (let i = y + 6; i < y + h - 6; i += 7) ys.push(i);
+  return (
+    <>
+      {ys.map((i) => (
+        <rect key={i} x={x} y={i} width={w} height={1} fill="rgba(255,255,255,0.22)" />
+      ))}
+    </>
+  );
+}
+
+/**
+ * One roll-up unit door with its frame and unit number. An `open` door is rolled up to that
+ * height and shows the boxes stored inside.
+ */
+function UnitDoor({ x, y, w, h, color, num, open }: { x: number; y: number; w: number; h: number; color: string; num: string; open?: number }) {
+  return (
+    <>
+      <rect x={x - 3} y={y - 3} width={w + 6} height={h + 3} fill="#E3E8F0" />
+      <text x={x + w / 2} y={y - 8} fontSize={10} fontWeight={800} fill="#8FA0BC" textAnchor="middle">
+        {num}
+      </text>
+      {open ? (
+        <>
+          <rect x={x} y={y} width={w} height={h} fill="#06142A" />
+          {[
+            [4, 22, 26],
+            [34, 18, 22],
+            [6, 18, 22, 22],
+          ].map(([bx, bh, bw, lift = 0]) => (
+            <g key={bx + lift}>
+              <rect x={x + bx} y={y + h - bh - lift} width={bw} height={bh} fill="#C98B4A" />
+              <rect x={x + bx + bw / 2 - 2} y={y + h - bh - lift} width={4} height={bh} fill="#E7B279" />
+            </g>
+          ))}
+          <g className="l-roll">
+            <rect x={x} y={y} width={w} height={open} fill={color} />
+            <Slats x={x} y={y} w={w} h={open} />
+            <rect x={x} y={y + open - 5} width={w} height={5} fill="rgba(0,0,0,0.35)" />
+          </g>
+        </>
+      ) : (
+        <>
+          <rect x={x} y={y} width={w} height={h} fill={color} />
+          <Slats x={x} y={y} w={w} h={h} />
+          <rect x={x} y={y + h - 6} width={w} height={6} fill="rgba(0,0,0,0.28)" />
+          <rect x={x + w / 2 - 8} y={y + h - 15} width={16} height={4} rx={2} fill="rgba(0,0,0,0.4)" />
+        </>
+      )}
+    </>
+  );
+}
+
+/** A low side building with four navy doors and two wall lamps. */
+function TownSide({ row }: { row: string }) {
+  return (
+    <svg className="l-town-side l-rise l-rise2" viewBox="0 0 316 136">
+      <rect width={316} height={14} rx={5} fill="#C5D1E3" />
+      <rect x={8} y={14} width={300} height={122} fill="#F5F6FA" />
+      {[90, 226].map((lx) => (
+        <g key={lx}>
+          <rect x={lx - 7} y={22} width={14} height={4} rx={2} fill="#9AA8BF" />
+          <path d={`M${lx - 7} 26 L${lx - 14} 52 L${lx + 14} 52 L${lx + 7} 26Z`} fill="rgba(255,214,140,0.1)" />
+        </g>
+      ))}
+      {[0, 1, 2, 3].map((i) => (
+        <UnitDoor key={i} x={30 + i * 68} y={56} w={52} h={80} color="#1E3560" num={`${row}${i + 1}`} />
+      ))}
+    </svg>
+  );
+}
+
 /** The row of storage buildings at the foot of the closing panel. */
 function Town() {
-  const side = (edge: "left" | "right") => (
-    <div className="l-town-side l-rise l-rise2">
-      <div style={{ [edge]: 0, width: "24%", bottom: 0, height: 104, background: "#F5F6FA", borderRadius: "8px 8px 0 0" }} />
-      <div style={{ [edge]: -6, width: "calc(24% + 12px)", bottom: 104, height: 12, background: "#C5D1E3", borderRadius: 5 }} />
-      <div
-        style={{ [edge]: 16, width: "calc(24% - 32px)", bottom: 0, height: 70, background: "repeating-linear-gradient(90deg, #16305A 0 48px, transparent 48px 62px)" }}
-      />
-    </div>
-  );
   return (
-    <div className="l-town" role="img" aria-label="A row of self storage buildings with orange roll-up doors">
-      {side("left")}
-      <div className="l-rise">
-        <div style={{ left: "27%", width: "46%", bottom: 0, height: 150, background: "#fff", borderRadius: "10px 10px 0 0" }} />
-        <div style={{ left: "calc(27% - 10px)", width: "calc(46% + 20px)", bottom: 150, height: 16, background: "#C5D1E3", borderRadius: 6 }} />
-        <div
-          style={{ left: "calc(27% + 22px)", width: "calc(46% - 44px)", bottom: 0, height: 104, background: "repeating-linear-gradient(90deg, #DB520B 0 60px, transparent 60px 76px)" }}
-        />
-        <div className="l-slats" style={{ left: "calc(27% + 22px)", width: "calc(46% - 44px)", bottom: 0, height: 104 }} />
-        <div style={{ left: "calc(27% + 174px)", bottom: 0, width: 60, height: 104, background: "#F26B1D" }} />
-        <div className="l-roll" style={{ left: "calc(27% + 174px)", bottom: 0, width: 60, height: 46, background: "#0B1F3A" }} />
-      </div>
-      {side("right")}
+    <div className="l-town" role="img" aria-label="A StorageStack self storage facility with orange roll-up doors, one of them open">
+      <TownSide row="B" />
+      <svg className="l-town-main l-rise" viewBox="0 0 456 196">
+        <rect width={456} height={16} rx={6} fill="#C5D1E3" />
+        <rect x={10} y={16} width={436} height={180} fill="#fff" />
+        <rect x={138} y={28} width={180} height={30} rx={6} fill="#0B1F3A" />
+        <text x={228} y={48} fontSize={15} fontWeight={800} fill="#fff" textAnchor="middle" letterSpacing={0.5}>
+          StorageStack
+        </text>
+        <rect x={150} y={52} width={156} height={2} fill="#F26B1D" />
+        {[0, 1, 2, 3, 4].map((i) => (
+          <UnitDoor key={i} x={32 + i * 80} y={84} w={58} h={112} color="#DB520B" num={`10${i + 1}`} open={i === 2 ? 44 : undefined} />
+        ))}
+        {[16, 431].map((bx) => (
+          <g key={bx}>
+            <rect x={bx} y={170} width={9} height={26} rx={3} fill="#F2B21D" />
+            <rect x={bx} y={177} width={9} height={4} fill="#0B1F3A" />
+          </g>
+        ))}
+      </svg>
+      <TownSide row="C" />
     </div>
   );
 }
