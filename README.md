@@ -64,6 +64,23 @@ Useful scripts:
 4. Deploy the Next.js app (e.g. Vercel) with `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    and `NEXT_PUBLIC_SITE_URL`.
 
+### Continuous deploy
+
+Every push to `main` runs `.github/workflows/ci.yml`: lint, typecheck and build, then
+`supabase db push` against production, then a production deploy to Vercel. The deploy runs only
+if the migrations succeed. Vercel's own Git deploys for `main` are off (`vercel.json`) so the app
+never ships before its schema. Pull requests still get Vercel preview deploys.
+
+Add these repository secrets (Settings → Secrets and variables → Actions):
+
+| Secret | Where to get it |
+| --- | --- |
+| `SUPABASE_ACCESS_TOKEN` | supabase.com → Account → Access Tokens |
+| `SUPABASE_PROJECT_ID` | the project ref in your Supabase project URL |
+| `SUPABASE_DB_PASSWORD` | the database password you set when creating the project |
+| `VERCEL_TOKEN` | vercel.com → Account Settings → Tokens |
+| `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID` | `.vercel/project.json` after running `vercel link` |
+
 ## Project layout
 
 ```
