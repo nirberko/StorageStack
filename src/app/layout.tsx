@@ -10,7 +10,7 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: { default: "StorageStack — the self storage community", template: "%s · StorageStack" },
+  title: { default: "The Storage Network — the self storage community", template: "%s · The Storage Network" },
   description:
     "Ask questions, share deals and learn from investors, operators and developers building in self storage.",
 };

@@ -64,7 +64,7 @@ export function AuthForm({ mode, next, linkError, email }: { mode: "login" | "si
         {pending ? "One moment…" : isSignup ? "Create free account" : "Log in"}
       </button>
       <p style={{ fontSize: 14, color: "#5E6B7E", textAlign: "center" }}>
-        {isSignup ? "Already a member? " : "New to StorageStack? "}
+        {isSignup ? "Already a member? " : "New to The Storage Network? "}
         <Link
           href={`${isSignup ? "/login" : "/signup"}${next !== "/forums" ? `?next=${encodeURIComponent(next)}` : ""}`}
           style={{ fontWeight: 700, color: "#DB520B" }}

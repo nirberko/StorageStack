@@ -130,7 +130,7 @@ export async function Landing() {
           <div className="l-head-end">
             {signedIn ? (
               <Link className="l-btn xs l-nudge" href="/forums">
-                Go to StorageStack <Icon d={ARROW} size={16} strokeWidth={2.4} />
+                Go to The Storage Network <Icon d={ARROW} size={16} strokeWidth={2.4} />
               </Link>
             ) : (
               <>
@@ -307,7 +307,7 @@ export async function Landing() {
             <Link href="/learn">Learn</Link>
             <Link href="/guidelines">Guidelines</Link>
           </nav>
-          <span style={{ fontSize: 13, color: "#5E6B7E" }}>© {new Date().getFullYear()} StorageStack</span>
+          <span style={{ fontSize: 13, color: "#5E6B7E" }}>© {new Date().getFullYear()} The Storage Network</span>
         </div>
       </footer>
     </div>
@@ -530,7 +530,7 @@ function TownSide({ row }: { row: string }) {
 /** The row of storage buildings at the foot of the closing panel. */
 function Town() {
   return (
-    <div className="l-town" role="img" aria-label="A StorageStack self storage facility with orange roll-up doors, one of them open">
+    <div className="l-town" role="img" aria-label="A Storage Network self storage facility with orange roll-up doors, one of them open">
       <TownSide row="B" />
       <svg className="l-town-main l-rise" viewBox="0 0 456 196">
         <rect width={456} height={16} rx={6} fill="#C5D1E3" />

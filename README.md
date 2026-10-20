@@ -1,4 +1,4 @@
-# StorageStack
+# The Storage Network
 
 The self storage community: forums for investors, operators and developers, plus a Deal Room
 for facilities for sale, capital raises, partnerships and loans.
@@ -44,8 +44,8 @@ npm run dev               # http://localhost:3000
 ```
 
 The seed creates sample discussions, deals and members from the design mockups, plus demo logins
-(local only): `demo@storagestack.dev` / `storagestack-demo`, and `admin@storagestack.dev` /
-`storagestack-admin` for the admin panel.
+(local only): `demo@thestoragenetwork.dev` / `storagenetwork-demo`, and `admin@thestoragenetwork.dev` /
+`storagenetwork-admin` for the admin panel.
 
 Useful scripts:
 

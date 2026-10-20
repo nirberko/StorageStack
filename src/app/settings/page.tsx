@@ -47,7 +47,7 @@ export default async function SettingsPage() {
               <Icon name="shieldCheck" size={22} stroke="#B5440A" style={{ flex: "none" }} />
               <span>
                 <b>Get verified</b>
-                Verified members get an orange check and can see full details on deals shared with all verified members. Verification is done by the StorageStack team.
+                Verified members get an orange check and can see full details on deals shared with all verified members. Verification is done by the Storage Network team.
               </span>
             </div>
           )}

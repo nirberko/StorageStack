@@ -296,7 +296,7 @@ export default async function ForumsPage({ searchParams }: { searchParams: Promi
                 eventId={event.id}
                 reminded={reminded}
                 going={(event.event_reminders as unknown as { count: number }[])[0]?.count ?? 0}
-                hostName={event.host?.full_name ?? "StorageStack"}
+                hostName={event.host?.full_name ?? "The Storage Network"}
                 hostColor={event.host?.avatar_color ?? "#E6EBF3"}
               />
             </div>

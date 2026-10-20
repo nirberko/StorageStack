@@ -36,7 +36,7 @@ const TIPS: Record<number, string[]> = {
 
 const AGREEMENTS = [
   "The numbers are accurate to the best of my knowledge, and I have the right to share this deal.",
-  "I understand StorageStack does not check the numbers and members must do their own homework.",
+  "I understand The Storage Network does not check the numbers and members must do their own homework.",
 ];
 
 function readDraft(): Draft | null {

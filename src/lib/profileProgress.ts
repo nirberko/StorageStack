@@ -33,7 +33,7 @@ export const INTRO_CATEGORY = "start";
  */
 export function profileSteps(f: ProfileFacts): ProfileStep[] {
   return [
-    { id: "account", label: "Create your StorageStack account", points: 10, href: "/settings", done: true },
+    { id: "account", label: "Create your Storage Network account", points: 10, href: "/settings", done: true },
     { id: "headline", label: "Add a headline and location", points: 10, href: "/settings", done: !!f.headline.trim() && !!f.location.trim() },
     { id: "bio", label: "Write a short bio", points: 10, href: "/settings", done: !!f.bio.trim() },
     { id: "topics", label: "Follow 3 forum topics", points: 10, href: "/forums", done: f.topicsFollowed >= 3 },

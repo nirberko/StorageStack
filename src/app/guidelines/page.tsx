@@ -20,7 +20,7 @@ const SECTIONS = [
     items: [
       "Only post deals you have the right to share.",
       "Members verify who people are, not the numbers. Always do your own due diligence.",
-      "StorageStack does not give investment advice and is not a party to any deal.",
+      "The Storage Network does not give investment advice and is not a party to any deal.",
       "Mark your deal as closed when it is done so it stops showing.",
     ],
   },
@@ -36,13 +36,13 @@ const SECTIONS = [
   {
     id: "terms",
     title: "Terms",
-    items: ["[TERMS OF SERVICE TO BE PROVIDED BY STORAGESTACK]"],
+    items: ["[TERMS OF SERVICE TO BE PROVIDED BY THE STORAGE NETWORK]"],
   },
 ];
 
 export default function GuidelinesPage() {
   return (
-    <InfoPage kicker="Guidelines" title="How we keep StorageStack useful" intro="A few simple rules for the forums and the Deal Room.">
+    <InfoPage kicker="Guidelines" title="How we keep The Storage Network useful" intro="A few simple rules for the forums and the Deal Room.">
       {SECTIONS.map((s) => (
         <section key={s.id} id={s.id} className="x-sec">
           <h2 className="x-h2">{s.title}</h2>
