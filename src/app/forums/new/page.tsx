@@ -13,8 +13,8 @@ const TIPS = [
   "Keep addresses and personal details private.",
 ];
 
-export default async function NewThreadPage({ searchParams }: { searchParams: Promise<{ cat?: string }> }) {
-  const { cat } = await searchParams;
+export default async function NewThreadPage({ searchParams }: { searchParams: Promise<{ cat?: string; title?: string }> }) {
+  const { cat, title } = await searchParams;
   const supabase = await createClient();
   const { data: categories } = await supabase.from("categories").select("*").order("sort");
 
@@ -36,7 +36,7 @@ export default async function NewThreadPage({ searchParams }: { searchParams: Pr
       <div className="wrap" style={{ paddingTop: 24, paddingBottom: 64, display: "flex", flexWrap: "wrap", gap: 24, alignItems: "flex-start" }}>
         <main style={{ flex: "999 1 560px", minWidth: 0 }}>
           <div className="m-card p-card" style={{ padding: "32px 36px" }}>
-            <NewThreadForm categories={categories ?? []} initialCat={cat} />
+            <NewThreadForm categories={categories ?? []} initialCat={cat} initialTitle={title?.slice(0, 200)} />
           </div>
         </main>
         <aside style={{ flex: "1 1 300px", maxWidth: "100%", display: "flex", flexDirection: "column", gap: 16, position: "sticky", top: 90 }} aria-label="Tips">
