@@ -446,7 +446,7 @@ a.h-step:hover { color: var(--orange-ink); }
 .l-nav a:hover { color: var(--navy); }
 .l-head-end { display: flex; gap: 8px; justify-content: flex-end; align-items: center; }
 .l-login { padding: 10px 12px; font-weight: 700; }
-.l-btn-line { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border-radius: 12px; border: 1.5px solid var(--navy); font-weight: 700; color: var(--navy); }
+.l-btn-line { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 12px; border: 1.5px solid var(--navy); font-weight: 700; color: var(--navy); }
 .l-btn-line:hover { color: var(--navy); background: var(--bg-3); }
 .l-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 54px; padding: 0 26px; border: 0; border-radius: 14px; background: var(--orange); color: #fff; font-size: 16px; font-weight: 800; white-space: nowrap; box-shadow: 0 8px 20px rgba(219, 82, 11, 0.25); }
 .l-btn:hover { color: #fff; background: var(--orange-hover); }
