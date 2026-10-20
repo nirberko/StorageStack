@@ -39,6 +39,9 @@ export const ICONS = {
   file: "M6 3h8l4 4v14H6zM14 3v4h4",
   x: "M6 6l12 12M18 6L6 18",
   reply: "M10 9V5l-7 7 7 7v-4c5 0 8 1 11 5-1-6-4-11-11-11z",
+  calculator: "M6 3h12v18H6zM9 7h6M9 11h.01M12 11h.01M15 11h.01M9 14h.01M12 14h.01M15 14h.01M9 17h.01M12 17h.01M15 17h.01",
+  trophy: "M8 4h8v5a4 4 0 01-8 0zM8 6H5a3 3 0 003 4M16 6h3a3 3 0 01-3 4M12 13v4M8 20h8M10 17h4",
+  convert: "M4 12a8 8 0 0114-5l2 2M20 12a8 8 0 01-14 5l-2-2M20 4v5h-5M4 20v-5h5",
 } as const;
 
 export type IconName = keyof typeof ICONS;

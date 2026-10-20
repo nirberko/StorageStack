@@ -37,6 +37,13 @@ export function money(dollars: number): string {
   return "$" + Math.round(dollars);
 }
 
+/** Hour of the day (0–23) -> "morning" / "afternoon" / "evening". */
+export function partOfDay(hour: number): string {
+  if (hour < 12) return "morning";
+  if (hour < 18) return "afternoon";
+  return "evening";
+}
+
 export function plural(n: number, one: string, many = one + "s"): string {
   return `${count(n)} ${n === 1 ? one : many}`;
 }

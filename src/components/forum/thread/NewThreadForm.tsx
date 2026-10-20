@@ -8,7 +8,7 @@ import { TagInput } from "@/components/forum/thread/TagInput";
 import { TopicSelect } from "@/components/forum/thread/TopicSelect";
 import type { Category } from "@/lib/types";
 
-export function NewThreadForm({ categories, initialCat }: { categories: Category[]; initialCat?: string }) {
+export function NewThreadForm({ categories, initialCat, initialTitle }: { categories: Category[]; initialCat?: string; initialTitle?: string }) {
   const [state, action, pending] = useActionState<ThreadFormState, FormData>(createThread, {});
   const f = state.fields ?? {};
   const [cat, setCat] = useState(f.category_id || initialCat || "");
@@ -39,7 +39,7 @@ export function NewThreadForm({ categories, initialCat }: { categories: Category
             id="title"
             name="title"
             className="d-input"
-            defaultValue={f.title}
+            defaultValue={f.title ?? initialTitle}
             maxLength={200}
             minLength={8}
             required

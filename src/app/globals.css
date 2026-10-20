@@ -1,5 +1,5 @@
 /* StorageStack design system — ported from the "Option A2: Classic Community, modernized" mockups.
-   Prefixes: m- shared shell, d- deal room, x- deal page, p- post-a-deal wizard, a- admin. */
+   Prefixes: m- shared shell, d- deal room, x- deal page, p- post-a-deal wizard, a- admin, h- signed-in home. */
 
 :root {
   --navy: #0b1f3a;
@@ -334,6 +334,54 @@ textarea.x-input { min-height: 90px; padding: 12px 14px; font-weight: 500; font-
   .m-header .m-btn { padding: 0 14px; }
   .m-logo { font-size: 17px; }
   .m-hero > svg { opacity: 0.25 !important; }
+}
+
+/* ---- Signed-in home -------------------------------------------------------- */
+
+.h-hi { font-size: 34px; line-height: 1.15; font-weight: 800; letter-spacing: -0.03em; }
+.h-count { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 7px; border-radius: 999px; background: var(--orange-hover); color: #fff; font-size: 12px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.h-eyebrow { display: block; font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--subtle); }
+.h-pro { display: inline-flex; align-items: center; font-size: 11px; font-weight: 800; letter-spacing: 0.06em; color: #5b33b0; background: #efe8fd; padding: 3px 8px; border-radius: 999px; }
+.m-btn-pro { background: #5b33b0; color: #fff; }
+.m-btn-pro:hover { background: #4a2896; color: #fff; }
+.h-tile { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; flex: none; }
+.h-grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 24px; }
+.h-link { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; font-weight: 700; color: var(--orange-ink); white-space: nowrap; }
+.h-kinds { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.h-kind { display: flex; align-items: center; gap: 10px; min-height: 64px; padding: 11px; border: 1px solid var(--line-2); border-radius: 16px; background: #fff; color: var(--ink); text-align: left; }
+.h-kind:hover { border-color: var(--hover-line); }
+.h-kind[aria-pressed="true"] { padding: 10px; border: 2px solid var(--orange); background: #fff6f0; }
+.h-kind .m-ic { background: var(--orange-tint); color: var(--orange-ink); }
+.h-kind[aria-pressed="true"] .m-ic { background: var(--orange); color: #fff; }
+.h-kind b { display: block; font-size: 14px; font-weight: 800; }
+.h-kind small { display: block; margin-top: 2px; font-size: 12px; font-weight: 600; color: var(--subtle); line-height: 1.35; }
+.h-banner { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; background: #f6f2fe; border: 1px solid #d9ccf7; border-radius: 20px; padding: 26px 32px; }
+.h-feed { display: flex; gap: 14px; padding: 18px 0; border-top: 1px solid var(--line-3); }
+.h-feed:first-child { border-top: 0; padding-top: 4px; }
+.h-perks { display: flex; gap: 16px; overflow-x: auto; padding: 2px 2px 8px; scroll-snap-type: x mandatory; }
+.h-perk { flex: 0 0 300px; max-width: 85%; scroll-snap-align: start; display: flex; flex-direction: column; gap: 14px; padding: 20px; }
+.h-perk.soon { background: transparent; border: 1.5px dashed #d9ccf7; }
+.h-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 800; padding: 5px 10px; border-radius: 999px; border: 1.5px solid var(--navy); background: var(--bg-2); color: var(--navy); }
+.h-badge.off { border: 1px dashed #c5cdda; background: #fff; color: var(--subtle); font-weight: 700; }
+.h-toggle { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; min-height: 44px; padding: 0; border: 0; background: transparent; color: var(--subtle); text-align: left; }
+.h-step { display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 6px 4px; border-top: 1px solid var(--line-3); font-size: 14px; font-weight: 700; color: var(--ink); }
+a.h-step:hover { color: var(--orange-ink); }
+.h-step.done { color: var(--subtle); font-weight: 600; }
+.h-step.done .h-st { text-decoration: line-through; }
+.h-check { width: 26px; height: 26px; border-radius: 50%; flex: none; display: grid; place-items: center; border: 2px solid #c5cdda; color: transparent; }
+.h-step.done .h-check { border-color: var(--green-tint); background: var(--green-tint); color: var(--green-ink); }
+.h-pts { margin-left: auto; font-size: 13px; font-weight: 800; color: var(--orange-ink); white-space: nowrap; }
+.h-deal { display: flex; align-items: center; gap: 12px; min-height: 60px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 14px; color: var(--ink); }
+.h-deal:hover { border-color: var(--hover-line); color: var(--ink); }
+.h-deal.hot { background: #fff6f0; border-color: var(--orange-line); }
+.h-deal.hot:hover { border-color: #f2c3a3; }
+
+@media (max-width: 760px) {
+  .h-hi { font-size: 28px; }
+  .h-banner { padding: 22px 20px; }
+  .h-kinds { gap: 8px; }
+  .h-kind { gap: 8px; padding: 9px; }
+  .h-kind[aria-pressed="true"] { padding: 8px; }
 }
 
 /* ---- Rich text (post bodies and the editor) -------------------------------- */
