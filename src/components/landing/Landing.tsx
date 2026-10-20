@@ -24,6 +24,36 @@ type LandingPartner = { profile_id: string; kind: string; offer_label: string; o
 
 const ARROW = "M5 12h14M13 6l6 6-6 6";
 
+/** One person in a side column of the hero network. */
+type NetChip = { key: string; href: string; name: string; color: string; verified: boolean; sub: string; pill: string; tint: string; ink: string };
+
+// Shown in the hero when there is not yet enough live data to fill it, so the panel always reads as a full network.
+const SAMPLE_ASKERS: NetChip[] = [
+  { key: "s-a1", href: "/forums", name: "Dana Whitfield", color: "#FFD8BF", verified: true, sub: "Owner, 4 facilities", pill: "Buying", tint: "#FFEDE2", ink: "#B5440A" },
+  { key: "s-a2", href: "/forums", name: "Marcus Lee", color: "#D8E6FF", verified: false, sub: "First-time buyer", pill: "Financing", tint: "#E6EEFD", ink: "#1D4ED8" },
+  { key: "s-a3", href: "/forums", name: "Priya Shah", color: "#D4F2E4", verified: true, sub: "Operator", pill: "Operations", tint: "#DDF3E8", ink: "#17603F" },
+];
+const SAMPLE_PARTNERS: NetChip[] = [
+  { key: "s-p1", href: "/deals/partners", name: "Harbor Capital", color: "#EADFFF", verified: true, sub: "Checks $250k to $2M", pill: "Investor", ...PARTNER_KINDS.Investor },
+  { key: "s-p2", href: "/deals/partners", name: "Summit Bank", color: "#DFF4F4", verified: true, sub: "Loans up to 75% LTV", pill: "Lender", ...PARTNER_KINDS.Lender },
+  { key: "s-p3", href: "/deals/partners", name: "Keystone Storage", color: "#FBF1DD", verified: false, sub: "Third-party management", pill: "Operator", ...PARTNER_KINDS.Operator },
+];
+const SAMPLE_DEAL: LandingDeal = {
+  id: 0,
+  type: "sale",
+  off_market: true,
+  title: "412-unit climate-controlled facility",
+  city: "Tulsa",
+  state: "OK",
+  raise_goal: null,
+  raise_committed: null,
+  metrics: [
+    { l: "Asking", v: "$4.2M" },
+    { l: "Cap rate", v: "7.8%", c: "#17603F" },
+    { l: "Occupancy", v: "91%" },
+  ],
+};
+
 /** The home page for visitors who are not logged in: hero, what membership includes, and a closing call to join. */
 export async function Landing() {
   const supabase = await createClient();
@@ -55,7 +85,30 @@ export async function Landing() {
 
   // One recent thread per author, so the hero shows three different people.
   const seen = new Set<string>();
-  const askers = threads.filter((t) => t.author && !seen.has(t.author.id) && seen.add(t.author.id)).slice(0, 3);
+  const askers: NetChip[] = threads
+    .filter((t) => t.author && !seen.has(t.author.id) && seen.add(t.author.id))
+    .slice(0, 3)
+    .map((t) => ({
+      key: `t${t.id}`,
+      href: `/forums/${t.id}`,
+      name: t.author!.full_name,
+      color: t.author!.avatar_color,
+      verified: t.author!.verified,
+      sub: t.author!.headline || "Member",
+      pill: t.category?.name ?? "Question",
+      tint: t.category?.tint ?? "#F1F3F8",
+      ink: t.category?.ink ?? "#0B1F3A",
+    }));
+  const backers: NetChip[] = partners.map((p) => ({
+    key: `p${p.profile_id}`,
+    href: `/u/${p.profile_id}`,
+    name: p.profile?.full_name ?? "Member",
+    color: p.profile?.avatar_color ?? "#E6EBF3",
+    verified: !!p.profile?.verified,
+    sub: `${p.offer_label} ${p.offer}`,
+    pill: p.kind,
+    ...(PARTNER_KINDS[p.kind] ?? PARTNER_KINDS.Investor),
+  }));
   const featured = deals.find((d) => d.type === "sale") ?? deals[0];
   const raise = deals.find((d) => d.type === "equity" && d.raise_goal && d.id !== featured?.id);
 
@@ -106,55 +159,11 @@ export async function Landing() {
 
           <div className="l-panel l-in-up l-d4" role="group" aria-label="Members, a deal and capital partners">
             <div className="l-net">
-              <div className="l-col">
-                <div className="l-label l-in-l l-n1">From the forums</div>
-                {askers.map((t, i) => (
-                  <Link key={t.id} href={`/forums/${t.id}`} className={`l-chip l-lift l-in-l l-n${i + 2}`}>
-                    <Avatar name={t.author!.full_name} color={t.author!.avatar_color} size={38} radius={19} fontSize={14} />
-                    <span className="l-chip-txt">
-                      <b>
-                        {t.author!.full_name}
-                        {t.author!.verified && <Verified size={14} />}
-                      </b>
-                      <span>{t.author!.headline || "Member"}</span>
-                    </span>
-                    {t.category && (
-                      <span className="l-pill" style={{ background: t.category.tint, color: t.category.ink }}>
-                        {t.category.name}
-                      </span>
-                    )}
-                  </Link>
-                ))}
-              </div>
-
+              <NetColumn label="From the forums" side="l" chips={fill(askers, SAMPLE_ASKERS)} round />
               <Wire flip={false} />
-              {featured ? <FeaturedDeal deal={featured} /> : <div />}
+              <FeaturedDeal deal={featured ?? SAMPLE_DEAL} />
               <Wire flip />
-
-              <div className="l-col">
-                <div className="l-label l-in-r l-n1">Capital partners</div>
-                {partners.map((p, i) => {
-                  const kind = PARTNER_KINDS[p.kind] ?? PARTNER_KINDS.Investor;
-                  const name = p.profile?.full_name ?? "Member";
-                  return (
-                    <Link key={p.profile_id} href={`/u/${p.profile_id}`} className={`l-chip l-lift l-in-r l-n${i + 2}`}>
-                      <Avatar name={name} color={p.profile?.avatar_color ?? "#E6EBF3"} size={38} radius={12} fontSize={14} />
-                      <span className="l-chip-txt">
-                        <b>
-                          {name}
-                          {p.profile?.verified && <Verified size={14} />}
-                        </b>
-                        <span>
-                          {p.offer_label} {p.offer}
-                        </span>
-                      </span>
-                      <span className={`l-pill${i === 0 ? " l-live" : ""}`} style={{ background: kind.tint, color: kind.ink }}>
-                        {p.kind}
-                      </span>
-                    </Link>
-                  );
-                })}
-              </div>
+              <NetColumn label="Capital partners" side="r" chips={fill(backers, SAMPLE_PARTNERS)} />
             </div>
           </div>
         </section>
@@ -305,6 +314,35 @@ export async function Landing() {
   );
 }
 
+/** Live entries first, topped up with samples to three. */
+function fill(live: NetChip[], samples: NetChip[]) {
+  return [...live, ...samples].slice(0, 3);
+}
+
+/** A labelled column of people on one side of the hero network. */
+function NetColumn({ label, side, chips, round }: { label: string; side: "l" | "r"; chips: NetChip[]; round?: boolean }) {
+  return (
+    <div className="l-col">
+      <div className={`l-label l-in-${side} l-n1`}>{label}</div>
+      {chips.map((c, i) => (
+        <Link key={c.key} href={c.href} className={`l-chip l-lift l-in-${side} l-n${i + 2}`}>
+          <Avatar name={c.name} color={c.color} size={38} radius={round ? 19 : 12} fontSize={14} />
+          <span className="l-chip-txt">
+            <b>
+              {c.name}
+              {c.verified && <Verified size={14} />}
+            </b>
+            <span>{c.sub}</span>
+          </span>
+          <span className={`l-pill${side === "r" && i === 0 ? " l-live" : ""}`} style={{ background: c.tint, color: c.ink }}>
+            {c.pill}
+          </span>
+        </Link>
+      ))}
+    </div>
+  );
+}
+
 /** Email box that carries the address over to the signup form. */
 function SignupForm({ id, className }: { id: string; className: string }) {
   return (
@@ -335,7 +373,7 @@ function Wire({ flip }: { flip: boolean }) {
 function FeaturedDeal({ deal }: { deal: LandingDeal }) {
   const metrics = (deal.metrics ?? []).slice(0, 3);
   return (
-    <Link href={`/deals/${deal.id}`} className="l-deal">
+    <Link href={deal.id ? `/deals/${deal.id}` : "/deals"} className="l-deal">
       <div className="l-art" style={{ height: 132 }} aria-hidden="true">
         <div style={{ left: 0, right: 0, bottom: 0, height: 26, background: "#C9D1DE" }} />
         <div style={{ left: "7%", right: "7%", bottom: 26, height: 74, background: "#fff", borderRadius: "6px 6px 0 0" }} />
