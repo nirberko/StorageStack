@@ -130,7 +130,7 @@ export async function Landing() {
           <div className="l-head-end">
             {signedIn ? (
               <Link className="l-btn xs l-nudge" href="/forums">
-                Go to StorageStack <Icon d={ARROW} size={16} strokeWidth={2.4} />
+                Go to The Storage Network <Icon d={ARROW} size={16} strokeWidth={2.4} />
               </Link>
             ) : (
               <>
@@ -307,7 +307,7 @@ export async function Landing() {
             <Link href="/learn">Learn</Link>
             <Link href="/guidelines">Guidelines</Link>
           </nav>
-          <span style={{ fontSize: 13, color: "#5E6B7E" }}>© {new Date().getFullYear()} StorageStack</span>
+          <span style={{ fontSize: 13, color: "#5E6B7E" }}>© {new Date().getFullYear()} The Storage Network</span>
         </div>
       </footer>
     </div>
@@ -530,16 +530,16 @@ function TownSide({ row }: { row: string }) {
 /** The row of storage buildings at the foot of the closing panel. */
 function Town() {
   return (
-    <div className="l-town" role="img" aria-label="A StorageStack self storage facility with orange roll-up doors, one of them open">
+    <div className="l-town" role="img" aria-label="A Storage Network self storage facility with orange roll-up doors, one of them open">
       <TownSide row="B" />
       <svg className="l-town-main l-rise" viewBox="0 0 456 196">
         <rect width={456} height={16} rx={6} fill="#C5D1E3" />
         <rect x={10} y={16} width={436} height={180} fill="#fff" />
-        <rect x={138} y={28} width={180} height={30} rx={6} fill="#0B1F3A" />
+        <rect x={113} y={28} width={230} height={30} rx={6} fill="#0B1F3A" />
         <text x={228} y={48} fontSize={15} fontWeight={800} fill="#fff" textAnchor="middle" letterSpacing={0.5}>
-          StorageStack
+          The Storage Network
         </text>
-        <rect x={150} y={52} width={156} height={2} fill="#F26B1D" />
+        <rect x={125} y={52} width={206} height={2} fill="#F26B1D" />
         {[0, 1, 2, 3, 4].map((i) => (
           <UnitDoor key={i} x={32 + i * 80} y={84} w={58} h={112} color="#DB520B" num={`10${i + 1}`} open={i === 2 ? 44 : undefined} />
         ))}
