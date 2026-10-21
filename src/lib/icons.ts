@@ -1,6 +1,7 @@
 // Stroke icon paths (24×24 viewBox) used across the design.
 export const ICONS = {
   plus: "M12 5v14M5 12h14",
+  home: "M3 11l9-7 9 7M5 9.5V20h5v-6h4v6h5V9.5",
   search: "M11 4a7 7 0 100 14 7 7 0 000-14zM20 20l-3.5-3.5",
   chat: "M4 5h16v11H9l-5 4z",
   heart: "M12 20s-7-4.4-9-9a5 5 0 019-3 5 5 0 019 3c-2 4.6-9 9-9 9z",

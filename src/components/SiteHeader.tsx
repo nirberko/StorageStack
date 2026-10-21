@@ -21,7 +21,7 @@ export async function SiteHeader() {
               <SearchBox />
             </Suspense>
             {!viewer && (
-              <Link className="m-btn m-btn-s m-show-sm" href="/login">
+              <Link className="m-btn m-btn-line m-show-sm" href="/login">
                 Log in
               </Link>
             )}

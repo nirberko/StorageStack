@@ -73,6 +73,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .m-nav a { padding: 9px 14px; border-radius: 10px; font-weight: 600; color: var(--muted); }
 .m-nav a:hover { background: var(--bg-3); color: var(--navy); }
 .m-nav a.on { background: var(--navy); color: #fff; }
+.m-nav-ic, .m-nav-go { display: none; }
 .m-search { flex: 1 1 240px; max-width: 380px; margin-left: auto; display: flex; align-items: center; gap: 10px; background: var(--bg-2); border: 1px solid var(--line); border-radius: 12px; padding: 0 10px 0 14px; min-height: 44px; }
 .m-search:focus-within { border-color: var(--orange); box-shadow: 0 0 0 3px rgba(219, 82, 11, 0.14); }
 .m-search input { flex: 1; min-width: 0; border: 0; background: transparent; outline: none; font: inherit; font-size: 14px; color: var(--ink); }
@@ -324,19 +325,38 @@ textarea.x-input { min-height: 90px; padding: 12px 14px; font-weight: 500; font-
   .p-card { padding: 20px !important; }
   .m-header-in { gap: 8px; padding-top: 10px; padding-bottom: 10px; }
   .m-account { margin-left: auto; }
-  .m-menu-btn { display: grid; }
-  .m-menu-panel { display: none; order: 5; flex-basis: 100%; flex-direction: column; gap: 10px; padding: 8px 0 6px; max-height: calc(100vh - 80px); overflow-y: auto; }
+  .m-menu-btn { display: grid; border-color: transparent; background: var(--bg-2); }
+  .m-menu-btn:hover { border-color: transparent; background: var(--bg-3); }
+  /* The phone menu: a sheet that drops from under the header row over a dimmed page. */
+  .m-header.open { background: #fff; backdrop-filter: none; border-bottom-color: var(--line-3); }
+  .m-menu-panel { display: none; position: absolute; top: 100%; left: 0; right: 0; z-index: 1; flex-direction: column; gap: 18px; padding: 14px 20px 24px; max-height: calc(100dvh - 72px); overflow-y: auto; overscroll-behavior: contain; background: #fff; border-radius: 0 0 28px 28px; box-shadow: 0 28px 40px -16px rgba(11, 31, 58, 0.3); }
   .m-header.open .m-menu-panel { display: flex; }
-  .m-header.open { background: #fff; backdrop-filter: none; box-shadow: 0 18px 40px rgba(11, 31, 58, 0.16); }
-  .m-menu-panel .m-nav { flex-direction: column; gap: 2px; }
-  .m-menu-panel .m-nav a { display: flex; align-items: center; min-height: 46px; font-size: 16px; }
-  .m-menu-panel .m-search { order: -1; flex: none; max-width: none; margin: 0; }
+  .m-menu-scrim { position: absolute; top: 100%; left: 0; right: 0; height: 100dvh; background: rgba(11, 31, 58, 0.4); }
+  .m-menu-panel .m-nav { flex-direction: column; gap: 0; }
+  .m-menu-panel .m-nav a { display: flex; align-items: center; gap: 14px; min-height: 66px; padding: 0 2px; border-radius: 0; border-bottom: 1px solid var(--line-3); font-size: 17px; font-weight: 700; color: var(--ink); }
+  .m-menu-panel .m-nav a:last-child { border-bottom: 0; }
+  .m-menu-panel .m-nav a:hover, .m-menu-panel .m-nav a.on { background: transparent; color: var(--navy); }
+  .m-menu-panel .m-nav a.on { font-weight: 800; }
+  .m-menu-panel .m-nav-ic { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: var(--bg-2); color: var(--navy); flex: none; }
+  .m-menu-panel .m-nav a.on .m-nav-ic { background: var(--orange); color: #fff; }
+  .m-menu-panel .m-nav-go { display: block; margin-left: auto; color: #9aa5b5; }
+  .m-menu-panel .m-nav a.on .m-nav-go { color: var(--orange); }
+  .m-menu-panel .m-search { order: -1; flex: none; max-width: none; margin: 0; min-height: 52px; border-radius: 14px; }
+  /* 16px stops iOS from zooming the page when the field gets focus. */
+  .m-menu-panel .m-search input { font-size: 16px; }
+  .m-menu-panel .m-btn { width: 100%; min-height: 52px; border-radius: 14px; font-size: 16px; }
   .m-show-sm { display: inline-flex !important; }
   .m-header .m-btn { padding: 0 14px; }
   .m-logo { font-size: 17px; }
   /* Let the name wrap inside its own space so the header stays one row. */
   .m-header .m-logo { flex: 1 1 0; min-width: 0; }
   .m-hero > svg { opacity: 0.25 !important; }
+}
+@media (max-width: 760px) and (prefers-reduced-motion: no-preference) {
+  @keyframes m-drop { from { opacity: 0; transform: translateY(-10px); } }
+  @keyframes m-fade { from { opacity: 0; } }
+  .m-header.open .m-menu-panel { animation: m-drop 0.22s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .m-menu-scrim { animation: m-fade 0.2s ease; }
 }
 
 /* ---- Signed-in home -------------------------------------------------------- */
