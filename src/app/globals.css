@@ -63,6 +63,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .m-logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 19px; letter-spacing: -0.02em; line-height: 1.15; color: var(--navy); }
 .m-logo svg { flex: none; }
 .m-logo:hover { color: var(--navy); }
+.m-logo-net { color: var(--orange); }
 .m-menu-panel { display: contents; }
 .m-account { display: flex; align-items: center; }
 .m-menu-btn { display: none; place-items: center; width: 44px; height: 44px; border: 1px solid var(--line-2); border-radius: 12px; background: #fff; color: var(--navy); flex: none; }
@@ -361,6 +362,12 @@ textarea.x-input { min-height: 90px; padding: 12px 14px; font-weight: 500; font-
 
 /* ---- Signed-in home -------------------------------------------------------- */
 
+.h-top-in { display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap; padding-top: 28px; }
+.h-top-text { flex: 1 1 420px; min-width: 0; }
+.h-sum { margin-top: 8px; font-size: 16px; color: var(--subtle); }
+.h-top-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.h-top-ask { display: none; }
+.h-main { gap: 24px; }
 .h-hi { font-size: 34px; line-height: 1.15; font-weight: 800; letter-spacing: -0.03em; }
 .h-count { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 7px; border-radius: 999px; background: var(--orange-hover); color: #fff; font-size: 12px; font-weight: 800; font-variant-numeric: tabular-nums; }
 .h-eyebrow { display: block; font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--subtle); }
@@ -398,13 +405,65 @@ a.h-step:hover { color: var(--orange-ink); }
 .h-deal:hover { border-color: var(--hover-line); color: var(--ink); }
 .h-deal.hot { background: #fff6f0; border-color: var(--orange-line); }
 .h-deal.hot:hover { border-color: #f2c3a3; }
+.h-needs, .h-next { display: none; }
 
 @media (max-width: 760px) {
   .h-hi { font-size: 28px; }
-  .h-banner { padding: 22px 20px; }
-  .h-kinds { gap: 8px; }
-  .h-kind { gap: 8px; padding: 9px; }
-  .h-kind[aria-pressed="true"] { padding: 8px; }
+
+  /* The navy band: greeting, ask box and the two main actions. The header above turns navy to match. */
+  .h-top { background: var(--navy); color: #fff; padding-bottom: 56px; }
+  .h-top-in { flex-direction: column; align-items: stretch; gap: 16px; padding-top: 20px; }
+  .h-top-text { flex: none; }
+  .h-sum { margin-top: 6px; font-size: 15px; line-height: 1.5; color: var(--on-navy); }
+  .h-top-ask { display: flex; align-items: center; gap: 8px; padding: 6px 6px 6px 16px; border-radius: 18px; background: #fff; }
+  .h-top-ask:focus-within { box-shadow: 0 0 0 3px rgba(242, 107, 29, 0.5); }
+  .h-top-ask input { flex: 1; min-width: 0; min-height: 44px; border: 0; outline: none; background: transparent; font: inherit; font-size: 16px; color: var(--ink); }
+  .h-top-ask input::placeholder { color: var(--subtle); }
+  .h-top-ask button { display: grid; place-items: center; width: 44px; height: 44px; flex: none; border: 0; border-radius: 14px; background: var(--orange); color: #fff; }
+  .h-top-ask button:hover { background: var(--orange-hover); }
+  .h-top-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: -6px; }
+  .h-top-actions .m-btn { min-height: 48px; padding: 0 10px; border: 0; border-radius: 14px; background: rgba(255, 255, 255, 0.1); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22); color: #fff; }
+  .h-top-actions .m-btn:hover { background: rgba(255, 255, 255, 0.16); color: #fff; }
+  .h-top-actions .h-count { background: var(--orange); }
+  body:has(.h-top) .m-header:not(.open) { background: var(--navy); border-bottom-color: var(--navy); backdrop-filter: none; }
+  body:has(.h-top) .m-header:not(.open) .m-logo { color: #fff; }
+  body:has(.h-top) .m-header:not(.open) .m-logo-net { color: var(--orange-bright); }
+  body:has(.h-top) .m-header:not(.open) .m-logo-box { fill: var(--on-navy); }
+  body:has(.h-top) .m-header:not(.open) .m-logo-tape { fill: #8a9ab2; }
+  body:has(.h-top) .m-header:not(.open) .m-menu-btn { background: rgba(255, 255, 255, 0.1); color: #fff; }
+  body:has(.h-top) .m-header:not(.open) .m-menu-btn:hover { background: rgba(255, 255, 255, 0.16); }
+
+  /* The first card overlaps the bottom of the navy band. */
+  .h-cols { margin-top: -40px; padding-top: 0; gap: 16px; }
+  .h-main, .h-grid2 { gap: 16px; }
+  .h-needs { display: flex; min-height: 66px; box-shadow: 0 12px 30px rgba(11, 31, 58, 0.12); }
+  .h-deal.h-needs { background: #fff; }
+  .h-main > .h-grid2:first-child > :first-child { box-shadow: 0 12px 30px rgba(11, 31, 58, 0.12); }
+
+  /* Profile card: the next step only. */
+  .h-next { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 14px; background: var(--bg); color: var(--ink); }
+  .h-next:hover { color: var(--ink); background: var(--bg-3); }
+
+  /* Feed tabs share one row. */
+  .h-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; }
+  .h-tabs a { justify-content: center; padding: 0 8px; }
+
+  /* Below the feed: the analysis card, then the perks. The mid-page Pro banner is left out. */
+  .h-main > .h-qa { order: 1; }
+  .h-main > #pro { order: 2; }
+  .h-banner { display: none; }
+
+  /* Deal kinds become one row of pills that scrolls sideways: no scrollbar, snaps to each pill,
+     and fades out at the card edges. The row bleeds into the card padding so pills reach the edge. */
+  .h-kinds { display: flex; gap: 8px; margin: -6px -24px; padding: 6px 24px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 24px; scrollbar-width: none; overscroll-behavior-x: contain;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent);
+    mask-image: linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent); }
+  .h-kinds::-webkit-scrollbar { display: none; }
+  .h-kind { flex: none; scroll-snap-align: start; min-height: 44px; padding: 0 16px; border-radius: 999px; }
+  .h-kind[aria-pressed="true"] { padding: 0 15px; }
+  .h-kind .m-ic, .h-kind small { display: none; }
+  .h-kind b { white-space: nowrap; font-weight: 700; }
+  .h-kind[aria-pressed="true"] b { font-weight: 800; color: var(--orange-ink); }
 }
 
 /* ---- Rich text (post bodies and the editor) -------------------------------- */
