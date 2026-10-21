@@ -58,16 +58,16 @@ export async function Dashboard({ viewer, feed }: { viewer: { id: string; profil
       <div className="wrap page-cols">
         <main className="col-main" style={{ flexBasis: 640, gap: 24 }}>
           <div className="h-grid2">
-            <QuickAnalysis />
+            <ProfileCard profile={p} facts={d.facts} followers={d.followers} following={d.following} />
             <AskForum items={d.ask} />
           </div>
+          <QuickAnalysis />
           <ProBanner />
           <ForumFeed feed={d.feed} items={d.items} followsAnything={d.followsAnything} />
           <ProPerks />
         </main>
 
-        <aside className="col-rail" style={{ flexBasis: 340 }} aria-label="Your profile and deals">
-          <ProfileCard profile={p} facts={d.facts} followers={d.followers} following={d.following} />
+        <aside className="col-rail" style={{ flexBasis: 340 }} aria-label="Your deals">
           <YourDeals pending={d.pending} alerts={d.alerts} savedDeals={d.savedDeals} dealsPosted={d.facts.dealsPosted} />
         </aside>
       </div>
