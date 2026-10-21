@@ -535,11 +535,11 @@ function Town() {
       <svg className="l-town-main l-rise" viewBox="0 0 456 196">
         <rect width={456} height={16} rx={6} fill="#C5D1E3" />
         <rect x={10} y={16} width={436} height={180} fill="#fff" />
-        <rect x={138} y={28} width={180} height={30} rx={6} fill="#0B1F3A" />
+        <rect x={113} y={28} width={230} height={30} rx={6} fill="#0B1F3A" />
         <text x={228} y={48} fontSize={15} fontWeight={800} fill="#fff" textAnchor="middle" letterSpacing={0.5}>
-          StorageStack
+          The Storage Network
         </text>
-        <rect x={150} y={52} width={156} height={2} fill="#F26B1D" />
+        <rect x={125} y={52} width={206} height={2} fill="#F26B1D" />
         {[0, 1, 2, 3, 4].map((i) => (
           <UnitDoor key={i} x={32 + i * 80} y={84} w={58} h={112} color="#DB520B" num={`10${i + 1}`} open={i === 2 ? 44 : undefined} />
         ))}

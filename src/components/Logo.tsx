@@ -41,7 +41,7 @@ export function Logo() {
     <Link href="/" className="m-logo">
       <LogoMark />
       <span>
-        Storage<span style={{ color: "#DB520B" }}>Stack</span>
+        The Storage <span style={{ color: "#DB520B" }}>Network</span>
       </span>
     </Link>
   );
