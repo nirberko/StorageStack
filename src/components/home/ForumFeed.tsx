@@ -4,10 +4,11 @@ import { Icon } from "@/components/Icon";
 import { compact, timeAgo } from "@/lib/format";
 import type { FeedId, FeedItem } from "@/lib/queries/home";
 
-const TABS: { id: FeedId; label: string }[] = [
+// `more` is dropped on phones, where the three tabs share one row.
+const TABS: { id: FeedId; label: string; more?: string }[] = [
   { id: "following", label: "Following" },
   { id: "latest", label: "Latest" },
-  { id: "replies", label: "Replies to you" },
+  { id: "replies", label: "Replies", more: " to you" },
 ];
 
 /** "Latest in the forums" on the home page. Tabs switch with ?feed=, like the forum sort tabs. */
@@ -25,10 +26,11 @@ export function ForumFeed({ feed, items, followsAnything }: { feed: FeedId; item
         <h2 id="feed-title" className="x-h2">
           Latest in the forums
         </h2>
-        <nav className="m-seg" aria-label="Show discussions">
+        <nav className="m-seg h-tabs" aria-label="Show discussions">
           {TABS.map((t) => (
             <Link key={t.id} className={t.id === feed ? "on" : undefined} aria-current={t.id === feed ? "true" : undefined} href={`/?feed=${t.id}`} scroll={false}>
               {t.label}
+              {t.more && <span className="m-hide-sm">{t.more}</span>}
             </Link>
           ))}
         </nav>

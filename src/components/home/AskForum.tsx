@@ -2,23 +2,41 @@ import Link from "next/link";
 import { Icon } from "@/components/Icon";
 import type { AskItem } from "@/lib/queries/home";
 
+/** The ask box in the navy band at the top of the home page. Phones only: wider screens use the one in AskForum. */
+export function AskBar() {
+  return (
+    <form action="/forums/new" className="h-top-ask">
+      <label htmlFor="top-q" className="sr-only">
+        Ask the forum
+      </label>
+      <input id="top-q" name="title" placeholder="Ask the forum a question" maxLength={200} required />
+      <button type="submit" aria-label="Ask">
+        <Icon name="arrowRight" size={20} strokeWidth={2.4} />
+      </button>
+    </form>
+  );
+}
+
 /** A quick question box (prefills the new-discussion title) and recent questions that need answers. */
 export function AskForum({ items }: { items: AskItem[] }) {
   return (
     <section className="m-card" style={{ padding: 24, display: "flex", flexDirection: "column", gap: 16 }} aria-labelledby="ask-title">
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-        <span className="h-tile" style={{ background: "#E6EBF3" }}>
+        <span className="h-tile m-hide-sm" style={{ background: "#E6EBF3" }}>
           <Icon name="chat" size={22} stroke="#0B1F3A" />
         </span>
+        {/* On phones the ask box is in the navy band, so this card is only the open questions. */}
         <h2 id="ask-title" style={{ flex: 1, fontSize: 18, fontWeight: 800, letterSpacing: "-0.01em" }}>
-          Ask the forum
+          <span className="m-hide-sm">Ask the forum</span>
+          <span className="m-show-sm">Waiting for an answer</span>
         </h2>
         <Link className="h-link" href="/forums">
-          Open forums ›
+          <span className="m-hide-sm">Open forums ›</span>
+          <span className="m-show-sm">Forums ›</span>
         </Link>
       </div>
 
-      <form action="/forums/new" style={{ display: "flex", gap: 8 }}>
+      <form action="/forums/new" className="m-hide-sm" style={{ display: "flex", gap: 8 }}>
         <label htmlFor="ask-q" className="sr-only">
           Your question
         </label>
@@ -29,7 +47,7 @@ export function AskForum({ items }: { items: AskItem[] }) {
       </form>
 
       <div>
-        <span className="h-eyebrow" style={{ marginBottom: 4 }}>
+        <span className="h-eyebrow m-hide-sm" style={{ marginBottom: 4 }}>
           Members are asking
         </span>
         {items.length === 0 && <p className="x-sub">Every recent question has answers. Check back soon.</p>}

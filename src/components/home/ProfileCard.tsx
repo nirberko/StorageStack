@@ -11,6 +11,7 @@ type Props = { profile: Profile; facts: ProfileFacts; followers: number; followi
 export function ProfileCard({ profile: p, facts, followers, following }: Props) {
   const progress = profileProgress(facts);
   const badges = profileBadges(facts);
+  const next = progress.steps.find((s) => !s.done);
 
   return (
     <section className="m-card" style={{ padding: 22, display: "flex", flexDirection: "column", gap: 16 }} aria-labelledby="profile-title">
@@ -47,7 +48,19 @@ export function ProfileCard({ profile: p, facts, followers, following }: Props) 
         </div>
       </div>
 
-      <div style={{ borderTop: "1px solid #EEF1F5", paddingTop: 16, display: "flex", gap: 14, alignItems: "flex-start" }}>
+      {/* Phones show just the next step; the rest of the card is for wider screens. */}
+      {next && (
+        <Link className="h-next" href={next.href}>
+          <span className="h-check" />
+          <span style={{ flex: 1, minWidth: 0, lineHeight: 1.3 }}>
+            <span className="h-eyebrow">Next up · {progress.left} left</span>
+            <b style={{ display: "block", fontSize: 15 }}>{next.label}</b>
+          </span>
+          <span className="h-pts">+{next.points} pts</span>
+        </Link>
+      )}
+
+      <div className="m-hide-sm" style={{ borderTop: "1px solid #EEF1F5", paddingTop: 16, display: "flex", gap: 14, alignItems: "flex-start" }}>
         <Avatar name={p.full_name} color={p.avatar_color} size={56} radius={18} fontSize={18} />
         <div style={{ flex: 1, minWidth: 0, lineHeight: 1.4 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -76,9 +89,11 @@ export function ProfileCard({ profile: p, facts, followers, following }: Props) 
         </div>
       </div>
 
-      <ShareProfileButton profileId={p.id} name={p.full_name} />
+      <div className="m-hide-sm">
+        <ShareProfileButton profileId={p.id} name={p.full_name} />
+      </div>
 
-      <div>
+      <div className="m-hide-sm">
         <span className="h-eyebrow" style={{ marginBottom: 10 }}>
           Badges
         </span>
@@ -93,7 +108,7 @@ export function ProfileCard({ profile: p, facts, followers, following }: Props) 
         </ul>
       </div>
 
-      <div style={{ borderTop: "1px solid #EEF1F5", paddingTop: 4 }}>
+      <div className="m-hide-sm" style={{ borderTop: "1px solid #EEF1F5", paddingTop: 4 }}>
         <NextUp steps={progress.steps} left={progress.left} />
       </div>
     </section>

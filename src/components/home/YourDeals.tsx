@@ -5,6 +5,26 @@ import type { Dashboard } from "@/lib/queries/home";
 
 type Props = Pick<Dashboard, "pending" | "alerts" | "savedDeals"> & { dealsPosted: number };
 
+/** "2 requests to approve", linking to My deals. */
+export function PendingRow({ pending, className }: { pending: Dashboard["pending"]; className?: string }) {
+  return (
+    <Link className={`h-deal hot${className ? ` ${className}` : ""}`} href="/deals/mine">
+      <span className="m-ic" style={{ width: 40, height: 40, borderRadius: 12, background: "#C2470A", color: "#fff", fontWeight: 800, fontSize: 15 }}>
+        {count(pending.count)}
+      </span>
+      <span style={{ flex: 1, minWidth: 0, lineHeight: 1.35 }}>
+        <b style={{ display: "block", fontSize: 14 }}>Requests to approve</b>
+        {pending.dealTitle && (
+          <span style={{ display: "block", fontSize: 13, color: "#5E6B7E", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+            {pending.dealTitle}
+          </span>
+        )}
+      </span>
+      <Icon name="chevron" size={18} stroke="#B5440A" style={{ flex: "none" }} />
+    </Link>
+  );
+}
+
 /** Shortcuts into the Deal Room: requests waiting on the viewer, their alerts and saved deals. */
 export function YourDeals({ pending, alerts, savedDeals, dealsPosted }: Props) {
   const empty = dealsPosted === 0 && pending.count === 0 && alerts === 0 && savedDeals === 0;
@@ -36,22 +56,8 @@ export function YourDeals({ pending, alerts, savedDeals, dealsPosted }: Props) {
         </div>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          {pending.count > 0 && (
-            <Link className="h-deal hot" href="/deals/mine">
-              <span className="m-ic" style={{ width: 40, height: 40, borderRadius: 12, background: "#C2470A", color: "#fff", fontWeight: 800, fontSize: 15 }}>
-                {count(pending.count)}
-              </span>
-              <span style={{ flex: 1, minWidth: 0, lineHeight: 1.35 }}>
-                <b style={{ display: "block", fontSize: 14 }}>Requests to approve</b>
-                {pending.dealTitle && (
-                  <span style={{ display: "block", fontSize: 13, color: "#5E6B7E", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                    {pending.dealTitle}
-                  </span>
-                )}
-              </span>
-              <Icon name="chevron" size={18} stroke="#B5440A" style={{ flex: "none" }} />
-            </Link>
-          )}
+          {/* On phones this row leads the page instead (see Dashboard). */}
+          {pending.count > 0 && <PendingRow pending={pending} className="m-hide-sm" />}
           <Link className="h-deal" href="/deals/alerts">
             <span className="m-ic" style={{ width: 40, height: 40, borderRadius: 12, background: "#E6EBF3" }}>
               <Icon name="bell" size={18} stroke="#0B1F3A" />

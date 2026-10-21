@@ -16,7 +16,7 @@ export function QuickAnalysis() {
   const [kind, setKind] = useState(KINDS[0]);
 
   return (
-    <section className="m-card" style={{ display: "flex", flexDirection: "column", overflow: "hidden" }} aria-labelledby="qa-title">
+    <section className="m-card h-qa" style={{ display: "flex", flexDirection: "column", overflow: "hidden" }} aria-labelledby="qa-title">
       {/* Not built yet: there is no deal calculator. The form sends the choice and address to /tools
           as ?type=&address= so the calculator can pick them up when it exists. */}
       <form action="/tools" style={{ padding: 24, flex: 1, display: "flex", flexDirection: "column", gap: 16 }}>
@@ -31,7 +31,7 @@ export function QuickAnalysis() {
 
         <div role="group" aria-labelledby="qa-step1">
           <span className="h-eyebrow" id="qa-step1" style={{ marginBottom: 10 }}>
-            Step 1 · What kind of deal?
+            <span className="m-hide-sm">Step 1 · </span>What kind of deal?
           </span>
           <input type="hidden" name="type" value={kind.id} />
           <div className="h-kinds">
@@ -49,7 +49,8 @@ export function QuickAnalysis() {
           </div>
         </div>
 
-        <div>
+        {/* Phones skip the address (it is optional) to keep the card short. */}
+        <div className="m-hide-sm">
           <label className="h-eyebrow" htmlFor="qa-address" style={{ marginBottom: 10 }}>
             Step 2 · Facility address
           </label>
@@ -64,7 +65,7 @@ export function QuickAnalysis() {
           Analyze this {kind.noun}
         </button>
       </form>
-      <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", padding: "14px 24px", background: "#FAFBFD", borderTop: "1px solid #EEF1F5" }}>
+      <div className="m-hide-sm" style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", padding: "14px 24px", background: "#FAFBFD", borderTop: "1px solid #EEF1F5" }}>
         <span style={{ fontSize: 14, fontWeight: 700, color: "#1E2B3F" }}>Save your analyses</span>
         <ProPill />
         <a className="m-btn m-btn-pro" href="#pro" style={{ marginLeft: "auto", minHeight: 44, padding: "0 14px", fontSize: 14 }}>

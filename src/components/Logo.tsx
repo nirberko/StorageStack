@@ -16,12 +16,14 @@ const BODY = 5.9;
 
 function Box({ x, y, w, fill, tape }: (typeof BOXES)[number]) {
   const lid = `M${x} ${y + LID}V${y + R}A${R} ${R} 0 0 1 ${x + R} ${y}H${x + w - R}A${R} ${R} 0 0 1 ${x + w} ${y + R}V${y + LID}Z`;
+  // The navy boxes get a class so the logo can sit on a navy header.
+  const dark = fill === NAVY;
   const body = `M${x} ${y + BODY}H${x + w}V${y + H - R}A${R} ${R} 0 0 1 ${x + w - R} ${y + H}H${x + R}A${R} ${R} 0 0 1 ${x} ${y + H - R}Z`;
   return (
     <>
-      <path d={lid} fill={fill} />
-      <path d={body} fill={fill} />
-      <rect x={x + w / 2 - 2} y={y + BODY} width="4" height="4.7" fill={tape} />
+      <path d={lid} fill={fill} className={dark ? "m-logo-box" : undefined} />
+      <path d={body} fill={fill} className={dark ? "m-logo-box" : undefined} />
+      <rect x={x + w / 2 - 2} y={y + BODY} width="4" height="4.7" fill={tape} className={dark ? "m-logo-tape" : undefined} />
     </>
   );
 }
@@ -41,7 +43,7 @@ export function Logo() {
     <Link href="/" className="m-logo">
       <LogoMark />
       <span>
-        The Storage <span style={{ color: "#DB520B" }}>Network</span>
+        The Storage <span className="m-logo-net">Network</span>
       </span>
     </Link>
   );
