@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { Icon } from "@/components/Icon";
 import { AskBar, AskForum } from "@/components/home/AskForum";
+import { Explore } from "@/components/home/Explore";
 import { ForumFeed } from "@/components/home/ForumFeed";
 import { Greeting } from "@/components/home/Greeting";
 import { ProBanner, ProPerks } from "@/components/home/Pro";
 import { ProfileCard } from "@/components/home/ProfileCard";
 import { QuickAnalysis } from "@/components/home/QuickAnalysis";
 import { PendingRow, YourDeals } from "@/components/home/YourDeals";
+import { PHASE2 } from "@/lib/features";
 import { count, partOfDay, plural } from "@/lib/format";
 import { getDashboard } from "@/lib/queries/home";
 import { createClient } from "@/lib/supabase/server";
@@ -48,15 +50,17 @@ export async function Dashboard({ viewer, feed }: { viewer: { id: string; profil
               <span className="m-hide-sm">Start a discussion</span>
               <span className="m-show-sm">New discussion</span>
             </Link>
-            <Link className="m-btn m-btn-n" href="/deals/mine">
-              My deals
-              {d.pending.count > 0 && (
-                <span className="h-count">
-                  {count(d.pending.count)}
-                  <span className="sr-only"> {d.pending.count === 1 ? "request" : "requests"} to approve</span>
-                </span>
-              )}
-            </Link>
+            {PHASE2 && (
+              <Link className="m-btn m-btn-n" href="/deals/mine">
+                My deals
+                {d.pending.count > 0 && (
+                  <span className="h-count">
+                    {count(d.pending.count)}
+                    <span className="sr-only"> {d.pending.count === 1 ? "request" : "requests"} to approve</span>
+                  </span>
+                )}
+              </Link>
+            )}
           </div>
         </div>
       </div>
@@ -64,19 +68,20 @@ export async function Dashboard({ viewer, feed }: { viewer: { id: string; profil
       <div className="wrap page-cols h-cols">
         <main className="col-main h-main" style={{ flexBasis: 640 }}>
           {/* Phones only: the requests card leads the page instead of waiting at the bottom in the rail. */}
-          {d.pending.count > 0 && <PendingRow pending={d.pending} className="h-needs" />}
+          {PHASE2 && d.pending.count > 0 && <PendingRow pending={d.pending} className="h-needs" />}
           <div className="h-grid2">
             <ProfileCard profile={p} facts={d.facts} followers={d.followers} following={d.following} />
             <AskForum items={d.ask} />
           </div>
           <QuickAnalysis />
-          <ProBanner />
+          {PHASE2 && <ProBanner />}
           <ForumFeed feed={d.feed} items={d.items} followsAnything={d.followsAnything} />
-          <ProPerks />
+          {PHASE2 && <ProPerks />}
         </main>
 
-        <aside className="col-rail" style={{ flexBasis: 340 }} aria-label="Your deals">
-          <YourDeals pending={d.pending} alerts={d.alerts} savedDeals={d.savedDeals} dealsPosted={d.facts.dealsPosted} />
+        {/* The Deal Room and Pro are Phase 2; until then the rail links to the rest of the site. */}
+        <aside className="col-rail" style={{ flexBasis: 340 }} aria-label={PHASE2 ? "Your deals" : "Explore"}>
+          {PHASE2 ? <YourDeals pending={d.pending} alerts={d.alerts} savedDeals={d.savedDeals} dealsPosted={d.facts.dealsPosted} /> : <Explore />}
         </aside>
       </div>
     </>

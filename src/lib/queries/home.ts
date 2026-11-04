@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/lib/database.types";
+import { PHASE2 } from "@/lib/features";
 import { INTRO_CATEGORY, type ProfileFacts } from "@/lib/profileProgress";
 import { toPlainText } from "@/lib/richtext";
 import type { Category, Profile } from "@/lib/types";
@@ -155,32 +156,35 @@ export async function getDashboard(supabase: DB, viewer: { id: string; profile: 
       .eq("thread.author_id", me)
       .neq("author_id", me)
       .gte("created_at", weekAgo),
-    supabase
-      .from("deal_requests")
-      .select("deal:deals!inner(id, title, poster_id)", { count: "exact" })
-      .eq("deal.poster_id", me)
-      .eq("status", "pending")
-      .order("created_at", { ascending: false })
-      .limit(1),
-    supabase.from("deal_alerts").select("id", { count: "exact", head: true }).eq("user_id", me),
-    supabase.from("deal_saves").select("deal_id", { count: "exact", head: true }).eq("user_id", me),
+    // Deal Room counts are skipped until Phase 2, when the Deal Room is shown.
+    PHASE2
+      ? supabase
+          .from("deal_requests")
+          .select("deal:deals!inner(id, title, poster_id)", { count: "exact" })
+          .eq("deal.poster_id", me)
+          .eq("status", "pending")
+          .order("created_at", { ascending: false })
+          .limit(1)
+      : null,
+    PHASE2 ? supabase.from("deal_alerts").select("id", { count: "exact", head: true }).eq("user_id", me) : null,
+    PHASE2 ? supabase.from("deal_saves").select("deal_id", { count: "exact", head: true }).eq("user_id", me) : null,
     supabase.from("follows").select("follower_id", { count: "exact", head: true }).eq("followee_id", me),
     supabase.from("threads").select("category_id, like_count").eq("author_id", me).limit(1000),
-    supabase.from("deals").select("id", { count: "exact", head: true }).eq("poster_id", me),
+    PHASE2 ? supabase.from("deals").select("id", { count: "exact", head: true }).eq("poster_id", me) : null,
   ]);
   if (askRes.error) throw new Error(askRes.error.message);
 
   const myThreads = myThreadsRes.data ?? [];
   const p = viewer.profile;
-  const latestRequest = pendingRes.data?.[0]?.deal ?? null;
+  const latestRequest = pendingRes?.data?.[0]?.deal ?? null;
 
   return {
     ...feedData,
     ask: (askRes.data ?? []).map((t) => ({ id: t.id, title: t.title, replies: t.reply_count, category: t.category })),
     repliesThisWeek: repliesWeekRes.count ?? 0,
-    pending: { count: pendingRes.count ?? 0, dealTitle: latestRequest?.title ?? null, dealId: latestRequest?.id ?? null },
-    alerts: alertsRes.count ?? 0,
-    savedDeals: savesRes.count ?? 0,
+    pending: { count: pendingRes?.count ?? 0, dealTitle: latestRequest?.title ?? null, dealId: latestRequest?.id ?? null },
+    alerts: alertsRes?.count ?? 0,
+    savedDeals: savesRes?.count ?? 0,
     followers: followersRes.count ?? 0,
     following: (people.data ?? []).length,
     facts: {
@@ -191,8 +195,9 @@ export async function getDashboard(supabase: DB, viewer: { id: string; profile: 
       posts: p.post_count,
       introduced: myThreads.some((t) => t.category_id === INTRO_CATEGORY),
       topicsFollowed: (topics.data ?? []).length,
-      alerts: alertsRes.count ?? 0,
-      dealsPosted: dealsRes.count ?? 0,
+      peopleFollowed: (people.data ?? []).length,
+      alerts: alertsRes?.count ?? 0,
+      dealsPosted: dealsRes?.count ?? 0,
       likesReceived: myThreads.reduce((n, t) => n + t.like_count, 0),
     },
   };

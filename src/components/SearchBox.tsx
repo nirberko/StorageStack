@@ -3,13 +3,14 @@
 import { useEffect, useRef } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Icon } from "@/components/Icon";
+import { PHASE2 } from "@/lib/features";
 
 export function SearchBox() {
   const router = useRouter();
   const path = usePathname();
   const params = useSearchParams();
   const ref = useRef<HTMLInputElement>(null);
-  const inDeals = path.startsWith("/deals");
+  const inDeals = PHASE2 && path.startsWith("/deals");
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {

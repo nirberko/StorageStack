@@ -6,6 +6,7 @@ import { Avatar } from "@/components/Avatar";
 import { Icon } from "@/components/Icon";
 import { ProfileForm } from "@/components/profile/ProfileForm";
 import { getViewer } from "@/lib/auth";
+import { PHASE2 } from "@/lib/features";
 
 export const metadata: Metadata = { title: "Settings" };
 
@@ -24,7 +25,7 @@ export default async function SettingsPage() {
           <section className="x-sec">
             <h2 className="x-h2">Your profile</h2>
             <p className="x-sub" style={{ marginBottom: 22 }}>
-              Members see this on your posts, deals and profile page.
+              Members see this on your posts{PHASE2 ? ", deals" : ""} and profile page.
             </p>
             <ProfileForm profile={p} email={viewer.email} />
           </section>
@@ -47,7 +48,7 @@ export default async function SettingsPage() {
               <Icon name="shieldCheck" size={22} stroke="#B5440A" style={{ flex: "none" }} />
               <span>
                 <b>Get verified</b>
-                Verified members get an orange check and can see full details on deals shared with all verified members. Verification is done by the Storage Network team.
+                Verified members get an orange check{PHASE2 ? " and can see full details on deals shared with all verified members" : " next to their name"}. Verification is done by the Storage Network team.
               </span>
             </div>
           )}

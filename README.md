@@ -19,6 +19,13 @@ modernized** and its Deal Room screens.
 | Admin (admins only) | `/admin/members` (search, verify, roles, suspend, delete), `/admin/topics` (add, edit, reorder, delete forum topics) |
 | Other | `/search`, `/login`, `/signup`, `/tools`, `/learn`, `/guidelines` |
 
+### Launch phases
+
+Phase 1 is the community: forums, profiles, tools, learning, a vendor directory and events.
+The Deal Room and Storage Network Pro are Phase 2. They are built but hidden behind `PHASE2` in
+`src/lib/features.ts`: while it is `false`, their links, home page cards and profile sections are left
+out and `/deals` redirects home. Set it to `true` to bring them back; the pages, data and policies are unchanged.
+
 ### Privacy model
 
 - Deal **addresses** live in `deal_private` and **documents** in the private `deal-docs` storage bucket.

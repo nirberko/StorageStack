@@ -5,6 +5,7 @@ import { Verified } from "@/components/Verified";
 import { DealCard, type DealCardData } from "@/components/deals/DealCard";
 import { ThreadCard } from "@/components/forum/ThreadCard";
 import { getViewer } from "@/lib/auth";
+import { PHASE2 } from "@/lib/features";
 import { DEAL_CARD_SELECT, getDealMarks } from "@/lib/queries/deals";
 import { getThreadMarks, THREAD_CARD_SELECT, toCard } from "@/lib/queries/forum";
 import { createClient } from "@/lib/supabase/server";
@@ -17,7 +18,8 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   const raw = (sp.q ?? "").trim().slice(0, 80);
   // PostgREST filter syntax treats these characters specially; plain words are all we need.
   const q = raw.replace(/[%*,()\\:"']/g, " ").replace(/\s+/g, " ").trim();
-  const scope = sp.in === "deals" ? "deals" : sp.in === "people" ? "people" : "forums";
+  // Deals are searchable once the Deal Room opens in Phase 2.
+  const scope = PHASE2 && sp.in === "deals" ? "deals" : sp.in === "people" ? "people" : "forums";
   const supabase = await createClient();
   const viewer = await getViewer();
   const like = `%${q}%`;
@@ -25,7 +27,9 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   const [threadsRes, dealsRes, peopleRes] = q
     ? await Promise.all([
         supabase.from("threads").select(THREAD_CARD_SELECT).or(`title.ilike.${like},body.ilike.${like}`).order("last_activity_at", { ascending: false }).limit(30),
-        supabase.from("deals").select(DEAL_CARD_SELECT).eq("status", "live").or(`title.ilike.${like},city.ilike.${like},state.ilike.${like},region.ilike.${like},story.ilike.${like}`).order("created_at", { ascending: false }).limit(30),
+        PHASE2
+          ? supabase.from("deals").select(DEAL_CARD_SELECT).eq("status", "live").or(`title.ilike.${like},city.ilike.${like},state.ilike.${like},region.ilike.${like},story.ilike.${like}`).order("created_at", { ascending: false }).limit(30)
+          : null,
         supabase.from("profiles").select(`${AUTHOR_FIELDS}, location`).or(`full_name.ilike.${like},headline.ilike.${like}`).limit(30),
       ])
     : [null, null, null];
@@ -41,7 +45,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
 
   const tabs = [
     { id: "forums", label: "Discussions", n: threads.length },
-    { id: "deals", label: "Deals", n: deals.length },
+    ...(PHASE2 ? [{ id: "deals", label: "Deals", n: deals.length }] : []),
     { id: "people", label: "People", n: people.length },
   ];
 
@@ -50,7 +54,13 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
       <div>
         <h1 style={{ fontSize: 32, fontWeight: 800, letterSpacing: "-0.03em" }}>{q ? `Results for “${raw}”` : "Search"}</h1>
         <p style={{ marginTop: 6, color: "#5E6B7E" }}>
-          {q ? "Searching discussion titles and posts, deals by city, state and keyword, and member names." : "Type in the search box above to find discussions, deals and people."}
+          {PHASE2
+            ? q
+              ? "Searching discussion titles and posts, deals by city, state and keyword, and member names."
+              : "Type in the search box above to find discussions, deals and people."
+            : q
+              ? "Searching discussion titles and posts, and member names and headlines."
+              : "Type in the search box above to find discussions and people."}
         </p>
       </div>
       {q && (
