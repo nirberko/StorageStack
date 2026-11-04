@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Icon } from "@/components/Icon";
 import { NewThreadForm } from "@/components/forum/thread/NewThreadForm";
 import { createClient } from "@/lib/supabase/server";
+import { PHASE2 } from "@/lib/features";
 
 export const metadata: Metadata = { title: "Start a discussion" };
 
@@ -56,13 +57,15 @@ export default async function NewThreadPage({ searchParams }: { searchParams: Pr
               ))}
             </div>
           </div>
-          <div className="m-note">
-            <Icon name="shieldCheck" size={22} stroke="#B5440A" style={{ flex: "none" }} />
-            <span>
-              <b>Selling or raising money?</b>
-              Post it in the <Link href="/deals/new" style={{ color: "#B5440A", fontWeight: 700 }}>Deal Room</Link> so the right investors and lenders see it. You can share it here for feedback too.
-            </span>
-          </div>
+          {PHASE2 && (
+            <div className="m-note">
+              <Icon name="shieldCheck" size={22} stroke="#B5440A" style={{ flex: "none" }} />
+              <span>
+                <b>Selling or raising money?</b>
+                Post it in the <Link href="/deals/new" style={{ color: "#B5440A", fontWeight: 700 }}>Deal Room</Link> so the right investors and lenders see it. You can share it here for feedback too.
+              </span>
+            </div>
+          )}
           <Link href="/guidelines" style={{ fontSize: 13, color: "#5E6B7E", padding: "0 4px" }}>
             Community guidelines
           </Link>

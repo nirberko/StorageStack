@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PHASE2 } from "@/lib/features";
 
 export default function NotFound() {
   return (
@@ -8,7 +9,11 @@ export default function NotFound() {
         <span>It may have been removed, or the link is wrong.</span>
         <div style={{ display: "flex", gap: 8, justifyContent: "center", marginTop: 18 }}>
           <Link className="m-btn m-btn-o" href="/forums">Go to the forums</Link>
-          <Link className="m-btn m-btn-s" href="/deals">Visit the Deal Room</Link>
+          {PHASE2 ? (
+            <Link className="m-btn m-btn-s" href="/deals">Visit the Deal Room</Link>
+          ) : (
+            <Link className="m-btn m-btn-s" href="/learn">Learn self storage</Link>
+          )}
         </div>
       </div>
     </div>

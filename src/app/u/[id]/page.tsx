@@ -10,6 +10,7 @@ import { ThreadCard } from "@/components/forum/ThreadCard";
 import { FollowPersonButton } from "@/components/profile/FollowPersonButton";
 import { getViewer } from "@/lib/auth";
 import { PARTNER_KINDS } from "@/lib/config";
+import { PHASE2 } from "@/lib/features";
 import { count, timeAgo } from "@/lib/format";
 import { DEAL_CARD_SELECT, getDealMarks } from "@/lib/queries/deals";
 import { getThreadMarks, THREAD_CARD_SELECT, toCard } from "@/lib/queries/forum";
@@ -17,10 +18,11 @@ import { createClient } from "@/lib/supabase/server";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
+// The Deals tab, deal counts and the capital partner card are part of the Deal Room (Phase 2).
 const TABS = [
   { id: "discussions", label: "Discussions" },
   { id: "replies", label: "Replies" },
-  { id: "deals", label: "Deals" },
+  ...(PHASE2 ? [{ id: "deals", label: "Deals" }] : []),
 ];
 
 async function loadProfile(id: string) {
@@ -58,17 +60,17 @@ export default async function ProfilePage({
     viewer && !isSelf
       ? supabase.from("follows").select("followee_id").eq("follower_id", viewer.id).eq("followee_id", id).maybeSingle()
       : null,
-    supabase.from("capital_partners").select("*").eq("profile_id", id).maybeSingle(),
-    viewer && !isSelf
+    PHASE2 ? supabase.from("capital_partners").select("*").eq("profile_id", id).maybeSingle() : null,
+    PHASE2 && viewer && !isSelf
       ? supabase.from("partner_connections").select("partner_id").eq("partner_id", id).eq("user_id", viewer.id).maybeSingle()
       : null,
     supabase.from("threads").select("id", { count: "exact", head: true }).eq("author_id", id),
     supabase.from("replies").select("id", { count: "exact", head: true }).eq("author_id", id),
-    supabase.from("deals").select("id", { count: "exact", head: true }).eq("poster_id", id).eq("status", "live"),
+    PHASE2 ? supabase.from("deals").select("id", { count: "exact", head: true }).eq("poster_id", id).eq("status", "live") : null,
   ]);
 
-  const counts = { discussions: threadCountRes.count ?? 0, replies: replyCountRes.count ?? 0, deals: dealCountRes.count ?? 0 };
-  const partner = partnerRes.data;
+  const counts = { discussions: threadCountRes.count ?? 0, replies: replyCountRes.count ?? 0, deals: dealCountRes?.count ?? 0 };
+  const partner = partnerRes?.data ?? null;
   const kind = partner ? PARTNER_KINDS[partner.kind] ?? PARTNER_KINDS.Investor : null;
   const memberSince = new Date(profile.created_at).toLocaleDateString("en-US", { month: "long", year: "numeric" });
 
@@ -208,10 +210,17 @@ export default async function ProfilePage({
               <b>{count(profile.post_count)}</b>
               <span>Posts</span>
             </div>
-            <div className="d-stat">
-              <b>{count(counts.deals)}</b>
-              <span>Live deals</span>
-            </div>
+            {PHASE2 ? (
+              <div className="d-stat">
+                <b>{count(counts.deals)}</b>
+                <span>Live deals</span>
+              </div>
+            ) : (
+              <div className="d-stat">
+                <b>{count(followersRes.count ?? 0)}</b>
+                <span>{followersRes.count === 1 ? "Follower" : "Followers"}</span>
+              </div>
+            )}
           </div>
         </section>
       </div>
@@ -268,7 +277,7 @@ export default async function ProfilePage({
             </div>
           )}
 
-          {isSelf && !partner && (
+          {PHASE2 && isSelf && !partner && (
             <div className="m-promo">
               <h3>Investor, lender or operator?</h3>
               <p>List yourself as a capital partner so members with deals can find you.</p>
@@ -283,7 +292,7 @@ export default async function ProfilePage({
             {[
               { icon: "chat" as const, label: "Discussions started", value: counts.discussions },
               { icon: "reply" as const, label: "Replies", value: counts.replies },
-              { icon: "briefcase" as const, label: "Live deals", value: counts.deals },
+              ...(PHASE2 ? [{ icon: "briefcase" as const, label: "Live deals", value: counts.deals }] : []),
             ].map((row) => (
               <div key={row.label} className="d-row">
                 <span className="m-ic" style={{ background: "#F3F5F9" }}>

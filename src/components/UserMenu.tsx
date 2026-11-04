@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { Avatar } from "@/components/Avatar";
 import { Icon } from "@/components/Icon";
 import { signOut } from "@/app/actions/auth";
+import { PHASE2 } from "@/lib/features";
 
 export function UserMenu({ id, name, color, isAdmin }: { id: string; name: string; color: string; isAdmin: boolean }) {
   const [open, setOpen] = useState(false);
@@ -53,9 +54,11 @@ export function UserMenu({ id, name, color, isAdmin }: { id: string; name: strin
           <Link href={`/u/${id}`} style={item} onClick={() => setOpen(false)}>
             <Icon name="user" /> Your profile
           </Link>
-          <Link href="/deals/mine" style={item} onClick={() => setOpen(false)}>
-            <Icon name="briefcase" /> My deals and requests
-          </Link>
+          {PHASE2 && (
+            <Link href="/deals/mine" style={item} onClick={() => setOpen(false)}>
+              <Icon name="briefcase" /> My deals and requests
+            </Link>
+          )}
           <Link href="/settings" style={item} onClick={() => setOpen(false)}>
             <Icon name="shield" /> Settings
           </Link>

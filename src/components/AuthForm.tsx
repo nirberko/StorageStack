@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useActionState } from "react";
 import { signIn, signUp, type AuthState } from "@/app/actions/auth";
+import { PHASE2 } from "@/lib/features";
 
 export function AuthForm({ mode, next, linkError, email }: { mode: "login" | "signup"; next: string; linkError?: boolean; email?: string }) {
   const [state, action, pending] = useActionState<AuthState, FormData>(mode === "login" ? signIn : signUp, {});
@@ -57,7 +58,7 @@ export function AuthForm({ mode, next, linkError, email }: { mode: "login" | "si
             What best describes you? <span style={{ fontWeight: 600, color: "#5E6B7E" }}>(optional)</span>
           </label>
           <input id="headline" name="headline" className="d-input" placeholder="e.g. Investor · Columbus, OH" maxLength={80} />
-          <span className="d-help">Shown next to your name in the forums and the Deal Room.</span>
+          <span className="d-help">Shown next to your name in the forums{PHASE2 ? " and the Deal Room" : " and on your profile"}.</span>
         </div>
       )}
       <button className="m-btn m-btn-o" type="submit" disabled={pending} style={{ minHeight: 50, fontSize: 16 }}>

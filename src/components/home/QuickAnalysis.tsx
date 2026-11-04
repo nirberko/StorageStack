@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Icon } from "@/components/Icon";
 import { ProPill } from "@/components/home/Pro";
+import { PHASE2 } from "@/lib/features";
 import type { IconName } from "@/lib/icons";
 
 const KINDS: { id: string; label: string; sub: string; noun: string; icon: IconName }[] = [
@@ -65,13 +66,16 @@ export function QuickAnalysis() {
           Analyze this {kind.noun}
         </button>
       </form>
-      <div className="m-hide-sm" style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", padding: "14px 24px", background: "#FAFBFD", borderTop: "1px solid #EEF1F5" }}>
-        <span style={{ fontSize: 14, fontWeight: 700, color: "#1E2B3F" }}>Save your analyses</span>
-        <ProPill />
-        <a className="m-btn m-btn-pro" href="#pro" style={{ marginLeft: "auto", minHeight: 44, padding: "0 14px", fontSize: 14 }}>
-          Get early access
-        </a>
-      </div>
+      {/* Saving analyses is a Pro feature (Phase 2). */}
+      {PHASE2 && (
+        <div className="m-hide-sm" style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", padding: "14px 24px", background: "#FAFBFD", borderTop: "1px solid #EEF1F5" }}>
+          <span style={{ fontSize: 14, fontWeight: 700, color: "#1E2B3F" }}>Save your analyses</span>
+          <ProPill />
+          <a className="m-btn m-btn-pro" href="#pro" style={{ marginLeft: "auto", minHeight: 44, padding: "0 14px", fontSize: 14 }}>
+            Get early access
+          </a>
+        </div>
+      )}
     </section>
   );
 }

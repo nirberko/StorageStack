@@ -4,6 +4,7 @@ import { Icon } from "@/components/Icon";
 import { Logo } from "@/components/Logo";
 import { Verified } from "@/components/Verified";
 import { DEAL_TYPES, PARTNER_KINDS } from "@/lib/config";
+import { PHASE2 } from "@/lib/features";
 import { money } from "@/lib/format";
 import { createClient } from "@/lib/supabase/server";
 import { AUTHOR_FIELDS, type Author, type DealType, type Metric } from "@/lib/types";
@@ -21,6 +22,7 @@ type LandingDeal = {
   metrics: Metric[];
 };
 type LandingPartner = { profile_id: string; kind: string; offer_label: string; offer: string; profile: Author | null };
+type LandingMember = Author & { created_at: string };
 
 const ARROW = "M5 12h14M13 6l6 6-6 6";
 
@@ -33,10 +35,12 @@ const SAMPLE_ASKERS: NetChip[] = [
   { key: "s-a2", href: "/forums", name: "Marcus Lee", color: "#D8E6FF", verified: false, sub: "First-time buyer", pill: "Financing", tint: "#E6EEFD", ink: "#1D4ED8" },
   { key: "s-a3", href: "/forums", name: "Priya Shah", color: "#D4F2E4", verified: true, sub: "Operator", pill: "Operations", tint: "#DDF3E8", ink: "#17603F" },
 ];
+// Before Phase 2 there is no partner page to link to, so the samples invite visitors to join.
+const PARTNERS_HREF = PHASE2 ? "/deals/partners" : "/signup";
 const SAMPLE_PARTNERS: NetChip[] = [
-  { key: "s-p1", href: "/deals/partners", name: "Harbor Capital", color: "#EADFFF", verified: true, sub: "Checks $250k to $2M", pill: "Investor", ...PARTNER_KINDS.Investor },
-  { key: "s-p2", href: "/deals/partners", name: "Summit Bank", color: "#DFF4F4", verified: true, sub: "Loans up to 75% LTV", pill: "Lender", ...PARTNER_KINDS.Lender },
-  { key: "s-p3", href: "/deals/partners", name: "Keystone Storage", color: "#FBF1DD", verified: false, sub: "Third-party management", pill: "Operator", ...PARTNER_KINDS.Operator },
+  { key: "s-p1", href: PARTNERS_HREF, name: "Harbor Capital", color: "#EADFFF", verified: true, sub: "Checks $250k to $2M", pill: "Investor", ...PARTNER_KINDS.Investor },
+  { key: "s-p2", href: PARTNERS_HREF, name: "Summit Bank", color: "#DFF4F4", verified: true, sub: "Loans up to 75% LTV", pill: "Lender", ...PARTNER_KINDS.Lender },
+  { key: "s-p3", href: PARTNERS_HREF, name: "Keystone Storage", color: "#FBF1DD", verified: false, sub: "Third-party management", pill: "Operator", ...PARTNER_KINDS.Operator },
 ];
 const SAMPLE_DEAL: LandingDeal = {
   id: 0,
@@ -54,33 +58,44 @@ const SAMPLE_DEAL: LandingDeal = {
   ],
 };
 
-/** The home page for visitors who are not logged in: hero, what membership includes, and a closing call to join. */
+/**
+ * The home page for visitors who are not logged in: hero, what membership includes, and a closing call to join.
+ * Before Phase 2 the Deal Room is hidden: the hero centres on an example deal analysis with members on
+ * the right, and the Deal Room tiles become Members and Learn.
+ */
 export async function Landing() {
   const supabase = await createClient();
-  const [userRes, threadsRes, dealsRes, partnersRes] = await Promise.all([
+  const [userRes, threadsRes, dealsRes, partnersRes, membersRes] = await Promise.all([
     supabase.auth.getUser(),
     supabase
       .from("threads")
       .select(`id, title, author:profiles!threads_author_id_fkey(${AUTHOR_FIELDS}), category:categories(name, tint, ink)`)
       .order("last_activity_at", { ascending: false })
       .limit(10),
-    supabase
-      .from("deals")
-      .select("id, type, off_market, title, city, state, raise_goal, raise_committed, metrics")
-      .eq("status", "live")
-      .order("created_at", { ascending: false })
-      .limit(12),
-    supabase
-      .from("capital_partners")
-      .select(`profile_id, kind, offer_label, offer, profile:profiles!capital_partners_profile_id_fkey(${AUTHOR_FIELDS})`)
-      .eq("active", true)
-      .order("created_at", { ascending: false })
-      .limit(3),
+    PHASE2
+      ? supabase
+          .from("deals")
+          .select("id, type, off_market, title, city, state, raise_goal, raise_committed, metrics")
+          .eq("status", "live")
+          .order("created_at", { ascending: false })
+          .limit(12)
+      : null,
+    PHASE2
+      ? supabase
+          .from("capital_partners")
+          .select(`profile_id, kind, offer_label, offer, profile:profiles!capital_partners_profile_id_fkey(${AUTHOR_FIELDS})`)
+          .eq("active", true)
+          .order("created_at", { ascending: false })
+          .limit(3)
+      : null,
+    // Newest members who have said what they do, for the hero and the Members tile.
+    PHASE2 ? null : supabase.from("profiles").select(`${AUTHOR_FIELDS}, created_at`).neq("headline", "").order("created_at", { ascending: false }).limit(3),
   ]);
 
   const threads = (threadsRes.data ?? []) as unknown as LandingThread[];
-  const deals = (dealsRes.data ?? []) as unknown as LandingDeal[];
-  const partners = (partnersRes.data ?? []) as unknown as LandingPartner[];
+  const deals = (dealsRes?.data ?? []) as unknown as LandingDeal[];
+  const partners = (partnersRes?.data ?? []) as unknown as LandingPartner[];
+  const members = (membersRes?.data ?? []) as unknown as LandingMember[];
   const signedIn = !!userRes.data.user;
 
   // One recent thread per author, so the hero shows three different people.
@@ -109,21 +124,35 @@ export async function Landing() {
     pill: p.kind,
     ...(PARTNER_KINDS[p.kind] ?? PARTNER_KINDS.Investor),
   }));
+  const newcomers: NetChip[] = members.map((m) => ({
+    key: `m${m.id}`,
+    href: `/u/${m.id}`,
+    name: m.full_name,
+    color: m.avatar_color,
+    verified: m.verified,
+    sub: m.headline,
+    pill: m.verified ? "Verified" : "Member",
+    tint: m.verified ? "#DDF3E8" : "#F1F3F8",
+    ink: m.verified ? "#17603F" : "#0B1F3A",
+  }));
+  const network = fill(PHASE2 ? backers : newcomers, SAMPLE_PARTNERS);
   const featured = deals.find((d) => d.type === "sale") ?? deals[0];
   const raise = deals.find((d) => d.type === "equity" && d.raise_goal && d.id !== featured?.id);
 
   return (
     <div className="l-page">
-      <div className="l-banner">
-        New: capital partners get an alert when a deal that fits what they fund is posted. <Link href="/deals/partners/join">Join as a partner</Link>
-      </div>
+      {PHASE2 && (
+        <div className="l-banner">
+          New: capital partners get an alert when a deal that fits what they fund is posted. <Link href="/deals/partners/join">Join as a partner</Link>
+        </div>
+      )}
 
       <div className="l-bar">
         <header className="l-in l-head">
           <Logo />
           <nav className="l-nav" aria-label="Main">
             <Link href="/forums">Forums</Link>
-            <Link href="/deals">Deal Room</Link>
+            {PHASE2 && <Link href="/deals">Deal Room</Link>}
             <Link href="/tools">Tools</Link>
             <Link href="/learn">Learn</Link>
           </nav>
@@ -152,18 +181,20 @@ export async function Landing() {
             Learn self storage from the people who <span className="l-mark">already own it</span>
           </h1>
           <p className="l-lead l-in-up l-d1">
-            Ask questions in the forums, run the numbers with free tools, and find your next facility, partner or loan in the Deal Room.
+            {PHASE2
+              ? "Ask questions in the forums, run the numbers with free tools, and find your next facility, partner or loan in the Deal Room."
+              : "Ask questions in the forums, run the numbers with free tools, and meet the owners, operators, brokers and investors who do this every day."}
           </p>
           <SignupForm id="hero-email" className="l-in-up l-d2" />
           <div className="l-note l-in-up l-d3">Free to join. No credit card.</div>
 
-          <div className="l-panel l-in-up l-d4" role="group" aria-label="Members, a deal and capital partners">
+          <div className="l-panel l-in-up l-d4" role="group" aria-label={PHASE2 ? "Members, a deal and capital partners" : "Members and an example deal analysis"}>
             <div className="l-net">
               <NetColumn label="From the forums" side="l" chips={fill(askers, SAMPLE_ASKERS)} round />
               <Wire flip={false} />
-              <FeaturedDeal deal={featured ?? SAMPLE_DEAL} />
+              {PHASE2 ? <FeaturedDeal deal={featured ?? SAMPLE_DEAL} /> : <ExampleAnalysis />}
               <Wire flip />
-              <NetColumn label="Capital partners" side="r" chips={fill(backers, SAMPLE_PARTNERS)} />
+              <NetColumn label={PHASE2 ? "Capital partners" : "Meet the network"} side="r" chips={network} />
             </div>
           </div>
         </section>
@@ -210,25 +241,29 @@ export async function Landing() {
               </div>
             </div>
 
-            <div className="l-tile tall l-sv l-sv2">
-              <div className="l-tile-head">
-                <span className="l-ico" style={{ background: "#DB520B", color: "#fff" }}>
-                  <Icon name="briefcase" size={18} />
-                </span>
-                <h3>Deal Room</h3>
+            {PHASE2 ? (
+              <div className="l-tile tall l-sv l-sv2">
+                <div className="l-tile-head">
+                  <span className="l-ico" style={{ background: "#DB520B", color: "#fff" }}>
+                    <Icon name="briefcase" size={18} />
+                  </span>
+                  <h3>Deal Room</h3>
+                </div>
+                <p>Facilities for sale, capital raises, partnerships and loans, posted by members.</p>
+                <div className="l-types">
+                  <span>For sale</span>
+                  <span>Capital raise</span>
+                  <span>Partnership</span>
+                  <span>Loan</span>
+                </div>
+                {raise && <RaiseCard deal={raise} />}
+                <Link href="/deals" className="l-more l-nudge">
+                  See open deals <Icon d={ARROW} size={14} strokeWidth={2.4} />
+                </Link>
               </div>
-              <p>Facilities for sale, capital raises, partnerships and loans, posted by members.</p>
-              <div className="l-types">
-                <span>For sale</span>
-                <span>Capital raise</span>
-                <span>Partnership</span>
-                <span>Loan</span>
-              </div>
-              {raise && <RaiseCard deal={raise} />}
-              <Link href="/deals" className="l-more l-nudge">
-                See open deals <Icon d={ARROW} size={14} strokeWidth={2.4} />
-              </Link>
-            </div>
+            ) : (
+              <MembersTile members={network} />
+            )}
 
             <div className="l-tile warm l-sv l-lift">
               <div className="l-tile-head">
@@ -259,28 +294,32 @@ export async function Landing() {
               </div>
             </div>
 
-            <div className="l-tile l-sv l-sv3 l-lift">
-              <div className="l-tile-head">
-                <span className="l-ico" style={{ background: "#DDF3E8", color: "#17603F" }}>
-                  <Icon name="lock" size={18} />
-                </span>
-                <h3>Private by default</h3>
-              </div>
-              <p>Addresses and documents stay hidden until you approve who sees them.</p>
-              <div className="l-box" aria-hidden="true" style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
-                <Avatar name="Verified member" color="#D8E6FF" size={32} radius={16} fontSize={12} />
-                <span style={{ flex: "1 1 120px", lineHeight: 1.35 }}>
-                  <b style={{ display: "block", fontSize: 14 }}>A verified member</b>
-                  <span style={{ fontSize: 12, color: "#5E6B7E" }}>Wants the rent roll</span>
-                </span>
-                <span style={{ display: "flex", gap: 6 }}>
-                  <span className="l-live" style={{ fontSize: 13, fontWeight: 700, padding: "7px 12px", borderRadius: 10, background: "#0B1F3A", color: "#fff" }}>
-                    Approve
+            {PHASE2 ? (
+              <div className="l-tile l-sv l-sv3 l-lift">
+                <div className="l-tile-head">
+                  <span className="l-ico" style={{ background: "#DDF3E8", color: "#17603F" }}>
+                    <Icon name="lock" size={18} />
                   </span>
-                  <span style={{ fontSize: 13, fontWeight: 700, padding: "7px 12px", borderRadius: 10, background: "#F1F3F8", color: "#0B1F3A" }}>Decline</span>
-                </span>
+                  <h3>Private by default</h3>
+                </div>
+                <p>Addresses and documents stay hidden until you approve who sees them.</p>
+                <div className="l-box" aria-hidden="true" style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+                  <Avatar name="Verified member" color="#D8E6FF" size={32} radius={16} fontSize={12} />
+                  <span style={{ flex: "1 1 120px", lineHeight: 1.35 }}>
+                    <b style={{ display: "block", fontSize: 14 }}>A verified member</b>
+                    <span style={{ fontSize: 12, color: "#5E6B7E" }}>Wants the rent roll</span>
+                  </span>
+                  <span style={{ display: "flex", gap: 6 }}>
+                    <span className="l-live" style={{ fontSize: 13, fontWeight: 700, padding: "7px 12px", borderRadius: 10, background: "#0B1F3A", color: "#fff" }}>
+                      Approve
+                    </span>
+                    <span style={{ fontSize: 13, fontWeight: 700, padding: "7px 12px", borderRadius: 10, background: "#F1F3F8", color: "#0B1F3A" }}>Decline</span>
+                  </span>
+                </div>
               </div>
-            </div>
+            ) : (
+              <LearnTile />
+            )}
           </div>
         </section>
 
@@ -302,7 +341,7 @@ export async function Landing() {
           <Logo />
           <nav aria-label="Footer">
             <Link href="/forums">Forums</Link>
-            <Link href="/deals">Deal Room</Link>
+            {PHASE2 && <Link href="/deals">Deal Room</Link>}
             <Link href="/tools">Tools</Link>
             <Link href="/learn">Learn</Link>
             <Link href="/guidelines">Guidelines</Link>
@@ -421,6 +460,129 @@ function FeaturedDeal({ deal }: { deal: LandingDeal }) {
         </div>
       </div>
     </Link>
+  );
+}
+
+/** The hero's centre card before Phase 2: what the Quick Deal Analyzer gives you, with example numbers. */
+function ExampleAnalysis() {
+  return (
+    <Link href="/tools" className="l-deal">
+      <div className="l-art" style={{ height: 132 }} aria-hidden="true">
+        <div style={{ left: 0, right: 0, bottom: 0, height: 26, background: "#C9D1DE" }} />
+        <div style={{ left: "7%", right: "7%", bottom: 26, height: 74, background: "#fff", borderRadius: "6px 6px 0 0" }} />
+        <div style={{ left: "7%", right: "7%", bottom: 100, height: 10, background: "#0B1F3A", borderRadius: "4px 4px 0 0" }} />
+        <div className="l-doors" style={{ left: "calc(7% + 14px)", right: "calc(7% + 14px)", bottom: 26, height: 52 }} />
+        <div className="l-slats" style={{ left: "calc(7% + 14px)", right: "calc(7% + 14px)", bottom: 26, height: 52 }} />
+        <span className="l-dark-pill" style={{ top: 12, right: 12 }}>
+          Example
+        </span>
+      </div>
+      <div className="l-deal-body">
+        <div className="l-deal-logo" aria-hidden="true">
+          <Icon name="calculator" size={22} stroke="#0B1F3A" />
+        </div>
+        <h2>Quick deal analysis</h2>
+        <div className="l-where">
+          <span>
+            <Icon name="pin" size={14} />
+            Tulsa, OK
+          </span>
+          <span>
+            <Icon name="build" size={14} />
+            412 units
+          </span>
+        </div>
+        <div className="l-tabs" aria-hidden="true">
+          <span>Revenue</span>
+          <span>Expenses</span>
+          <span>Offer</span>
+        </div>
+        <div className="l-nums">
+          <div>
+            <b>$194k</b>
+            <span>Net income</span>
+          </div>
+          <div>
+            <b style={{ color: "#17603F" }}>$2.4M</b>
+            <span>Offer from</span>
+          </div>
+          <div>
+            <b style={{ color: "#17603F" }}>$2.8M</b>
+            <span>Offer to</span>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+/** Bento tile before Phase 2: the people you can meet here. */
+function MembersTile({ members }: { members: NetChip[] }) {
+  return (
+    <div className="l-tile tall l-sv l-sv2">
+      <div className="l-tile-head">
+        <span className="l-ico" style={{ background: "#DB520B", color: "#fff" }}>
+          <Icon name="people" size={18} />
+        </span>
+        <h3>Members</h3>
+      </div>
+      <p>Owners, operators, brokers, investors and lenders. See what each member does and follow the people you learn from.</p>
+      <div className="l-types">
+        <span>Owners</span>
+        <span>Operators</span>
+        <span>Brokers</span>
+        <span>Investors</span>
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        {members.map((m) => (
+          <Link key={m.key} href={m.href} className="l-row l-lift">
+            <Avatar name={m.name} color={m.color} size={32} radius={16} fontSize={12} />
+            <span style={{ flex: 1, minWidth: 0, lineHeight: 1.35 }}>
+              <b style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                {m.name}
+                {m.verified && <Verified size={13} />}
+              </b>
+              <span style={{ display: "block", fontSize: 12, color: "#5E6B7E" }}>{m.sub}</span>
+            </span>
+          </Link>
+        ))}
+      </div>
+      <Link href="/signup" className="l-more l-nudge">
+        Join the network <Icon d={ARROW} size={14} strokeWidth={2.4} />
+      </Link>
+    </div>
+  );
+}
+
+/** Bento tile before Phase 2: the learning resources. */
+function LearnTile() {
+  const items = [
+    { href: "/forums/1", label: "The self storage glossary" },
+    { href: "/forums?cat=start", label: "Getting started" },
+    { href: "/search?q=recap", label: "Real case studies" },
+  ];
+  return (
+    <div className="l-tile l-sv l-sv3 l-lift">
+      <div className="l-tile-head">
+        <span className="l-ico" style={{ background: "#DDF3E8", color: "#17603F" }}>
+          <Icon name="bulb" size={18} />
+        </span>
+        <h3>
+          <Link href="/learn" style={{ color: "inherit" }}>
+            Learn
+          </Link>
+        </h3>
+      </div>
+      <p>Plain-English guides and real projects with real numbers, from members who have done it.</p>
+      <div className="l-box" style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+        {items.map((i) => (
+          <Link key={i.href} href={i.href} className="l-calc" style={{ color: "#0B1F3A", fontWeight: 700, fontSize: 14 }}>
+            <span style={{ color: "#0B1F3A", fontWeight: 700 }}>{i.label}</span>
+            <Icon name="chevron" size={16} stroke="#5E6B7E" />
+          </Link>
+        ))}
+      </div>
+    </div>
   );
 }
 

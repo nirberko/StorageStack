@@ -1,6 +1,8 @@
 // Profile progress on the signed-in home page: a checklist worth 100 points, a level and badges.
 // Pure functions over facts the server already loaded, so they are easy to test.
 
+import { PHASE2 } from "@/lib/features";
+
 /** What we know about a member, all from their own rows. */
 export type ProfileFacts = {
   headline: string;
@@ -12,6 +14,8 @@ export type ProfileFacts = {
   /** Has a thread in the Getting Started topic. */
   introduced: boolean;
   topicsFollowed: number;
+  /** Members this member follows. */
+  peopleFollowed: number;
   alerts: number;
   dealsPosted: number;
   /** Likes on the member's threads. Replies cannot be liked. */
@@ -39,7 +43,10 @@ export function profileSteps(f: ProfileFacts): ProfileStep[] {
     { id: "topics", label: "Follow 3 forum topics", points: 10, href: "/forums", done: f.topicsFollowed >= 3 },
     { id: "post", label: "Start or reply to a discussion", points: 15, href: "/forums/new", done: f.posts > 0 },
     { id: "intro", label: "Introduce yourself in Getting Started", points: 15, href: `/forums/new?cat=${INTRO_CATEGORY}`, done: f.introduced },
-    { id: "alert", label: "Set up a deal alert", points: 15, href: "/deals/alerts", done: f.alerts > 0 },
+    // Deal alerts are part of the Deal Room (Phase 2); until then this step is following a member.
+    PHASE2
+      ? { id: "alert", label: "Set up a deal alert", points: 15, href: "/deals/alerts", done: f.alerts > 0 }
+      : { id: "person", label: "Follow a member you learn from", points: 15, href: "/forums", done: f.peopleFollowed > 0 },
     // Not built yet: there is no deal calculator, so nothing records an analysis.
     { id: "analyze", label: "Analyze a deal", points: 15, href: "/tools", done: false },
   ];
@@ -67,7 +74,7 @@ export function profileBadges(f: ProfileFacts): ProfileBadge[] {
     { id: "member", label: "Member", earned: true },
     { id: "first-post", label: "First post", earned: f.posts > 0 },
     { id: "hello", label: "Said hello", earned: f.introduced },
-    { id: "deal", label: "Deal poster", earned: f.dealsPosted > 0 },
+    ...(PHASE2 ? [{ id: "deal", label: "Deal poster", earned: f.dealsPosted > 0 }] : []),
     { id: "verified", label: "Verified", earned: f.verified },
     { id: "helpful", label: "Helpful", earned: f.likesReceived >= 10 },
   ];
