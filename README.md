@@ -61,8 +61,13 @@ Useful scripts:
    `update profiles set is_admin = true where id = (select id from auth.users where email = 'you@example.com');`
 3. In Supabase Auth settings set the Site URL to your domain and add `https://<domain>/auth/confirm`
    as a redirect URL.
-4. Deploy the Next.js app (e.g. Vercel) with `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   and `NEXT_PUBLIC_SITE_URL`.
+4. Deploy the app to Cloudflare Workers (via [OpenNext](https://opennext.js.org/cloudflare)):
+   - `npx wrangler login` once.
+   - Put `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` and `NEXT_PUBLIC_SITE_URL` in
+     `.env.local` (or the build environment). They are `NEXT_PUBLIC_*`, so they are baked in at build time.
+   - `npm run deploy` builds with OpenNext and uploads the worker. `npm run preview` runs the same
+     build locally in the Workers runtime.
+   - Attach your domain under Workers → `storagestack` → Settings → Domains & Routes.
 
 ## Project layout
 
