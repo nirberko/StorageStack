@@ -3,9 +3,8 @@ import { Landing } from "@/components/landing/Landing";
 import { getViewer } from "@/lib/auth";
 
 // Members get their dashboard; visitors get the landing page.
-export default async function HomePage({ searchParams }: { searchParams: Promise<{ feed?: string }> }) {
+export default async function HomePage() {
   const viewer = await getViewer();
   if (!viewer) return <Landing />;
-  const { feed } = await searchParams;
-  return <Dashboard viewer={viewer} feed={feed} />;
+  return <Dashboard viewer={viewer} />;
 }

@@ -619,3 +619,59 @@ a.f-pill:hover { background: var(--ds-fill-hover); color: var(--ink); }
 }
 .f-hero .m-btn-w { background: #fff; color: var(--ink); box-shadow: none; }
 .f-hero .m-btn-w:hover { background: var(--ds-fill); color: var(--ink); }
+
+/* ---- Signed-in home (Dashboard.tsx) ---------------------------------------- */
+
+.hm { padding-top: 32px; padding-bottom: 64px; display: flex; flex-direction: column; gap: 20px; }
+.hm-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
+.hm-sub { margin-top: 4px; font-size: 14px; color: var(--subtle); }
+.hm-row { display: flex; flex-wrap: wrap; gap: 20px; align-items: stretch; }
+.hm-card { background: #fff; border: 1px solid var(--line); border-radius: 16px; }
+.hm-head { display: flex; align-items: center; gap: 10px; }
+.hm-head h2 { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+.hm-ico { width: 36px; height: 36px; border-radius: 10px; background: var(--ds-primary-soft); color: var(--ds-primary); display: grid; place-items: center; flex: none; }
+.hm-more { margin-left: auto; font-size: 13px; font-weight: 500; color: var(--ds-primary-text); }
+.hm-meta { font-size: 12px; color: var(--subtle); }
+
+.hm-ask { flex: 2 1 560px; min-width: 0; padding: 22px; display: flex; flex-direction: column; gap: 14px; }
+.hm-ask-form { display: flex; gap: 8px; }
+.hm-ask-form .d-input { flex: 1; min-width: 0; min-height: 40px; }
+.hm-ask-form .m-btn { min-height: 40px; }
+.hm-q { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line-3); color: var(--ink); }
+.hm-q:hover b { color: var(--ds-primary); }
+.hm-qi { width: 32px; height: 32px; border-radius: 8px; display: grid; place-items: center; flex: none; }
+.hm-q b { display: block; font-size: 14px; font-weight: 600; line-height: 1.4; }
+.hm-q small { display: block; margin-top: 2px; font-size: 12px; color: var(--subtle); }
+
+.hm-profile { flex: 1 1 300px; min-width: 0; padding: 22px; display: flex; flex-direction: column; gap: 16px; }
+.hm-progress-row { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; }
+.hm-progress-row b { font-weight: 600; }
+.hm-progress-row span { color: var(--subtle); }
+.hm-bar { margin-top: 8px; height: 6px; border-radius: 3px; background: var(--line-3); overflow: hidden; }
+.hm-bar span { display: block; height: 100%; border-radius: 3px; background: var(--ds-primary); }
+.hm-step { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line-3); font-size: 14px; font-weight: 500; color: var(--ink); }
+.hm-step:hover { color: var(--ds-primary-text); }
+.hm-step i { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--ds-line-strong); flex: none; }
+.hm-step em { margin-left: auto; font-style: normal; font-size: 12px; font-weight: 600; color: var(--ds-primary-text); }
+
+.hm-sec { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 32px; padding: 20px 20px 20px 32px; }
+.hm-sec.flip { flex-direction: row-reverse; padding: 20px 32px 20px 20px; }
+.hm-copy { flex: 1 1 340px; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.hm-kick { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--ds-primary-text); }
+.hm-kick > span { width: 26px; height: 26px; border-radius: 7px; background: var(--ds-primary-soft); display: grid; place-items: center; }
+.hm-copy h3 { font-size: 22px; line-height: 1.2; font-weight: 600; letter-spacing: -0.02em; color: var(--ink); }
+.hm-copy p { font-size: 14px; line-height: 1.55; color: var(--muted); max-width: 48ch; }
+.hm-ticks { margin: 2px 0 6px; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.hm-ticks li { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--body); }
+.hm-shot { flex: 0 1 340px; width: 340px; max-width: 100%; height: auto; border-radius: 16px; display: block; }
+
+@media (max-width: 760px) {
+  .hm-sec, .hm-sec.flip { flex-direction: column; align-items: stretch; padding: 16px; gap: 16px; }
+  .hm-shot { width: 100%; flex-basis: auto; }
+}
+
+/* Funding coming-soon preview: a short lender list */
+.fd-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line-3); font-size: 14px; }
+.fd-row:first-of-type { border-top: 0; }
+.fd-row b { font-weight: 600; color: var(--ink); }
+.fd-row span { font-size: 12px; color: var(--subtle); }
