@@ -39,7 +39,7 @@ Requirements: Node 20+, Docker (for the local Supabase stack).
 npm install
 npm run db:start          # starts Supabase locally, applies migrations and seed data
 cp .env.example .env.local
-# paste the API URL and anon key printed by db:start into .env.local
+# paste the API URL and publishable key (or legacy anon key) printed by db:start into .env.local
 npm run dev               # http://localhost:3000
 ```
 
@@ -63,8 +63,9 @@ Useful scripts:
    as a redirect URL.
 4. Deploy the app to Cloudflare Workers (via [OpenNext](https://opennext.js.org/cloudflare)):
    - `npx wrangler login` once.
-   - Put `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` and `NEXT_PUBLIC_SITE_URL` in
-     `.env.local` (or the build environment). They are `NEXT_PUBLIC_*`, so they are baked in at build time.
+   - Put the hosted `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` and
+     `NEXT_PUBLIC_SITE_URL` in `.env.production.local` (or the build environment). It overrides
+     `.env.local` for production builds only. They are `NEXT_PUBLIC_*`, so they are baked in at build time.
    - `npm run deploy` builds with OpenNext and uploads the worker. `npm run preview` runs the same
      build locally in the Workers runtime.
    - Attach your domain under Workers → `storagestack` → Settings → Domains & Routes.
