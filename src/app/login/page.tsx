@@ -8,7 +8,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   const { next = "/forums", error } = await searchParams;
   return (
     <AuthShell title="Welcome back" subtitle="Log in to keep the conversation going.">
-      <AuthForm mode="login" next={next} linkError={error === "link"} />
+      <AuthForm mode="login" next={next} linkError={error === "link"} googleError={error === "google"} />
     </AuthShell>
   );
 }

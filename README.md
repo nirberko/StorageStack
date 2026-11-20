@@ -57,7 +57,14 @@ Useful scripts:
    `update profiles set is_admin = true where id = (select id from auth.users where email = 'you@example.com');`
 3. In Supabase Auth settings set the Site URL to your domain and add `https://<domain>/auth/confirm`
    as a redirect URL.
-4. Deploy the app to Cloudflare Workers (via [OpenNext](https://opennext.js.org/cloudflare)):
+4. Sign in with Google (optional):
+   - In Google Cloud Console, create an OAuth client (type "Web application"). Add your Supabase
+     callback as an authorized redirect URI: `https://<ref>.supabase.co/auth/v1/callback`.
+   - In Supabase, go to Authentication → Sign In / Providers → Google. Turn it on and paste the client ID and secret.
+   - To try it locally, add `http://127.0.0.1:54321/auth/v1/callback` to the same Google client. Put
+     `SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_ID` and `SUPABASE_AUTH_EXTERNAL_GOOGLE_SECRET` in `supabase/.env`,
+     set `enabled = true` under `[auth.external.google]` in `supabase/config.toml`, and restart Supabase.
+5. Deploy the app to Cloudflare Workers (via [OpenNext](https://opennext.js.org/cloudflare)):
    - `npx wrangler login` once.
    - Put the hosted `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` and
      `NEXT_PUBLIC_SITE_URL` in `.env.production.local` (or the build environment). It overrides

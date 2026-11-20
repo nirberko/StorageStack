@@ -53,6 +53,20 @@ export async function signUp(_prev: AuthState, formData: FormData): Promise<Auth
   redirect(safeNext(formData.get("next")));
 }
 
+/** Sends the member to Google. Google returns them to /auth/confirm with a code, which signs them in (and creates the account on the first visit). */
+export async function signInWithGoogle(formData: FormData) {
+  const origin = process.env.NEXT_PUBLIC_SITE_URL ?? (await headers()).get("origin") ?? "";
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: `${origin}/auth/confirm?next=${encodeURIComponent(safeNext(formData.get("next")))}`,
+      queryParams: { prompt: "select_account" },
+    },
+  });
+  redirect(error || !data.url ? "/login?error=google" : data.url);
+}
+
 /** Emails a link that signs the member in and opens the page for choosing a new password. Always says the same thing, so it never reveals who has an account. */
 export async function requestPasswordReset(_prev: AuthState, formData: FormData): Promise<AuthState> {
   const email = String(formData.get("email") ?? "").trim();
