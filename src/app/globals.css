@@ -675,3 +675,18 @@ a.f-pill:hover { background: var(--ds-fill-hover); color: var(--ink); }
 .fd-row:first-of-type { border-top: 0; }
 .fd-row b { font-weight: 600; color: var(--ink); }
 .fd-row span { font-size: 12px; color: var(--subtle); }
+
+/* Forums topic menu: a dropdown on phones, the full list on wider screens */
+.f-pick { display: none; }
+.f-pick summary { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; border: 1px solid var(--line); border-radius: 12px; background: #fff; cursor: pointer; list-style: none; font-size: 14px; }
+.f-pick summary::-webkit-details-marker { display: none; }
+.f-pick summary span { color: var(--subtle); }
+.f-pick summary b { flex: 1; min-width: 0; font-weight: 600; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.f-pick summary svg { flex: none; color: var(--subtle); transform: rotate(90deg); transition: transform 0.15s; }
+.f-pick[open] summary svg { transform: rotate(-90deg); }
+.f-pick[open] summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.f-pick .f-side { border-top: 0; border-top-left-radius: 0; border-top-right-radius: 0; max-height: 60vh; overflow-y: auto; }
+@media (max-width: 760px) {
+  .f-pick { display: block; }
+  .f-desk { display: none; }
+}

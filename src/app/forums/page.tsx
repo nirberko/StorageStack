@@ -81,6 +81,38 @@ export default async function ForumsPage({ searchParams }: { searchParams: Promi
   const threads = (rows ?? []).map((r: any) => toCard(r));
   const marks = await getThreadMarks(supabase, viewer?.id, threads.map((t) => t.id));
 
+  // What the member is browsing, for the phone dropdown's label.
+  const currentView = cat ? cat.name : following ? "Following" : tab === "saved" ? "Saved" : "All discussions";
+  const topicLinks = (
+    <>
+      <Link className={!cat && !following && tab !== "saved" ? "on" : undefined} href={href(browse, { cat: undefined, view: undefined, limit: undefined })}>
+        All discussions<span>{count(stats.discussions)}</span>
+      </Link>
+      <Link className={following ? "on" : undefined} href={href(browse, { cat: undefined, view: "following", limit: undefined })}>
+        Following<span>{followedIds.length}</span>
+      </Link>
+      <Link className={tab === "saved" && !cat && !following ? "on" : undefined} href={href({}, { tab: "saved" })}>
+        Saved<span>{savedIds.length}</span>
+      </Link>
+      {TOPIC_GROUPS.map((g) => (
+        <div key={g}>
+          <h3>{g}</h3>
+          {categories
+            .filter((c) => c.group_name === g)
+            .map((c) => {
+              const on = c.id === cat?.id;
+              return (
+                <Link key={c.id} className={on ? "on" : undefined} href={href(browse, { cat: c.id, view: undefined, limit: undefined })} aria-current={on ? "page" : undefined}>
+                  {c.name}
+                  <span>{count(c.topics)}</span>
+                </Link>
+              );
+            })}
+        </div>
+      ))}
+    </>
+  );
+
   const emptyText =
     tab === "saved"
       ? ["No saved discussions yet", "Tap the bookmark on any discussion to keep it here."]
@@ -113,33 +145,16 @@ export default async function ForumsPage({ searchParams }: { searchParams: Promi
 
       <div className="wrap page-cols">
         <aside className="col-side" aria-label="Forum topics">
-          <nav className="f-side">
-            <Link className={!cat && !following && tab !== "saved" ? "on" : undefined} href={href(browse, { cat: undefined, view: undefined, limit: undefined })}>
-              All discussions<span>{count(stats.discussions)}</span>
-            </Link>
-            <Link className={following ? "on" : undefined} href={href(browse, { cat: undefined, view: "following", limit: undefined })}>
-              Following<span>{followedIds.length}</span>
-            </Link>
-            <Link className={tab === "saved" && !cat && !following ? "on" : undefined} href={href({}, { tab: "saved" })}>
-              Saved<span>{savedIds.length}</span>
-            </Link>
-            {TOPIC_GROUPS.map((g) => (
-              <div key={g}>
-                <h3>{g}</h3>
-                {categories
-                  .filter((c) => c.group_name === g)
-                  .map((c) => {
-                    const on = c.id === cat?.id;
-                    return (
-                      <Link key={c.id} className={on ? "on" : undefined} href={href(browse, { cat: c.id, view: undefined, limit: undefined })} aria-current={on ? "page" : undefined}>
-                        {c.name}
-                        <span>{count(c.topics)}</span>
-                      </Link>
-                    );
-                  })}
-              </div>
-            ))}
-          </nav>
+          {/* Phones: the same links folded into a dropdown, so the posts are not pushed below every topic. Keyed so it closes after a pick. */}
+          <details className="f-pick" key={currentView}>
+            <summary>
+              <span>Topic</span>
+              <b>{currentView}</b>
+              <Icon name="chevron" size={16} />
+            </summary>
+            <nav className="f-side">{topicLinks}</nav>
+          </details>
+          <nav className="f-side f-desk">{topicLinks}</nav>
         </aside>
 
         <main className="col-main">
