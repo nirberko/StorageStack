@@ -10,7 +10,7 @@ export function Logo() {
         <rect x="14" y="25" width="6" height="3" rx="1.5" fill="#F26B1D" />
       </svg>
       <span>
-        Storage<span style={{ color: "#DB520B" }}>Stack</span>
+        The Storage <span style={{ color: "#DB520B" }}>Network</span>
       </span>
     </Link>
   );

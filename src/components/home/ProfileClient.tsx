@@ -11,7 +11,7 @@ export function ShareProfileButton({ profileId, name }: { profileId: string; nam
   async function share() {
     const url = `${window.location.origin}/u/${profileId}`;
     try {
-      if (navigator.share) await navigator.share({ url, title: `${name} on StorageStack` });
+      if (navigator.share) await navigator.share({ url, title: `${name} on The Storage Network` });
       else {
         await navigator.clipboard.writeText(url);
         setCopied(true);

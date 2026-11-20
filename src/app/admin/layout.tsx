@@ -4,7 +4,7 @@ import { Icon } from "@/components/Icon";
 import { requireAdmin } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 
-export const metadata: Metadata = { title: { default: "Admin", template: "%s · Admin · StorageStack" } };
+export const metadata: Metadata = { title: { default: "Admin", template: "%s · Admin · The Storage Network" } };
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   await requireAdmin();

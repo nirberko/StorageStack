@@ -1,6 +1,6 @@
 "use client";
 
-import { toggleFollowPerson } from "@/app/actions/deals";
+import { toggleFollowPerson } from "@/app/actions/profile";
 import { useToggle } from "@/lib/useToggle";
 
 /** Follow button with the live follower count beside it. */

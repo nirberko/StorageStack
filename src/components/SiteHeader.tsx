@@ -52,7 +52,7 @@ export async function SiteFooter() {
     <HideOnLanding active={!viewer}>
       <footer className="m-footer">
         <div className="wrap m-footer-in">
-          <span>StorageStack — the self storage community</span>
+          <span>The Storage Network — the self storage community</span>
           <span>
             <Link href="/learn">About</Link> · <Link href="/guidelines">Guidelines</Link> · <Link href="/guidelines#privacy">Privacy</Link> ·{" "}
             <Link href="/guidelines#terms">Terms</Link>

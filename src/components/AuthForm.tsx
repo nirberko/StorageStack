@@ -57,14 +57,14 @@ export function AuthForm({ mode, next, linkError, email }: { mode: "login" | "si
             What best describes you? <span style={{ fontWeight: 600, color: "#5E6B7E" }}>(optional)</span>
           </label>
           <input id="headline" name="headline" className="d-input" placeholder="e.g. Investor · Columbus, OH" maxLength={80} />
-          <span className="d-help">Shown next to your name in the forums and the Deal Room.</span>
+          <span className="d-help">Shown next to your name in the forums.</span>
         </div>
       )}
       <button className="m-btn m-btn-o" type="submit" disabled={pending} style={{ minHeight: 50, fontSize: 16 }}>
         {pending ? "One moment…" : isSignup ? "Create free account" : "Log in"}
       </button>
       <p style={{ fontSize: 14, color: "#5E6B7E", textAlign: "center" }}>
-        {isSignup ? "Already a member? " : "New to StorageStack? "}
+        {isSignup ? "Already a member? " : "New to The Storage Network? "}
         <Link
           href={`${isSignup ? "/login" : "/signup"}${next !== "/forums" ? `?next=${encodeURIComponent(next)}` : ""}`}
           style={{ fontWeight: 700, color: "#DB520B" }}

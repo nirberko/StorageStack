@@ -60,7 +60,7 @@ export default async function NewThreadPage({ searchParams }: { searchParams: Pr
             <Icon name="shieldCheck" size={22} stroke="#B5440A" style={{ flex: "none" }} />
             <span>
               <b>Selling or raising money?</b>
-              Post it in the <Link href="/deals/new" style={{ color: "#B5440A", fontWeight: 700 }}>Deal Room</Link> so the right investors and lenders see it. You can share it here for feedback too.
+              Share it here for feedback. The <Link href="/deals" style={{ color: "#B5440A", fontWeight: 700 }}>Deal Room</Link> is coming soon.
             </span>
           </div>
           <Link href="/guidelines" style={{ fontSize: 13, color: "#5E6B7E", padding: "0 4px" }}>

@@ -1,6 +1,6 @@
 import { Icon } from "@/components/Icon";
 
-// StorageStack Pro is not built yet: there is no plan, waitlist or payment backend.
+// Storage Network Pro is not built yet: there is no plan, waitlist or payment backend.
 // Every "Get early access" button links to the perks section (#pro) for now.
 
 export function ProPill() {
@@ -21,7 +21,7 @@ export function ProBanner() {
       <div style={{ flex: "1 1 300px", minWidth: 0 }}>
         <span className="h-pro">COMING SOON</span>
         <h2 id="pro-banner-title" style={{ marginTop: 8, fontSize: 22, fontWeight: 800, letterSpacing: "-0.02em", color: "#0F1B2D" }}>
-          StorageStack Pro is on the way
+          Storage Network Pro is on the way
         </h2>
         <p style={{ marginTop: 6, fontSize: 15, lineHeight: 1.55, color: "#3F3566" }}>
           Saved deal analyses, early access to new deals in the Deal Room and member perks from our partners.

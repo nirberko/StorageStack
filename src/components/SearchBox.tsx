@@ -9,7 +9,6 @@ export function SearchBox() {
   const path = usePathname();
   const params = useSearchParams();
   const ref = useRef<HTMLInputElement>(null);
-  const inDeals = path.startsWith("/deals");
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -29,12 +28,12 @@ export function SearchBox() {
       onSubmit={(e) => {
         e.preventDefault();
         const q = ref.current?.value.trim() ?? "";
-        router.push(`/search?q=${encodeURIComponent(q)}${inDeals ? "&in=deals" : ""}`);
+        router.push(`/search?q=${encodeURIComponent(q)}`);
       }}
     >
       <Icon name="search" size={17} stroke="#5E6B7E" />
       <label htmlFor="site-search" className="sr-only">
-        {inDeals ? "Search deals" : "Search the forums"}
+        Search the forums
       </label>
       <input
         id="site-search"
@@ -42,7 +41,7 @@ export function SearchBox() {
         type="search"
         name="q"
         defaultValue={path === "/search" ? params.get("q") ?? "" : ""}
-        placeholder={inDeals ? "Search deals by city, state or keyword" : "Search discussions, markets, people"}
+        placeholder="Search discussions, markets, people"
       />
       <span className="m-kbd m-hide-sm">⌘K</span>
     </form>

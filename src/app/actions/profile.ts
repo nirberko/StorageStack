@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { withUser } from "@/app/actions/shared";
+import { NEEDS_LOGIN, setMembership, withUser, type ActionResult } from "@/app/actions/shared";
 
 export type ProfileFormState = { error?: string; saved?: boolean };
 
@@ -27,4 +27,11 @@ export async function updateProfile(_prev: ProfileFormState, formData: FormData)
 
   revalidatePath("/", "layout");
   return { saved: true };
+}
+
+export async function toggleFollowPerson(personId: string, on: boolean): Promise<ActionResult> {
+  const { user } = await withUser();
+  if (!user) return NEEDS_LOGIN;
+  if (personId === user.id) return { ok: false, error: "You cannot follow yourself." };
+  return setMembership("follows", { follower_id: user.id, followee_id: personId }, on);
 }

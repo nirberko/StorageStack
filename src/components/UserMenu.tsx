@@ -53,9 +53,6 @@ export function UserMenu({ id, name, color, isAdmin }: { id: string; name: strin
           <Link href={`/u/${id}`} style={item} onClick={() => setOpen(false)}>
             <Icon name="user" /> Your profile
           </Link>
-          <Link href="/deals/mine" style={item} onClick={() => setOpen(false)}>
-            <Icon name="briefcase" /> My deals and requests
-          </Link>
           <Link href="/settings" style={item} onClick={() => setOpen(false)}>
             <Icon name="shield" /> Settings
           </Link>

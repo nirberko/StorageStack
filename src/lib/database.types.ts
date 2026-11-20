@@ -23,27 +23,7 @@ export type Database = {
           }
         },"public": {
           Tables: {
-            "capital_partners": {
-                  Row: {
-                    "about": string,"active": boolean,"created_at": string,"focus": (string)[],"kind": string,"offer": string,"offer_label": string,"profile_id": string,"reply_time": string,"track_record": string
-                  }
-                  ComputedFields: never
-                  Insert: {
-                    "about"?: string,"active"?: boolean,"created_at"?: string,"focus"?: (string)[],"kind": string,"offer": string,"offer_label"?: string,"profile_id": string,"reply_time"?: string,"track_record"?: string
-                  }
-                  Update: {
-                    "about"?: string,"active"?: boolean,"created_at"?: string,"focus"?: (string)[],"kind"?: string,"offer"?: string,"offer_label"?: string,"profile_id"?: string,"reply_time"?: string,"track_record"?: string
-                  }
-                  Relationships: [
-                    {
-      foreignKeyName: "capital_partners_profile_id_fkey"
-      columns: ["profile_id"]
-isOneToOne: true
-      referencedRelation: "profiles"
-      referencedColumns: ["id"]
-    }
-                  ]
-                },"categories": {
+            "categories": {
                   Row: {
                     "color": string,"description": string,"group_name": string,"icon": string,"id": string,"ink": string,"name": string,"sort": number,"tint": string
                   }
@@ -84,190 +64,6 @@ isOneToOne: false
     },{
       foreignKeyName: "category_follows_user_id_fkey"
       columns: ["user_id"]
-isOneToOne: false
-      referencedRelation: "profiles"
-      referencedColumns: ["id"]
-    }
-                  ]
-                },"deal_alerts": {
-                  Row: {
-                    "created_at": string,"deal_type": Database["public"]['Enums']["deal_type"] | null,"id": number,"label": string,"max_amount": number | null,"property_type": Database["public"]['Enums']["property_type"] | null,"region": string | null,"user_id": string
-                  }
-                  ComputedFields: never
-                  Insert: {
-                    "created_at"?: string,"deal_type"?: Database["public"]['Enums']["deal_type"] | null,"id"?: never,"label": string,"max_amount"?: number | null,"property_type"?: Database["public"]['Enums']["property_type"] | null,"region"?: string | null,"user_id": string
-                  }
-                  Update: {
-                    "created_at"?: string,"deal_type"?: Database["public"]['Enums']["deal_type"] | null,"id"?: never,"label"?: string,"max_amount"?: number | null,"property_type"?: Database["public"]['Enums']["property_type"] | null,"region"?: string | null,"user_id"?: string
-                  }
-                  Relationships: [
-                    {
-      foreignKeyName: "deal_alerts_user_id_fkey"
-      columns: ["user_id"]
-isOneToOne: false
-      referencedRelation: "profiles"
-      referencedColumns: ["id"]
-    }
-                  ]
-                },"deal_documents": {
-                  Row: {
-                    "created_at": string,"deal_id": number,"ext": string,"id": number,"meta": string,"name": string,"storage_path": string | null
-                  }
-                  ComputedFields: never
-                  Insert: {
-                    "created_at"?: string,"deal_id": number,"ext"?: string,"id"?: never,"meta"?: string,"name": string,"storage_path"?: string | null
-                  }
-                  Update: {
-                    "created_at"?: string,"deal_id"?: number,"ext"?: string,"id"?: never,"meta"?: string,"name"?: string,"storage_path"?: string | null
-                  }
-                  Relationships: [
-                    {
-      foreignKeyName: "deal_documents_deal_id_fkey"
-      columns: ["deal_id"]
-isOneToOne: false
-      referencedRelation: "deals"
-      referencedColumns: ["id"]
-    }
-                  ]
-                },"deal_private": {
-                  Row: {
-                    "address": string,"deal_id": number
-                  }
-                  ComputedFields: never
-                  Insert: {
-                    "address"?: string,"deal_id": number
-                  }
-                  Update: {
-                    "address"?: string,"deal_id"?: number
-                  }
-                  Relationships: [
-                    {
-      foreignKeyName: "deal_private_deal_id_fkey"
-      columns: ["deal_id"]
-isOneToOne: true
-      referencedRelation: "deals"
-      referencedColumns: ["id"]
-    }
-                  ]
-                },"deal_questions": {
-                  Row: {
-                    "answer": string | null,"answered_at": string | null,"author_id": string,"body": string,"created_at": string,"deal_id": number,"id": number,"like_count": number
-                  }
-                  ComputedFields: never
-                  Insert: {
-                    "answer"?: string | null,"answered_at"?: string | null,"author_id": string,"body": string,"created_at"?: string,"deal_id": number,"id"?: never,"like_count"?: number
-                  }
-                  Update: {
-                    "answer"?: string | null,"answered_at"?: string | null,"author_id"?: string,"body"?: string,"created_at"?: string,"deal_id"?: number,"id"?: never,"like_count"?: number
-                  }
-                  Relationships: [
-                    {
-      foreignKeyName: "deal_questions_author_id_fkey"
-      columns: ["author_id"]
-isOneToOne: false
-      referencedRelation: "profiles"
-      referencedColumns: ["id"]
-    },{
-      foreignKeyName: "deal_questions_deal_id_fkey"
-      columns: ["deal_id"]
-isOneToOne: false
-      referencedRelation: "deals"
-      referencedColumns: ["id"]
-    }
-                  ]
-                },"deal_reports": {
-                  Row: {
-                    "created_at": string,"deal_id": number,"reason": string,"user_id": string
-                  }
-                  ComputedFields: never
-                  Insert: {
-                    "created_at"?: string,"deal_id": number,"reason"?: string,"user_id": string
-                  }
-                  Update: {
-                    "created_at"?: string,"deal_id"?: number,"reason"?: string,"user_id"?: string
-                  }
-                  Relationships: [
-                    {
-      foreignKeyName: "deal_reports_deal_id_fkey"
-      columns: ["deal_id"]
-isOneToOne: false
-      referencedRelation: "deals"
-      referencedColumns: ["id"]
-    },{
-      foreignKeyName: "deal_reports_user_id_fkey"
-      columns: ["user_id"]
-isOneToOne: false
-      referencedRelation: "profiles"
-      referencedColumns: ["id"]
-    }
-                  ]
-                },"deal_requests": {
-                  Row: {
-                    "amount": number | null,"created_at": string,"deal_id": number,"message": string,"status": Database["public"]['Enums']["request_status"],"user_id": string
-                  }
-                  ComputedFields: never
-                  Insert: {
-                    "amount"?: number | null,"created_at"?: string,"deal_id": number,"message"?: string,"status"?: Database["public"]['Enums']["request_status"],"user_id": string
-                  }
-                  Update: {
-                    "amount"?: number | null,"created_at"?: string,"deal_id"?: number,"message"?: string,"status"?: Database["public"]['Enums']["request_status"],"user_id"?: string
-                  }
-                  Relationships: [
-                    {
-      foreignKeyName: "deal_requests_deal_id_fkey"
-      columns: ["deal_id"]
-isOneToOne: false
-      referencedRelation: "deals"
-      referencedColumns: ["id"]
-    },{
-      foreignKeyName: "deal_requests_user_id_fkey"
-      columns: ["user_id"]
-isOneToOne: false
-      referencedRelation: "profiles"
-      referencedColumns: ["id"]
-    }
-                  ]
-                },"deal_saves": {
-                  Row: {
-                    "created_at": string,"deal_id": number,"user_id": string
-                  }
-                  ComputedFields: never
-                  Insert: {
-                    "created_at"?: string,"deal_id": number,"user_id": string
-                  }
-                  Update: {
-                    "created_at"?: string,"deal_id"?: number,"user_id"?: string
-                  }
-                  Relationships: [
-                    {
-      foreignKeyName: "deal_saves_deal_id_fkey"
-      columns: ["deal_id"]
-isOneToOne: false
-      referencedRelation: "deals"
-      referencedColumns: ["id"]
-    },{
-      foreignKeyName: "deal_saves_user_id_fkey"
-      columns: ["user_id"]
-isOneToOne: false
-      referencedRelation: "profiles"
-      referencedColumns: ["id"]
-    }
-                  ]
-                },"deals": {
-                  Row: {
-                    "amount": number,"city": string,"closed_at": string | null,"closes_note": string,"created_at": string,"details": NonNullable<Json>,"features": (string)[],"id": number,"interest_count": number,"metrics": NonNullable<Json>,"needed_by": string,"off_market": boolean,"photos": NonNullable<Json>,"poster_id": string,"property_type": Database["public"]['Enums']["property_type"],"raise_committed": number | null,"raise_goal": number | null,"raise_note": string,"region": string,"seek": string,"seeking": (string)[],"state": string,"status": Database["public"]['Enums']["deal_status"],"story": string,"title": string,"type": Database["public"]['Enums']["deal_type"],"views": number,"visibility": Database["public"]['Enums']["deal_visibility"]
-                  }
-                  ComputedFields: never
-                  Insert: {
-                    "amount"?: number,"city": string,"closed_at"?: string | null,"closes_note"?: string,"created_at"?: string,"details"?: NonNullable<Json>,"features"?: (string)[],"id"?: never,"interest_count"?: number,"metrics"?: NonNullable<Json>,"needed_by"?: string,"off_market"?: boolean,"photos"?: NonNullable<Json>,"poster_id": string,"property_type": Database["public"]['Enums']["property_type"],"raise_committed"?: number | null,"raise_goal"?: number | null,"raise_note"?: string,"region"?: string,"seek"?: string,"seeking"?: (string)[],"state": string,"status"?: Database["public"]['Enums']["deal_status"],"story"?: string,"title": string,"type": Database["public"]['Enums']["deal_type"],"views"?: number,"visibility"?: Database["public"]['Enums']["deal_visibility"]
-                  }
-                  Update: {
-                    "amount"?: number,"city"?: string,"closed_at"?: string | null,"closes_note"?: string,"created_at"?: string,"details"?: NonNullable<Json>,"features"?: (string)[],"id"?: never,"interest_count"?: number,"metrics"?: NonNullable<Json>,"needed_by"?: string,"off_market"?: boolean,"photos"?: NonNullable<Json>,"poster_id"?: string,"property_type"?: Database["public"]['Enums']["property_type"],"raise_committed"?: number | null,"raise_goal"?: number | null,"raise_note"?: string,"region"?: string,"seek"?: string,"seeking"?: (string)[],"state"?: string,"status"?: Database["public"]['Enums']["deal_status"],"story"?: string,"title"?: string,"type"?: Database["public"]['Enums']["deal_type"],"views"?: number,"visibility"?: Database["public"]['Enums']["deal_visibility"]
-                  }
-                  Relationships: [
-                    {
-      foreignKeyName: "deals_poster_id_fkey"
-      columns: ["poster_id"]
 isOneToOne: false
       referencedRelation: "profiles"
       referencedColumns: ["id"]
@@ -345,32 +141,6 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
-                },"partner_connections": {
-                  Row: {
-                    "created_at": string,"partner_id": string,"user_id": string
-                  }
-                  ComputedFields: never
-                  Insert: {
-                    "created_at"?: string,"partner_id": string,"user_id": string
-                  }
-                  Update: {
-                    "created_at"?: string,"partner_id"?: string,"user_id"?: string
-                  }
-                  Relationships: [
-                    {
-      foreignKeyName: "partner_connections_partner_id_fkey"
-      columns: ["partner_id"]
-isOneToOne: false
-      referencedRelation: "capital_partners"
-      referencedColumns: ["profile_id"]
-    },{
-      foreignKeyName: "partner_connections_user_id_fkey"
-      columns: ["user_id"]
-isOneToOne: false
-      referencedRelation: "profiles"
-      referencedColumns: ["id"]
-    }
-                  ]
                 },"profiles": {
                   Row: {
                     "avatar_color": string,"bio": string,"created_at": string,"full_name": string,"headline": string,"id": string,"is_admin": boolean,"is_moderator": boolean,"location": string,"post_count": number,"verified": boolean
@@ -384,32 +154,6 @@ isOneToOne: false
                   }
                   Relationships: [
                     
-                  ]
-                },"question_likes": {
-                  Row: {
-                    "question_id": number,"user_id": string
-                  }
-                  ComputedFields: never
-                  Insert: {
-                    "question_id": number,"user_id": string
-                  }
-                  Update: {
-                    "question_id"?: number,"user_id"?: string
-                  }
-                  Relationships: [
-                    {
-      foreignKeyName: "question_likes_question_id_fkey"
-      columns: ["question_id"]
-isOneToOne: false
-      referencedRelation: "deal_questions"
-      referencedColumns: ["id"]
-    },{
-      foreignKeyName: "question_likes_user_id_fkey"
-      columns: ["user_id"]
-isOneToOne: false
-      referencedRelation: "profiles"
-      referencedColumns: ["id"]
-    }
                   ]
                 },"replies": {
                   Row: {
@@ -555,17 +299,8 @@ isOneToOne: false
 "assert_admin":
 { Args: Record<PropertyKey, never>; Returns: undefined
                            },
-"can_see_private":
-{ Args: { "p_deal_id": number }; Returns: boolean
-                           },
 "community_stats":
 { Args: Record<PropertyKey, never>; Returns: Json
-                           },
-"deal_room_stats":
-{ Args: Record<PropertyKey, never>; Returns: Json
-                           },
-"increment_deal_views":
-{ Args: { "p_deal_id": number }; Returns: undefined
                            },
 "increment_thread_views":
 { Args: { "p_thread_id": number }; Returns: undefined
@@ -584,7 +319,7 @@ isOneToOne: false
                            }
           }
           Enums: {
-            "deal_status": "live"|"closed","deal_type": "sale"|"equity"|"jv"|"debt","deal_visibility": "approve"|"verified","property_type": "facility"|"conv"|"land"|"rv"|"portfolio","request_status": "pending"|"approved"|"declined"
+            [_ in never]: never
           }
           CompositeTypes: {
             [_ in never]: never
@@ -704,7 +439,7 @@ export const Constants = {
           }
         },"public": {
           Enums: {
-            "deal_status": ["live", "closed"],"deal_type": ["sale", "equity", "jv", "debt"],"deal_visibility": ["approve", "verified"],"property_type": ["facility", "conv", "land", "rv", "portfolio"],"request_status": ["pending", "approved", "declined"]
+            
           }
         }
 } as const

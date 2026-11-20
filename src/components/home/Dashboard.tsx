@@ -6,19 +6,14 @@ import { Greeting } from "@/components/home/Greeting";
 import { ProBanner, ProPerks } from "@/components/home/Pro";
 import { ProfileCard } from "@/components/home/ProfileCard";
 import { QuickAnalysis } from "@/components/home/QuickAnalysis";
-import { YourDeals } from "@/components/home/YourDeals";
-import { count, partOfDay, plural } from "@/lib/format";
+import { partOfDay, plural } from "@/lib/format";
 import { getDashboard } from "@/lib/queries/home";
 import { createClient } from "@/lib/supabase/server";
 import type { Profile } from "@/lib/types";
 
-/** "3 new replies on your discussions and 2 deal requests waiting for you." Parts that are 0 are left out. */
-function summary(replies: number, requests: number): string {
-  const parts = [
-    replies > 0 && `${plural(replies, "new reply", "new replies")} on your discussions`,
-    requests > 0 && `${plural(requests, "deal request")} waiting for you`,
-  ].filter(Boolean);
-  return parts.length ? `${parts.join(" and ")}.` : "Here's what's happening in the community.";
+/** "3 new replies on your discussions." or a generic line when there are none. */
+function summary(replies: number): string {
+  return replies > 0 ? `${plural(replies, "new reply", "new replies")} on your discussions.` : "Here's what's happening in the community.";
 }
 
 /** The signed-in home page. */
@@ -36,21 +31,12 @@ export async function Dashboard({ viewer, feed }: { viewer: { id: string; profil
         <div style={{ flex: "1 1 420px", minWidth: 0 }}>
           <Greeting firstName={firstName} serverPart={partOfDay(etHour)} />
           {/* "New" means in the last 7 days: nothing tracks which replies a member has read. */}
-          <p style={{ marginTop: 8, fontSize: 16, color: "#5E6B7E" }}>{summary(d.repliesThisWeek, d.pending.count)}</p>
+          <p style={{ marginTop: 8, fontSize: 16, color: "#5E6B7E" }}>{summary(d.repliesThisWeek)}</p>
         </div>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           <Link className="m-btn m-btn-line" href="/forums/new">
             <Icon name="plus" size={18} strokeWidth={2.4} />
             Start a discussion
-          </Link>
-          <Link className="m-btn m-btn-n" href="/deals/mine">
-            My deals
-            {d.pending.count > 0 && (
-              <span className="h-count">
-                {count(d.pending.count)}
-                <span className="sr-only"> {d.pending.count === 1 ? "request" : "requests"} to approve</span>
-              </span>
-            )}
           </Link>
         </div>
       </div>
@@ -66,9 +52,8 @@ export async function Dashboard({ viewer, feed }: { viewer: { id: string; profil
           <ProPerks />
         </main>
 
-        <aside className="col-rail" style={{ flexBasis: 340 }} aria-label="Your profile and deals">
+        <aside className="col-rail" style={{ flexBasis: 340 }} aria-label="Your profile">
           <ProfileCard profile={p} facts={d.facts} followers={d.followers} following={d.following} />
-          <YourDeals pending={d.pending} alerts={d.alerts} savedDeals={d.savedDeals} dealsPosted={d.facts.dealsPosted} />
         </aside>
       </div>
     </>

@@ -4,14 +4,10 @@ import { notFound } from "next/navigation";
 import { Avatar } from "@/components/Avatar";
 import { Icon } from "@/components/Icon";
 import { Verified } from "@/components/Verified";
-import { ConnectButton } from "@/components/deals/DealButtons";
-import { DealCard, type DealCardData } from "@/components/deals/DealCard";
 import { ThreadCard } from "@/components/forum/ThreadCard";
 import { FollowPersonButton } from "@/components/profile/FollowPersonButton";
 import { getViewer } from "@/lib/auth";
-import { PARTNER_KINDS } from "@/lib/config";
 import { count, timeAgo } from "@/lib/format";
-import { DEAL_CARD_SELECT, getDealMarks } from "@/lib/queries/deals";
 import { getThreadMarks, THREAD_CARD_SELECT, toCard } from "@/lib/queries/forum";
 import { createClient } from "@/lib/supabase/server";
 
@@ -20,7 +16,6 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const TABS = [
   { id: "discussions", label: "Discussions" },
   { id: "replies", label: "Replies" },
-  { id: "deals", label: "Deals" },
 ];
 
 async function loadProfile(id: string) {
@@ -52,24 +47,17 @@ export default async function ProfilePage({
   const viewer = await getViewer();
   const isSelf = viewer?.id === id;
 
-  const [followersRes, followingRes, viewerFollowRes, partnerRes, connectedRes, threadCountRes, replyCountRes, dealCountRes] = await Promise.all([
+  const [followersRes, followingRes, viewerFollowRes, threadCountRes, replyCountRes] = await Promise.all([
     supabase.from("follows").select("follower_id", { count: "exact", head: true }).eq("followee_id", id),
     supabase.from("follows").select("followee_id", { count: "exact", head: true }).eq("follower_id", id),
     viewer && !isSelf
       ? supabase.from("follows").select("followee_id").eq("follower_id", viewer.id).eq("followee_id", id).maybeSingle()
       : null,
-    supabase.from("capital_partners").select("*").eq("profile_id", id).maybeSingle(),
-    viewer && !isSelf
-      ? supabase.from("partner_connections").select("partner_id").eq("partner_id", id).eq("user_id", viewer.id).maybeSingle()
-      : null,
     supabase.from("threads").select("id", { count: "exact", head: true }).eq("author_id", id),
     supabase.from("replies").select("id", { count: "exact", head: true }).eq("author_id", id),
-    supabase.from("deals").select("id", { count: "exact", head: true }).eq("poster_id", id).eq("status", "live"),
   ]);
 
-  const counts = { discussions: threadCountRes.count ?? 0, replies: replyCountRes.count ?? 0, deals: dealCountRes.count ?? 0 };
-  const partner = partnerRes.data;
-  const kind = partner ? PARTNER_KINDS[partner.kind] ?? PARTNER_KINDS.Investor : null;
+  const counts = { discussions: threadCountRes.count ?? 0, replies: replyCountRes.count ?? 0 };
   const memberSince = new Date(profile.created_at).toLocaleDateString("en-US", { month: "long", year: "numeric" });
 
   let body: React.ReactNode = null;
@@ -89,7 +77,7 @@ export default async function ProfilePage({
     ) : (
       <Empty title="No discussions yet" text={isSelf ? "Start one in the forums." : `${profile.full_name} has not started a discussion yet.`} />
     );
-  } else if (tab === "replies") {
+  } else {
     const { data, error } = await supabase
       .from("replies")
       .select("id, body, created_at, is_answer, thread:threads(id, title)")
@@ -124,25 +112,6 @@ export default async function ProfilePage({
       </div>
     ) : (
       <Empty title="No replies yet" text={isSelf ? "Help someone out in the forums." : `${profile.full_name} has not replied to anything yet.`} />
-    );
-  } else {
-    const { data, error } = await supabase
-      .from("deals")
-      .select(DEAL_CARD_SELECT)
-      .eq("poster_id", id)
-      .eq("status", "live")
-      .order("created_at", { ascending: false });
-    if (error) throw new Error(error.message);
-    const deals = (data ?? []) as unknown as DealCardData[];
-    const marks = await getDealMarks(supabase, viewer?.id, deals.map((d) => d.id));
-    body = deals.length ? (
-      <div className="d-grid">
-        {deals.map((d) => (
-          <DealCard key={d.id} deal={d} saved={marks.saved.has(d.id)} requested={marks.requested.has(d.id)} viewerId={viewer?.id} />
-        ))}
-      </div>
-    ) : (
-      <Empty title="No live deals" text={isSelf ? "Post one in the Deal Room." : `${profile.full_name} has no deals in the Deal Room right now.`} />
     );
   }
 
@@ -209,8 +178,8 @@ export default async function ProfilePage({
               <span>Posts</span>
             </div>
             <div className="d-stat">
-              <b>{count(counts.deals)}</b>
-              <span>Live deals</span>
+              <b>{count(counts.discussions)}</b>
+              <span>Discussions</span>
             </div>
           </div>
         </section>
@@ -236,54 +205,11 @@ export default async function ProfilePage({
         </main>
 
         <aside style={{ flex: "1 1 320px", maxWidth: "100%", display: "flex", flexDirection: "column", gap: 16 }} aria-label="More about this member">
-          {partner && kind && (
-            <div className="m-card" style={{ padding: 20, display: "flex", flexDirection: "column", gap: 14 }}>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
-                <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase", color: "#5E6B7E" }}>Capital partner</span>
-                <span className="d-pill" style={{ background: kind.tint, color: kind.ink }}>
-                  {partner.kind}
-                </span>
-              </div>
-              <div style={{ background: "#F5F6FA", borderRadius: 14, padding: "12px 14px" }}>
-                <span style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#5E6B7E" }}>{partner.offer_label}</span>
-                <b style={{ display: "block", fontSize: 20, fontWeight: 800, letterSpacing: "-0.01em", marginTop: 2 }}>{partner.offer}</b>
-              </div>
-              {partner.about && <p style={{ fontSize: 14, lineHeight: 1.55, color: "#4A576B" }}>{partner.about}</p>}
-              {partner.focus.length > 0 && (
-                <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                  {partner.focus.map((f) => (
-                    <span key={f} className="m-tag">
-                      {f}
-                    </span>
-                  ))}
-                </div>
-              )}
-              <div style={{ paddingTop: 14, borderTop: "1px solid #EEF1F5", display: "flex", alignItems: "center", gap: 10 }}>
-                <span style={{ flex: 1, minWidth: 0, fontSize: 12, color: "#5E6B7E", lineHeight: 1.45 }}>
-                  <b style={{ display: "block", fontSize: 13, color: "#1E2B3F" }}>{partner.track_record}</b>
-                  {partner.reply_time}
-                </span>
-                <ConnectButton partnerId={id} connected={!!connectedRes?.data} own={isSelf} />
-              </div>
-            </div>
-          )}
-
-          {isSelf && !partner && (
-            <div className="m-promo">
-              <h3>Investor, lender or operator?</h3>
-              <p>List yourself as a capital partner so members with deals can find you.</p>
-              <Link className="m-btn m-btn-o" href="/deals/partners/join" style={{ position: "relative" }}>
-                Join as a capital partner
-              </Link>
-            </div>
-          )}
-
           <div className="m-card" style={{ padding: 20 }}>
             <h3 style={{ margin: "0 0 12px", fontSize: 15, fontWeight: 800 }}>Activity</h3>
             {[
               { icon: "chat" as const, label: "Discussions started", value: counts.discussions },
               { icon: "reply" as const, label: "Replies", value: counts.replies },
-              { icon: "briefcase" as const, label: "Live deals", value: counts.deals },
             ].map((row) => (
               <div key={row.label} className="d-row">
                 <span className="m-ic" style={{ background: "#F3F5F9" }}>

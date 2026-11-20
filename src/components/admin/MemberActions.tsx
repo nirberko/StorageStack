@@ -75,7 +75,7 @@ export function MemberActions({ member: m, self }: { member: Member; self: boole
         label: "Delete member",
         icon: "trash",
         danger: true,
-        confirm: `Delete ${m.name}? Their account, discussions, replies and deals are removed. This cannot be undone.`,
+        confirm: `Delete ${m.name}? Their account, discussions and replies are removed. This cannot be undone.`,
         run: () => deleteMember(m.id),
       },
     );
