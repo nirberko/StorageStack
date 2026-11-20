@@ -1,0 +1,27 @@
+.ui-check { display: inline-flex; align-items: flex-start; gap: 8px; font-family: var(--ds-font); font-size: var(--ds-text-control); font-weight: 400; color: var(--ds-ink); cursor: pointer; min-height: 20px; }
+.ui-check[data-disabled] { color: var(--ds-disabled); cursor: default; }
+.ui-check-text { display: flex; flex-direction: column; gap: 2px; line-height: 20px; }
+.ui-check-text small { line-height: 1.4; font-size: var(--ds-text-caption); font-weight: 400; color: var(--ds-muted); }
+.ui-check input {
+  appearance: none; flex: none; margin: 2px 0 0; width: 16px; height: 16px; display: grid; place-items: center;
+  border: 1px solid var(--ds-line-strong); background: var(--ds-surface); cursor: inherit;
+  transition: background-color 0.12s ease, border-color 0.12s ease;
+}
+.ui-check input[type="checkbox"] { border-radius: 4px; }
+.ui-check input[type="radio"] { border-radius: 50%; }
+.ui-check input:hover:not(:disabled) { border-color: var(--ds-muted); }
+.ui-check input:focus-visible { outline: none; box-shadow: var(--ds-focus); }
+.ui-check input[type="checkbox"]:checked {
+  background: var(--ds-primary) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5 9-10'/%3E%3C/svg%3E") center / 10px no-repeat;
+  border-color: var(--ds-primary);
+}
+.ui-check input[type="radio"]:checked { border: 5px solid var(--ds-primary); }
+.ui-check input:disabled { background-color: var(--ds-fill); border-color: var(--ds-line); }
+
+/* The switch is a checkbox underneath: these selectors out-rank the checkbox rules above */
+.ui-check.ui-switch input[type="checkbox"] { width: 30px; height: 18px; border-radius: 9px; border: 0; background: var(--ds-fill-hover); position: relative; }
+.ui-check.ui-switch input[type="checkbox"]::after { content: ""; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: #fff; transition: transform 0.15s ease; }
+.ui-check.ui-switch input[type="checkbox"]:checked { background: var(--ds-primary); }
+.ui-check.ui-switch input[type="checkbox"]:checked::after { transform: translateX(12px); }
+.ui-check.ui-switch input[type="checkbox"]:disabled { background: var(--ds-fill); }
+.ui-check.ui-switch input[type="checkbox"]:disabled::after { background: var(--ds-line); }

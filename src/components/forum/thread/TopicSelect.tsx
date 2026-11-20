@@ -131,7 +131,7 @@ export function TopicSelect({
                         <b style={{ display: "block", fontSize: 14 }}>{c.name}</b>
                         <span style={{ display: "block", fontSize: 12, color: "#5E6B7E" }}>{c.description}</span>
                       </span>
-                      {on && <Icon name="check" size={16} strokeWidth={2.8} stroke="#DB520B" style={{ flex: "none" }} />}
+                      {on && <Icon name="check" size={16} strokeWidth={2.8} stroke="#0369A1" style={{ flex: "none" }} />}
                     </div>
                   );
                 })}

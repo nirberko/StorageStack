@@ -1,0 +1,11 @@
+.ui-listing-photo { height: 96px; background: repeating-linear-gradient(90deg, var(--ds-primary) 0 26px, var(--ds-primary-soft) 26px 31px); }
+.ui-listing-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ui-listing-body { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 4px; }
+.ui-listing-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.ui-listing-name { font-size: 15px; font-weight: 600; color: var(--ds-ink); }
+.ui-listing-meta { font-size: var(--ds-text-small); color: var(--ds-muted); }
+.ui-listing-nums { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 6px 0 0; padding: 10px 0 0; border-top: 1px solid var(--ds-line); font-size: var(--ds-text-small); color: var(--ds-muted); font-variant-numeric: tabular-nums; }
+/* Value first, label after ("$3.2M asking"), while the markup keeps the term before its value */
+.ui-listing-nums div { display: flex; flex-direction: row-reverse; gap: 4px; }
+.ui-listing-nums dd { margin: 0; font-weight: 600; color: var(--ds-ink); }
+.ui-listing-nums dd[data-key] { color: var(--ds-primary-text); }

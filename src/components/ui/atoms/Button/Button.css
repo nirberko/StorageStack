@@ -1,0 +1,30 @@
+.ui-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  height: var(--ds-control); padding: 0 14px; border: 0; border-radius: var(--ds-radius-control);
+  font-family: var(--ds-font); font-size: var(--ds-text-control); font-weight: 500; line-height: 1;
+  white-space: nowrap; text-decoration: none; cursor: pointer; flex: none;
+  transition: background-color 0.12s ease, color 0.12s ease;
+}
+.ui-btn:focus-visible { outline: none; box-shadow: var(--ds-focus); }
+.ui-btn[data-size="sm"] { height: var(--ds-control-sm); padding: 0 10px; font-size: var(--ds-text-small); }
+.ui-btn[data-size="lg"] { height: var(--ds-control-lg); padding: 0 18px; font-size: 15px; }
+.ui-btn[data-full] { width: 100%; }
+.ui-btn[data-icon-only] { width: var(--ds-control); padding: 0; }
+.ui-btn[data-icon-only][data-size="sm"] { width: var(--ds-control-sm); }
+.ui-btn[data-icon-only][data-size="lg"] { width: var(--ds-control-lg); }
+
+.ui-btn[data-variant="primary"] { background: var(--ds-primary); color: var(--ds-on-primary); }
+.ui-btn[data-variant="primary"]:hover { background: var(--ds-primary-hover); color: var(--ds-on-primary); }
+.ui-btn[data-variant="soft"] { background: var(--ds-primary-soft); color: var(--ds-primary-text); }
+.ui-btn[data-variant="soft"]:hover { background: var(--ds-primary-soft-hover); color: var(--ds-primary-text); }
+.ui-btn[data-variant="neutral"] { background: var(--ds-fill); color: var(--ds-ink); }
+.ui-btn[data-variant="neutral"]:hover { background: var(--ds-fill-hover); color: var(--ds-ink); }
+.ui-btn[data-variant="ink"] { background: var(--ds-ink); color: var(--ds-on-ink); }
+.ui-btn[data-variant="ink"]:hover { background: var(--ds-ink-hover); color: var(--ds-on-ink); }
+.ui-btn[data-variant="ghost"] { background: transparent; color: var(--ds-ink); }
+.ui-btn[data-variant="ghost"]:hover { background: var(--ds-fill); color: var(--ds-ink); }
+.ui-btn[data-variant="danger"] { background: var(--ds-danger-soft); color: var(--ds-danger); }
+.ui-btn[data-variant="danger"]:hover { background: var(--ds-danger); color: #fff; }
+
+.ui-btn:disabled, .ui-btn[aria-disabled="true"] { background: var(--ds-fill); color: var(--ds-disabled); cursor: default; pointer-events: none; }
+.ui-btn[data-loading] { pointer-events: none; }

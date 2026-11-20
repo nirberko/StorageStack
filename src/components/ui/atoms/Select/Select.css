@@ -1,0 +1,3 @@
+.ui-control[data-select] { position: relative; padding: 0; }
+.ui-control[data-select] select { appearance: none; padding: 0 32px 0 10px; cursor: pointer; }
+.ui-control[data-select] .ui-chev { position: absolute; right: 10px; pointer-events: none; color: var(--ds-muted); }

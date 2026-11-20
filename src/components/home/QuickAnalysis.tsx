@@ -21,8 +21,8 @@ export function QuickAnalysis() {
           as ?type=&address= so the calculator can pick them up when it exists. */}
       <form action="/tools" style={{ padding: 24, flex: 1, display: "flex", flexDirection: "column", gap: 16 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <span className="h-tile" style={{ background: "#FFEDE2" }}>
-            <Icon name="calculator" size={22} stroke="#B5440A" />
+          <span className="h-tile" style={{ background: "#E6F3FA" }}>
+            <Icon name="calculator" size={22} stroke="#035A8A" />
           </span>
           <h2 id="qa-title" style={{ fontSize: 18, fontWeight: 800, letterSpacing: "-0.01em" }}>
             Quick deal analysis

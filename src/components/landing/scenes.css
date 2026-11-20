@@ -1,0 +1,238 @@
+/* The landing page's product illustrations (Scenes.tsx). Everything is scoped to .tsn-scene. */
+
+.tsn-scene {
+  width: 100%;
+
+  & .ss-stage {
+    --gutter: 28px;
+    --ss-font: var(--ds-font);
+    --ss-accent: #0369A1;
+    --ss-accent-soft: rgba(3, 105, 161, 0.1);
+    --ss-accent-text: #035A8A;
+    --ss-success: #16855a;
+    --ss-success-soft: rgba(22, 133, 90, 0.12);
+    --ss-success-text: #17603f;
+    --ss-text-strong: #0f1420;
+    --ss-text: #5f6676;
+    --ss-text-faint: #8a95a6;
+    --ss-well: #eef1f6;
+    --ss-radius-window: 14px;
+    overflow: hidden;
+    border-radius: 24px;
+    background: var(--ss-well);
+  }
+
+  /* Pinned top-left, about an eighth past the right edge and off the bottom */
+  .tsn-window {
+    position: absolute;
+    top: var(--gutter);
+    left: 104px;
+    width: 480px;
+    height: 420px;
+    box-shadow: var(--ss-shadow-hero);
+  }
+  /* Phone: the window takes the width and the satellite is dropped, so nothing covers the rows */
+  & [data-layout="compact"] .tsn-window { left: var(--gutter); width: 360px; }
+  & [data-layout="compact"] .tsn-sat { display: none; }
+
+  .tsn-window .ss-window__body { background: var(--ss-surface); }
+
+  .tsn-page {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    /* The window runs 64px past the stage; the content stops a gutter inside the crop so only filler bleeds */
+    padding: 18px 84px 18px 20px;
+  }
+  & [data-layout="compact"] .tsn-page { padding-right: 50px; }
+
+  .tsn-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .tsn-head.tsn-thread {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--ss-line);
+  }
+
+  .tsn-title {
+    font-size: 15px;
+    line-height: 1.3;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--ss-text-strong);
+  }
+
+  .tsn-name {
+    font-size: 12.5px;
+    line-height: 1.4;
+    font-weight: 700;
+    color: var(--ss-text-strong);
+  }
+
+  .tsn-sub {
+    font-size: 11.5px;
+    line-height: 1.4;
+    font-weight: 500;
+    color: var(--ss-text);
+  }
+
+  .tsn-list { display: flex; flex-direction: column; }
+
+  .tsn-row {
+    height: 56px;
+    margin: 0 -10px;
+    padding: 0 10px;
+    border-radius: 10px;
+    border-bottom: 1px solid var(--ss-line-faint);
+  }
+  .tsn-row[data-selected] {
+    background: var(--ss-accent-soft);
+    border-bottom-color: transparent;
+  }
+  .tsn-row.tsn-check { height: 44px; }
+  .tsn-row.tsn-answer { height: 78px; }
+
+  /* Trailing badges are filler-free but sit past the compact crop: the compact design drops them */
+  & [data-layout="compact"] .tsn-row .ss-badge { display: none; }
+
+  .tsn-doors {
+    display: block;
+    width: 44px;
+    height: 32px;
+    border-radius: 8px;
+    background: repeating-linear-gradient(90deg, #0369A1 0 8px, #CDE7F4 8px 10px);
+  }
+  .tsn-doors[data-tone="navy"] { background: repeating-linear-gradient(90deg, #262C3A 0 8px, #c5d1e3 8px 10px); }
+
+  .tsn-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  /* Satellites straddle the window's left edge, over filler rows only */
+  .tsn-sat {
+    position: absolute;
+    left: var(--gutter);
+    bottom: var(--gutter);
+    padding: 14px 16px;
+    border-radius: 14px;
+    background: var(--ss-surface);
+    box-shadow: var(--ss-shadow-satellite);
+  }
+
+  .tsn-alert {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .tsn-tile {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: var(--ss-accent-soft);
+    color: var(--ss-accent);
+  }
+
+  .tsn-note {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 224px;
+  }
+
+  .tsn-who {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .tsn-quote {
+    margin-left: 36px;
+    font-size: 12.5px;
+    line-height: 1.45;
+    font-weight: 500;
+    color: var(--ss-text-strong);
+  }
+
+  /* Calculator */
+  .tsn-calc {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .tsn-calc .ss-field__label { font-size: 11.5px; font-weight: 600; color: var(--ss-text); }
+  .tsn-calc .ss-field__value { font-size: 13px; font-weight: 700; color: var(--ss-text-strong); font-variant-numeric: tabular-nums; }
+
+  .tsn-result {
+    display: flex;
+    align-items: flex-end;
+    gap: 40px;
+    padding-top: 14px;
+    border-top: 1px solid var(--ss-line);
+  }
+  .tsn-big {
+    font-size: 40px;
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--ss-accent);
+    font-variant-numeric: tabular-nums;
+  }
+  .tsn-value {
+    font-size: 18px;
+    line-height: 1.3;
+    font-weight: 800;
+    color: var(--ss-text-strong);
+  }
+  .tsn-side { padding-bottom: 5px; }
+  & [data-layout="compact"] .tsn-side { display: none; }
+
+  .tsn-lines { display: flex; flex-direction: column; }
+  .tsn-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 32px;
+    border-bottom: 1px solid var(--ss-line-faint);
+  }
+
+  /* The calculator's note sits low, over the expense lines under the result */
+  .tsn-low { max-width: 300px; }
+
+  /* Checklist: the progress chip, the same satellite as the others but a pill */
+  .tsn-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 999px;
+  }
+
+  /* Forum: the orange verified check beside a name */
+  .tsn-verified {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .tsn-tick {
+    display: grid;
+    place-items: center;
+    width: 14px;
+    height: 14px;
+    border-radius: 7px;
+    background: var(--ss-accent);
+    color: #fff;
+  }
+}

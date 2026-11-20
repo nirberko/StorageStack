@@ -1,0 +1,108 @@
+/* The Storage Network design system ("Ocean"): every color, type size, space and corner, in one place.
+   Rules: flat (no shadows), blue only means "click this" or "selected", everything else is ink and gray.
+   Dark values apply under [data-theme="dark"] on any ancestor. */
+
+:root {
+  /* Brand */
+  --ds-primary: #0369a1;
+  --ds-primary-hover: #035a8a;
+  --ds-primary-soft: #e6f3fa;
+  --ds-primary-soft-hover: #d3eaf6;
+  --ds-primary-text: #035a8a;
+  --ds-on-primary: #ffffff;
+
+  /* Ink and grays */
+  --ds-ink: #0f1420;
+  --ds-ink-hover: #262c3a;
+  --ds-on-ink: #ffffff;
+  --ds-body: #3a4050;
+  --ds-muted: #5f6676;
+  --ds-disabled: #9a9faa;
+
+  /* Surfaces and lines */
+  --ds-page: #ffffff;
+  --ds-surface: #ffffff;
+  --ds-fill: #f4f5f7;
+  --ds-fill-hover: #e7e9ee;
+  --ds-line: #e5e7ec;
+  --ds-line-strong: #c6cad3;
+
+  /* Status */
+  --ds-success: #137a4f;
+  --ds-success-soft: #e3f4ec;
+  --ds-warning: #8c5a00;
+  --ds-warning-soft: #fcf2dc;
+  --ds-danger: #c0322a;
+  --ds-danger-hover: #a52a23;
+  --ds-danger-soft: #fde8e6;
+
+  /* Type */
+  --ds-font: var(--font-inter, Inter), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ds-text-display: 44px;
+  --ds-text-h1: 28px;
+  --ds-text-h2: 22px;
+  --ds-text-h3: 16px;
+  --ds-text-body: 14px;
+  --ds-text-control: 14px;
+  --ds-text-small: 13px;
+  --ds-text-caption: 12px;
+
+  /* Space (4px steps) */
+  --ds-space-1: 4px;
+  --ds-space-2: 8px;
+  --ds-space-3: 12px;
+  --ds-space-4: 16px;
+  --ds-space-5: 24px;
+  --ds-space-6: 32px;
+  --ds-space-7: 48px;
+
+  /* Shape and size */
+  --ds-radius-control: 8px;
+  --ds-radius-item: 6px;
+  --ds-radius-card: 12px;
+  --ds-radius-round: 999px;
+  --ds-control-sm: 28px;
+  --ds-control: 36px;
+  --ds-control-lg: 44px;
+  --ds-focus: 0 0 0 2px var(--ds-page), 0 0 0 4px var(--ds-primary);
+}
+
+/* On touch screens, controls grow to a comfortable tap size */
+@media (pointer: coarse) {
+  :root { --ds-control-sm: 36px; --ds-control: 44px; --ds-control-lg: 48px; }
+}
+
+[data-theme="dark"] {
+  --ds-primary: #38a3dc;
+  --ds-primary-hover: #5bb5e5;
+  --ds-primary-soft: #0e2a3b;
+  --ds-primary-soft-hover: #133749;
+  --ds-primary-text: #7cc6ee;
+  --ds-on-primary: #06121c;
+
+  --ds-ink: #f2f4f8;
+  --ds-ink-hover: #d9dde5;
+  --ds-on-ink: #0b0f17;
+  --ds-body: #c9ced8;
+  --ds-muted: #9aa1ae;
+  --ds-disabled: #646b78;
+
+  --ds-page: #0b0f17;
+  --ds-surface: #121823;
+  --ds-fill: #1a2130;
+  --ds-fill-hover: #232b3c;
+  --ds-line: #252d3d;
+  --ds-line-strong: #384256;
+
+  --ds-success: #4cc38a;
+  --ds-success-soft: #0f2a20;
+  --ds-warning: #e3b04b;
+  --ds-warning-soft: #2c2210;
+  --ds-danger: #f07167;
+  --ds-danger-hover: #f48b83;
+  --ds-danger-soft: #331816;
+  color-scheme: dark;
+}
+
+/* Base for anything built from the design system */
+.ui-root { font-family: var(--ds-font); color: var(--ds-ink); }

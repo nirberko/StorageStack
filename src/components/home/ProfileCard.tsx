@@ -15,13 +15,13 @@ export function ProfileCard({ profile: p, facts, followers, following }: Props) 
   return (
     <section className="m-card" style={{ padding: 22, display: "flex", flexDirection: "column", gap: 16 }} aria-labelledby="profile-title">
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-        <span className="m-ic" style={{ width: 40, height: 40, borderRadius: 12, background: "#FFEDE2" }}>
-          <Icon name="trophy" size={19} stroke="#B5440A" />
+        <span className="m-ic" style={{ width: 40, height: 40, borderRadius: 12, background: "#E6F3FA" }}>
+          <Icon name="trophy" size={19} stroke="#035A8A" />
         </span>
         <h2 id="profile-title" style={{ fontSize: 17, fontWeight: 800 }}>
           Your profile
         </h2>
-        <span className="m-badge" style={{ color: "#0B1F3A", background: "#E6EBF3" }}>
+        <span className="m-badge" style={{ color: "#0F1420", background: "#E6EBF3" }}>
           Level {progress.level}
         </span>
         <Link className="h-link" href={`/u/${p.id}`} style={{ marginLeft: "auto" }}>
@@ -43,7 +43,7 @@ export function ProfileCard({ profile: p, facts, followers, following }: Props) 
           aria-valuenow={progress.points}
           style={{ marginTop: 8 }}
         >
-          <span style={{ width: `${progress.points}%`, background: "#DB520B" }} />
+          <span style={{ width: `${progress.points}%`, background: "#0369A1" }} />
         </div>
       </div>
 

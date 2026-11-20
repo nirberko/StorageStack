@@ -22,6 +22,8 @@ const eslintConfig = [
       ".wrangler/**",
       ".claude/**",
       "cloudflare-env.d.ts",
+      // Vendored stageshow kit (MIT, benjitaylor/skills), kept as published
+      "src/components/stageshow/kit/**",
     ],
   },
 ];

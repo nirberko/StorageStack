@@ -44,7 +44,7 @@ export default async function SettingsPage() {
           </div>
           {!p.verified && (
             <div className="m-note">
-              <Icon name="shieldCheck" size={22} stroke="#B5440A" style={{ flex: "none" }} />
+              <Icon name="shieldCheck" size={22} stroke="#035A8A" style={{ flex: "none" }} />
               <span>
                 <b>Get verified</b>
                 Verified members get an orange check next to their name. Verification is done by the Storage Network team.

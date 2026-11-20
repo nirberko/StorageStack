@@ -1,0 +1,3 @@
+.ui-avatars { display: inline-flex; }
+.ui-avatars .ui-avatar { box-shadow: 0 0 0 2px var(--ds-surface); }
+.ui-avatars .ui-avatar + .ui-avatar { margin-left: -8px; }

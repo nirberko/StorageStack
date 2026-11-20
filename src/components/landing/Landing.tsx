@@ -1,54 +1,47 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Avatar } from "@/components/Avatar";
 import { Icon } from "@/components/Icon";
 import { Logo } from "@/components/Logo";
-import { createClient } from "@/lib/supabase/server";
-import { AUTHOR_FIELDS, type Author } from "@/lib/types";
+import { CalculatorScene, ChecklistScene, DealsScene, ForumScene, FundingScene } from "./Scenes";
 
-type LandingThread = {
-  id: number;
-  title: string;
-  author: Author | null;
-  category: { name: string; tint: string; ink: string } | null;
-};
-
-const ARROW = "M5 12h14M13 6l6 6-6 6";
 const CHECK = "M5 12l5 5L20 7";
 
-/** "Start where you are": three stages, each pointing at the forum categories that fit it. */
-const PATHS = [
+/** The five problems that stop self storage investors, each with what The Storage Network gives them and a picture of it. */
+const PAINS = [
   {
-    who: "I am exploring",
-    title: "Learn the basics and pick a market",
-    bg: "#F5F6FA",
-    ink: "#1D4ED8",
-    links: [
-      { cat: "start", name: "Getting Started" },
-      { cat: "feas", name: "Market Research" },
-    ],
+    title: "See deals before they hit the market",
+    text: "Most facilities sell off market. The Deal Room shows deals from members and brokers, and alerts you when one comes up in your area.",
+    product: "Deal Room",
+    live: false,
+    Scene: DealsScene,
   },
   {
-    who: "I am buying or building",
-    title: "Check a deal before you sign",
-    bg: "#FFF8F3",
-    ink: "#B5440A",
-    links: [
-      { cat: "acq", name: "Buying a Facility" },
-      { cat: "dev", name: "Building New" },
-      { cat: "conv", name: "Conversions" },
-    ],
+    title: "Meet the people who fund storage",
+    text: "Banks want a track record you don’t have yet. Find lenders who already finance storage, and partners with money who need someone to run the deal.",
+    product: "Lenders and partners",
+    live: false,
+    Scene: FundingScene,
   },
   {
-    who: "I am running a facility",
-    title: "Fill units and raise rents",
-    bg: "#F5FBF8",
-    ink: "#17603F",
-    links: [
-      { cat: "ops", name: "Running a Facility" },
-      { cat: "rev", name: "Pricing & Rents" },
-      { cat: "mkt", name: "Marketing" },
-    ],
+    title: "Check the numbers in five minutes",
+    text: "Put in the price, income and costs. See the cap rate and price per square foot. Then ask members to check your math.",
+    product: "Deal calculators",
+    live: false,
+    Scene: CalculatorScene,
+  },
+  {
+    title: "Know what to check before you sign",
+    text: "Sellers don’t tell you what’s wrong. Follow a checklist from owners who learned the hard way.",
+    product: "Due diligence checklist",
+    live: false,
+    Scene: ChecklistScene,
+  },
+  {
+    title: "Ask the people who already did it",
+    text: "Most people give up before their first deal because they have no one to ask. Here, owners, operators and lenders answer. Free, today.",
+    product: "Forums",
+    live: true,
+    Scene: ForumScene,
   },
 ];
 
@@ -58,16 +51,8 @@ const FAQ = [
   { q: "When does the Deal Room open?", a: "We are building it now. Members hear first when it opens." },
 ];
 
-/** The home page for visitors who are not logged in: hero, paths by stage, recent forum questions, FAQ and a closing call to join. */
-export async function Landing() {
-  const supabase = await createClient();
-  const threadsRes = await supabase
-    .from("threads")
-    .select(`id, title, author:profiles!threads_author_id_fkey(${AUTHOR_FIELDS}), category:categories(name, tint, ink)`)
-    .order("last_activity_at", { ascending: false })
-    .limit(3);
-  const threads = (threadsRes.data ?? []) as unknown as LandingThread[];
-
+/** The home page for visitors who are not logged in: hero, the five investor problems and how we solve each, FAQ and a closing call to join. */
+export function Landing() {
   return (
     <div className="l-page">
       <div className="l-bar">
@@ -110,9 +95,9 @@ export async function Landing() {
           <div className="l-hero-art l-in-up l-d2">
             <Image
               src="/landing/storage-facility.jpg"
-              alt="A modern self storage facility with rows of orange roll-up doors"
+              alt="A modern self storage facility with rows of blue roll-up doors"
               width={1600}
-              height={686}
+              height={693}
               sizes="(max-width: 980px) 100vw, 680px"
               priority
               unoptimized
@@ -123,55 +108,29 @@ export async function Landing() {
         <section className="l-in l-sec">
           <div className="l-sec-head center l-sv">
             <div>
-              <div className="l-eyebrow">Start where you are</div>
-              <h2 className="l-h2">Whatever stage you are at, someone here has been there</h2>
+              <div className="l-eyebrow">Why investors get stuck</div>
+              <h2 className="l-h2">Five problems. One place to solve them.</h2>
             </div>
           </div>
-          <div className="l-paths">
-            {PATHS.map((path, i) => (
-              <div key={path.who} className={`l-path l-sv${i ? ` l-sv${i + 1}` : ""}`} style={{ background: path.bg }}>
-                <span className="l-path-who" style={{ color: path.ink }}>
-                  {path.who}
-                </span>
-                <h3>{path.title}</h3>
-                <div className="l-path-links">
-                  {path.links.map((l) => (
-                    <Link key={l.cat} href={`/forums?cat=${l.cat}`} className="l-nudge">
-                      {l.name} <Icon d={ARROW} size={14} strokeWidth={2.4} />
-                    </Link>
-                  ))}
+          <div className="l-pains">
+            {PAINS.map(({ title, text, product, live, Scene }) => (
+              <div key={product} className="l-pain l-sv">
+                <div className="l-pain-copy">
+                  <h3>{title}</h3>
+                  <p>{text}</p>
+                  <div className="l-pain-foot">
+                    <b>{product}</b>
+                    {live && (
+                      <Link className="l-btn sm" href="/signup">
+                        Join free
+                      </Link>
+                    )}
+                  </div>
+                </div>
+                <div className="l-pain-art">
+                  <Scene />
                 </div>
               </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="l-in l-forum">
-          <div className="l-forum-copy l-sv">
-            <div className="l-eyebrow">From the forums</div>
-            <h2 className="l-h2">Real questions. Answers from people who have done it.</h2>
-            <p>No sales pitches. Members share what they paid, what went wrong and what they would do again.</p>
-            <Link href="/forums" className="l-btn sm navy">
-              Browse the forums
-            </Link>
-          </div>
-          <div className="l-forum-list">
-            {threads.slice(0, 3).map((t, i) => (
-              <Link key={t.id} href={`/forums/${t.id}`} className={`l-q l-lift l-svl${i ? ` l-svl${i + 1}` : ""}`}>
-                <span className="l-q-who">
-                  <Avatar name={t.author?.full_name ?? "?"} color={t.author?.avatar_color ?? "#E6EBF3"} size={30} radius={15} fontSize={11} />
-                  <span>
-                    <b>{t.author?.full_name ?? "Member"}</b>
-                    {t.author?.headline ? ` · ${t.author.headline}` : ""}
-                  </span>
-                  {t.category && (
-                    <span className="l-pill" style={{ background: t.category.tint, color: t.category.ink }}>
-                      {t.category.name}
-                    </span>
-                  )}
-                </span>
-                <b className="l-q-title">{t.title}</b>
-              </Link>
             ))}
           </div>
         </section>
@@ -191,7 +150,7 @@ export async function Landing() {
         <section className="l-in" style={{ paddingTop: 96, paddingBottom: 96 }}>
           <div className="l-cta">
             <h2 className="l-sv">
-              Your next facility starts with a <span style={{ color: "#F26B1D" }}>conversation</span>
+              Your next facility starts with a <span style={{ color: "#38A3DC" }}>conversation</span>
             </h2>
             <p className="l-sv l-sv2">Join the investors, operators, developers and lenders who talk self storage here every day.</p>
             <SignupForm id="closing-email" className="l-sv l-sv3" />
@@ -240,7 +199,7 @@ function Town() {
       <div style={{ [edge]: 0, width: "24%", bottom: 0, height: 104, background: "#F5F6FA", borderRadius: "8px 8px 0 0" }} />
       <div style={{ [edge]: -6, width: "calc(24% + 12px)", bottom: 104, height: 12, background: "#C5D1E3", borderRadius: 5 }} />
       <div
-        style={{ [edge]: 16, width: "calc(24% - 32px)", bottom: 0, height: 70, background: "repeating-linear-gradient(90deg, #16305A 0 48px, transparent 48px 62px)" }}
+        style={{ [edge]: 16, width: "calc(24% - 32px)", bottom: 0, height: 70, background: "repeating-linear-gradient(90deg, #262C3A 0 48px, transparent 48px 62px)" }}
       />
     </div>
   );
@@ -251,11 +210,11 @@ function Town() {
         <div style={{ left: "27%", width: "46%", bottom: 0, height: 150, background: "#fff", borderRadius: "10px 10px 0 0" }} />
         <div style={{ left: "calc(27% - 10px)", width: "calc(46% + 20px)", bottom: 150, height: 16, background: "#C5D1E3", borderRadius: 6 }} />
         <div
-          style={{ left: "calc(27% + 22px)", width: "calc(46% - 44px)", bottom: 0, height: 104, background: "repeating-linear-gradient(90deg, #DB520B 0 60px, transparent 60px 76px)" }}
+          style={{ left: "calc(27% + 22px)", width: "calc(46% - 44px)", bottom: 0, height: 104, background: "repeating-linear-gradient(90deg, #0369A1 0 60px, transparent 60px 76px)" }}
         />
         <div className="l-slats" style={{ left: "calc(27% + 22px)", width: "calc(46% - 44px)", bottom: 0, height: 104 }} />
-        <div style={{ left: "calc(27% + 174px)", bottom: 0, width: 60, height: 104, background: "#F26B1D" }} />
-        <div className="l-roll" style={{ left: "calc(27% + 174px)", bottom: 0, width: 60, height: 46, background: "#0B1F3A" }} />
+        <div style={{ left: "calc(27% + 174px)", bottom: 0, width: 60, height: 104, background: "#38A3DC" }} />
+        <div className="l-roll" style={{ left: "calc(27% + 174px)", bottom: 0, width: 60, height: 46, background: "#0F1420" }} />
       </div>
       {side("right")}
     </div>

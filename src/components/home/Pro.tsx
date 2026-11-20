@@ -13,7 +13,7 @@ export function ProBanner() {
       <svg width="96" height="80" viewBox="0 0 96 80" aria-hidden="true" style={{ flex: "none" }}>
         <path d="M8 34L44 14l36 20v40H8z" fill="#fff" stroke="#5B33B0" strokeWidth="2.5" strokeLinejoin="round" />
         <rect x="18" y="42" width="22" height="32" rx="3" fill="#D9CCF7" />
-        <rect x="48" y="42" width="22" height="32" rx="3" fill="#F26B1D" />
+        <rect x="48" y="42" width="22" height="32" rx="3" fill="#38A3DC" />
         <path d="M18 50h22M18 57h22M18 64h22M48 50h22M48 57h22M48 64h22" stroke="#fff" strokeOpacity="0.7" strokeWidth="1.5" />
         <circle cx="78" cy="16" r="14" fill="#5B33B0" />
         <path d="M78 10v12M72 16h12" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" />
@@ -73,7 +73,7 @@ export function ProPerks() {
         {PERKS.map((p) => (
           <article key={p.name} className="m-card h-perk">
             <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <span className="h-tile" style={{ background: "#0B1F3A", color: "#fff", fontWeight: 800, fontSize: 15 }} aria-hidden="true">
+              <span className="h-tile" style={{ background: "#0F1420", color: "#fff", fontWeight: 800, fontSize: 15 }} aria-hidden="true">
                 {p.initials}
               </span>
               <span style={{ minWidth: 0, lineHeight: 1.35 }}>

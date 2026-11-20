@@ -1,0 +1,11 @@
+.ui-alert { display: flex; gap: 10px; padding: 10px 12px; border-radius: var(--ds-radius-control); font-family: var(--ds-font); font-size: var(--ds-text-control); line-height: 1.45; color: var(--ds-ink); }
+.ui-alert svg { flex: none; margin-top: 1px; }
+.ui-alert-title { display: block; font-weight: 600; }
+.ui-alert[data-tone="info"] { background: var(--ds-primary-soft); }
+.ui-alert[data-tone="info"] svg { color: var(--ds-primary-text); }
+.ui-alert[data-tone="success"] { background: var(--ds-success-soft); }
+.ui-alert[data-tone="success"] svg { color: var(--ds-success); }
+.ui-alert[data-tone="warning"] { background: var(--ds-warning-soft); }
+.ui-alert[data-tone="warning"] svg { color: var(--ds-warning); }
+.ui-alert[data-tone="danger"] { background: var(--ds-danger-soft); }
+.ui-alert[data-tone="danger"] svg { color: var(--ds-danger); }

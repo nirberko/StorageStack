@@ -122,8 +122,8 @@ export default async function ProfilePage({
           <svg width="520" height="300" viewBox="0 0 520 300" aria-hidden="true" style={{ position: "absolute", right: -60, top: -40 }}>
             <defs>
               <radialGradient id="uGlow" cx="0.6" cy="0.4" r="0.6">
-                <stop offset="0" stopColor="#F26B1D" stopOpacity="0.35" />
-                <stop offset="1" stopColor="#F26B1D" stopOpacity="0" />
+                <stop offset="0" stopColor="#38A3DC" stopOpacity="0.35" />
+                <stop offset="1" stopColor="#38A3DC" stopOpacity="0" />
               </radialGradient>
             </defs>
             <rect width="520" height="300" fill="url(#uGlow)" />
@@ -213,7 +213,7 @@ export default async function ProfilePage({
             ].map((row) => (
               <div key={row.label} className="d-row">
                 <span className="m-ic" style={{ background: "#F3F5F9" }}>
-                  <Icon name={row.icon} size={16} stroke="#0B1F3A" />
+                  <Icon name={row.icon} size={16} stroke="#0F1420" />
                 </span>
                 <span style={{ flex: 1, fontSize: 14, fontWeight: 600 }}>{row.label}</span>
                 <b style={{ fontSize: 15 }}>{count(row.value)}</b>

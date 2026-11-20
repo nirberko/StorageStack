@@ -1,0 +1,6 @@
+.ui-toast { display: flex; align-items: center; gap: 10px; min-height: 40px; padding: 0 6px 0 12px; border-radius: var(--ds-radius-control); background: var(--ds-ink); color: var(--ds-on-ink); font-family: var(--ds-font); font-size: var(--ds-text-control); font-weight: 500; max-width: 380px; }
+.ui-toast-text { flex: 1; min-width: 0; padding: 10px 0; }
+.ui-toast-action { flex: none; display: inline-flex; align-items: center; height: 28px; padding: 0 10px; border: 0; border-radius: var(--ds-radius-item); background: transparent; color: #8fd0f2; font-family: var(--ds-font); font-size: var(--ds-text-small); font-weight: 600; cursor: pointer; text-decoration: none; }
+[data-theme="dark"] .ui-toast-action { color: var(--ds-primary-hover); }
+.ui-toast-action:hover { background: rgba(255, 255, 255, 0.1); }
+.ui-toast-action:focus-visible { outline: none; box-shadow: 0 0 0 2px #8fd0f2; }

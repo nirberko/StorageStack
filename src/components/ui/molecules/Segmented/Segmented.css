@@ -1,0 +1,5 @@
+.ui-seg { display: inline-flex; padding: 2px; gap: 2px; border: 0; margin: 0; border-radius: var(--ds-radius-control); background: var(--ds-fill); font-family: var(--ds-font); }
+.ui-seg label { position: relative; display: flex; align-items: center; height: 28px; padding: 0 10px; border-radius: var(--ds-radius-item); font-size: var(--ds-text-small); font-weight: 500; color: var(--ds-muted); cursor: pointer; }
+.ui-seg input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.ui-seg label:has(input:checked) { background: var(--ds-surface); color: var(--ds-ink); box-shadow: inset 0 0 0 1px var(--ds-line); }
+.ui-seg label:has(input:focus-visible) { box-shadow: var(--ds-focus); }

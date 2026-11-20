@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Manrope } from "next/font/google";
+import { Inter } from "next/font/google";
 import { SiteFooter, SiteHeader } from "@/components/SiteHeader";
+import "@/components/ui/foundations/tokens.css";
 import "./globals.css";
 
-const manrope = Manrope({
-  variable: "--font-manrope",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={manrope.variable}>
+    <html lang="en" className={`${inter.variable} ui-root`}>
       <body>
         <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
           <SiteHeader />

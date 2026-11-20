@@ -29,7 +29,7 @@ export function EventHost({
         type="button"
         onClick={t.toggle}
         aria-pressed={t.on}
-        style={{ minHeight: 40, padding: "0 14px", fontSize: 13, background: t.on ? "#DDF3E8" : "#FFF0E6", color: t.on ? "#17603F" : "#B5440A" }}
+        style={{ minHeight: 40, padding: "0 14px", fontSize: 13, background: t.on ? "#DDF3E8" : "#E6F3FA", color: t.on ? "#17603F" : "#035A8A" }}
       >
         {t.on ? "Reminder set" : "Remind me"}
       </button>

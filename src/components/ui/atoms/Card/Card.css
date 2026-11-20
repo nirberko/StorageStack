@@ -1,0 +1,8 @@
+.ui-card { background: var(--ds-surface); border: 1px solid var(--ds-line); border-radius: var(--ds-radius-card); color: var(--ds-ink); font-family: var(--ds-font); overflow: hidden; }
+.ui-card[data-tone="fill"] { background: var(--ds-fill); border-color: transparent; }
+.ui-card[data-pad="sm"] { padding: var(--ds-space-3); }
+.ui-card[data-pad="md"] { padding: var(--ds-space-4); }
+.ui-card[data-pad="lg"] { padding: 20px; }
+a.ui-card { display: block; text-decoration: none; transition: border-color 0.12s ease; }
+a.ui-card:hover { border-color: var(--ds-line-strong); color: var(--ds-ink); }
+a.ui-card:focus-visible { outline: none; box-shadow: var(--ds-focus); }

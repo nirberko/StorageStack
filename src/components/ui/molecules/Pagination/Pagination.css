@@ -1,0 +1,7 @@
+.ui-pages { display: flex; align-items: center; gap: 4px; font-family: var(--ds-font); }
+.ui-page { display: inline-grid; place-items: center; min-width: 32px; height: 32px; padding: 0 8px; border-radius: var(--ds-radius-item); font-size: var(--ds-text-small); font-weight: 500; color: var(--ds-body); text-decoration: none; font-variant-numeric: tabular-nums; }
+.ui-page:hover { background: var(--ds-fill); color: var(--ds-ink); }
+.ui-page[aria-current="page"] { background: var(--ds-primary-soft); color: var(--ds-primary-text); }
+.ui-page[aria-disabled="true"] { color: var(--ds-disabled); pointer-events: none; }
+.ui-page:focus-visible { outline: none; box-shadow: var(--ds-focus); }
+.ui-pages-gap { min-width: 24px; text-align: center; color: var(--ds-muted); }

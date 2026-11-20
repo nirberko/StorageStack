@@ -1,0 +1,6 @@
+.ui-dialog { width: min(420px, calc(100vw - 32px)); padding: 0; border: 0; border-radius: var(--ds-radius-card); background: var(--ds-surface); color: var(--ds-ink); font-family: var(--ds-font); }
+.ui-dialog::backdrop { background: rgba(15, 20, 32, 0.5); }
+.ui-dialog-in { padding: 20px; display: flex; flex-direction: column; gap: 8px; }
+.ui-dialog-title { margin: 0; font-size: 16px; font-weight: 600; letter-spacing: -0.02em; }
+.ui-dialog-body { font-size: var(--ds-text-control); line-height: 1.5; color: var(--ds-body); }
+.ui-dialog-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--ds-space-2); margin-top: 8px; }

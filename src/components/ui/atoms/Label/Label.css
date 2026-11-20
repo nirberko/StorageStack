@@ -1,0 +1,4 @@
+.ui-label { font-family: var(--ds-font); font-size: var(--ds-text-small); font-weight: 500; color: var(--ds-ink); }
+.ui-label .ui-optional { font-weight: 500; color: var(--ds-muted); }
+.ui-hint { font-family: var(--ds-font); font-size: var(--ds-text-caption); line-height: 1.4; color: var(--ds-muted); }
+.ui-hint[data-error] { color: var(--ds-danger); }

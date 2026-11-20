@@ -8,7 +8,7 @@ export function AskForum({ items }: { items: AskItem[] }) {
     <section className="m-card" style={{ padding: 24, display: "flex", flexDirection: "column", gap: 16 }} aria-labelledby="ask-title">
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
         <span className="h-tile" style={{ background: "#E6EBF3" }}>
-          <Icon name="chat" size={22} stroke="#0B1F3A" />
+          <Icon name="chat" size={22} stroke="#0F1420" />
         </span>
         <h2 id="ask-title" style={{ flex: 1, fontSize: 18, fontWeight: 800, letterSpacing: "-0.01em" }}>
           Ask the forum
@@ -36,7 +36,7 @@ export function AskForum({ items }: { items: AskItem[] }) {
         {items.map((t) => (
           <Link key={t.id} className="m-trend" href={`/forums/${t.id}`} style={{ alignItems: "center", color: "#0F1B2D" }}>
             <span className="m-ic" style={{ width: 40, height: 40, borderRadius: 12, background: t.category?.tint ?? "#EEF2F8" }}>
-              <Icon d={t.category?.icon} name={t.category ? undefined : "chat"} size={18} stroke={t.category?.ink ?? "#0B1F3A"} />
+              <Icon d={t.category?.icon} name={t.category ? undefined : "chat"} size={18} stroke={t.category?.ink ?? "#0F1420"} />
             </span>
             <span style={{ flex: 1, minWidth: 0 }}>
               <span className="m-tt" style={{ display: "block", fontSize: 15, fontWeight: 700, lineHeight: 1.4 }}>

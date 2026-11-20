@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const LINKS = [
-  { href: "/", label: "Home" },
   { href: "/forums", label: "Forums" },
   { href: "/deals", label: "Deal Room" },
   { href: "/tools", label: "Tools" },
@@ -16,7 +15,7 @@ export function NavLinks() {
   return (
     <nav className="m-nav" aria-label="Main">
       {LINKS.map((l) => {
-        const on = l.href === "/" ? path === "/" : path === l.href || path.startsWith(l.href + "/");
+        const on = path === l.href || path.startsWith(l.href + "/");
         return (
           <Link key={l.href} href={l.href} className={on ? "on" : undefined} aria-current={on ? "page" : undefined}>
             {l.label}

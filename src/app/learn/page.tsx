@@ -1,18 +1,62 @@
 import type { Metadata } from "next";
-import { InfoCard, InfoPage } from "@/components/static/InfoPage";
+import Link from "next/link";
+import { Icon } from "@/components/Icon";
+import { ComingSoon, ExampleTag } from "@/components/static/ComingSoon";
 
 export const metadata: Metadata = { title: "Learn" };
 
+const LESSONS = [
+  { title: "Pick a market", state: "done" },
+  { title: "Read a rent roll", state: "now" },
+  { title: "Check the seller's numbers", state: "next" },
+  { title: "Get to closing", state: "next" },
+] as const;
+
+/** Placeholder until courses are ready. The free guides that already exist stay one click away. */
 export default function LearnPage() {
   return (
-    <InfoPage kicker="Learn" title="Learn self storage" intro="The Storage Network is a community for people buying, building and running self storage. Start with the basics, then learn from members who have done it.">
-      <div className="d-grid">
-        <InfoCard title="The self storage glossary" text="Occupancy, cap rate, street rate, NOI and square feet per person, explained in plain English." href="/forums/1" cta="Read the glossary" />
-        <InfoCard title="Getting started" text="New to storage? Ask anything. No question is too basic." href="/forums?cat=start" cta="Browse Getting Started" />
-        <InfoCard title="Buying your first facility" text="Finding deals, checking the seller's numbers and getting to closing." href="/forums?cat=acq" cta="Browse Buying a Facility" />
-        <InfoCard title="Case studies" text="Real projects with real numbers, posted by the members who did them." href="/search?q=recap" cta="Find case studies" />
-        <InfoCard soon title="Courses" text="Short, practical lessons from experienced operators and developers." />
+    <ComingSoon
+      title="Courses, coming soon"
+      text="Short, practical lessons from owners and operators, from your first market to your first facility. Start with the free guides today."
+      preview={<CoursePreview />}
+      more={
+        <>
+          Also free: <Link href="/forums?cat=start">Getting started</Link> · <Link href="/search?q=recap">Case studies</Link>
+        </>
+      }
+    >
+      <Link className="m-btn m-btn-o" href="/forums/1">
+        Read the glossary
+      </Link>
+      <Link className="m-btn m-btn-line" href="/forums?cat=acq">
+        Buying your first facility
+      </Link>
+    </ComingSoon>
+  );
+}
+
+/** An example course: four lessons, the first done and the second in progress. */
+function CoursePreview() {
+  return (
+    <div className="cs-card ln-course" role="img" aria-label="An example course, Buying your first facility: four lessons, one done and one in progress">
+      <div className="cs-card-head">
+        <div className="ln-title">
+          <span>Course</span>
+          <b>Buying your first facility</b>
+        </div>
+        <ExampleTag />
       </div>
-    </InfoPage>
+      <div className="ln-progress" aria-hidden>
+        <span style={{ width: "38%" }} />
+      </div>
+      <ol className="ln-lessons">
+        {LESSONS.map((l, i) => (
+          <li key={l.title} data-state={l.state}>
+            <span className="ln-dot">{l.state === "done" ? <Icon d="M5 12l5 5L20 7" size={12} strokeWidth={3} stroke="#fff" /> : i + 1}</span>
+            {l.title}
+          </li>
+        ))}
+      </ol>
+    </div>
   );
 }

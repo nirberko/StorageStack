@@ -42,25 +42,25 @@ export default async function NewThreadPage({ searchParams }: { searchParams: Pr
         <aside style={{ flex: "1 1 300px", maxWidth: "100%", display: "flex", flexDirection: "column", gap: 16, position: "sticky", top: 90 }} aria-label="Tips">
           <div className="m-card" style={{ padding: 20 }}>
             <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-              <span className="m-ic" style={{ background: "#FFEDE2" }}>
-                <Icon name="bulb" size={17} stroke="#DB520B" />
+              <span className="m-ic" style={{ background: "#E6F3FA" }}>
+                <Icon name="bulb" size={17} stroke="#0369A1" />
               </span>
               <b style={{ fontSize: 15 }}>Get better answers</b>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 14 }}>
               {TIPS.map((tip) => (
                 <span key={tip} style={{ display: "flex", gap: 10, fontSize: 14, lineHeight: 1.5, color: "#4A576B" }}>
-                  <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#DB520B", marginTop: 8, flex: "none" }} />
+                  <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#0369A1", marginTop: 8, flex: "none" }} />
                   {tip}
                 </span>
               ))}
             </div>
           </div>
           <div className="m-note">
-            <Icon name="shieldCheck" size={22} stroke="#B5440A" style={{ flex: "none" }} />
+            <Icon name="shieldCheck" size={22} stroke="#035A8A" style={{ flex: "none" }} />
             <span>
               <b>Selling or raising money?</b>
-              Share it here for feedback. The <Link href="/deals" style={{ color: "#B5440A", fontWeight: 700 }}>Deal Room</Link> is coming soon.
+              Share it here for feedback. The <Link href="/deals" style={{ color: "#035A8A", fontWeight: 700 }}>Deal Room</Link> is coming soon.
             </span>
           </div>
           <Link href="/guidelines" style={{ fontSize: 13, color: "#5E6B7E", padding: "0 4px" }}>

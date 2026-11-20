@@ -53,6 +53,27 @@ export async function signUp(_prev: AuthState, formData: FormData): Promise<Auth
   redirect(safeNext(formData.get("next")));
 }
 
+/** Emails a link that signs the member in and opens the page for choosing a new password. Always says the same thing, so it never reveals who has an account. */
+export async function requestPasswordReset(_prev: AuthState, formData: FormData): Promise<AuthState> {
+  const email = String(formData.get("email") ?? "").trim();
+  if (!email.includes("@")) return { error: "Enter the email you signed up with." };
+  const origin = process.env.NEXT_PUBLIC_SITE_URL ?? (await headers()).get("origin") ?? "";
+  const supabase = await createClient();
+  await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${origin}/auth/confirm?next=/reset-password` });
+  return { message: `If ${email} has an account, a link to reset the password is on its way.` };
+}
+
+/** Sets a new password for the member signed in by the reset link. */
+export async function updatePassword(_prev: AuthState, formData: FormData): Promise<AuthState> {
+  const password = String(formData.get("password") ?? "");
+  if (password.length < 8) return { error: "Use at least 8 characters for your password." };
+  const supabase = await createClient();
+  const { error } = await supabase.auth.updateUser({ password });
+  if (error) return { error: "That reset link has expired. Ask for a new one." };
+  revalidatePath("/", "layout");
+  redirect("/forums");
+}
+
 export async function signOut() {
   const supabase = await createClient();
   await supabase.auth.signOut();

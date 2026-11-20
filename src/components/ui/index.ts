@@ -1,0 +1,9 @@
+// The Storage Network design system, in atomic design layers:
+//   foundations/  tokens (colors, type, space, shape) in tokens.css
+//   atoms/        smallest parts: Button, Input, Badge, Avatar...
+//   molecules/    small groups of atoms: TextField, Alert, Pagination...
+//   organisms/    sections with behavior: Tabs, Dialog, ListingCard...
+// Each component keeps its .tsx, .css and .stories.tsx in its own folder.
+export * from "./atoms";
+export * from "./molecules";
+export * from "./organisms";
