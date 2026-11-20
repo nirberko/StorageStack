@@ -4,6 +4,10 @@
   "main": ".open-next/worker.js",
   "compatibility_date": "2026-11-01",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  // Custom domain: Cloudflare creates the DNS record and TLS certificate on deploy.
+  "routes": [{ "pattern": "thestorage.network", "custom_domain": true }],
+  // Adding routes turns the *.workers.dev URL off by default; keep it on.
+  "workers_dev": true,
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
