@@ -14,9 +14,17 @@ modernized**.
 | Home | `/` |
 | Forums (design A2) | `/forums` (topics, sort tabs, following, saved), `/forums/[id]`, `/forums/new` |
 | Deal Room | `/deals` ("coming soon" placeholder) |
-| Members | `/u/[id]` profiles, `/settings` |
+| Members | `/u/[id]` profiles, `/settings`, `/notifications` |
 | Admin (admins only) | `/admin/members` (search, verify, roles, suspend, delete), `/admin/topics` (add, edit, reorder, delete forum topics) |
 | Other | `/search`, `/login`, `/signup`, `/tools`, `/learn`, `/guidelines` |
+
+### Notifications
+
+The bell in the header shows unread notifications for replies to your discussions, replies in
+discussions you joined, likes, your reply being marked as the answer, and new followers. Database
+triggers write them (members cannot create notifications themselves). While one is unread, more
+activity of the same kind on the same discussion is folded into it. Opening a discussion marks its
+notifications read. The bell updates live through Supabase Realtime, and otherwise on each page change.
 
 ### Privacy model
 

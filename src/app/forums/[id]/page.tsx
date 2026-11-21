@@ -67,6 +67,15 @@ export default async function ThreadPage({ params }: { params: Promise<{ id: str
       : null,
     getThreadMarks(supabase, viewer?.id, [id]),
     supabase.rpc("increment_thread_views", { p_thread_id: id }),
+    // Reading the discussion clears its notifications.
+    viewer
+      ? supabase
+          .from("notifications")
+          .update({ read_at: new Date().toISOString() })
+          .eq("user_id", viewer.id)
+          .eq("thread_id", id)
+          .is("read_at", null)
+      : null,
   ]);
   if (repliesRes.error) throw new Error(repliesRes.error.message);
 

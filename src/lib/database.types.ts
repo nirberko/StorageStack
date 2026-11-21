@@ -141,6 +141,44 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"notifications": {
+                  Row: {
+                    "actor_id": string,"count": number,"created_at": string,"id": number,"kind": string,"read_at": string | null,"reply_id": number | null,"thread_id": number | null,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "actor_id": string,"count"?: number,"created_at"?: string,"id"?: never,"kind": string,"read_at"?: string | null,"reply_id"?: number | null,"thread_id"?: number | null,"user_id": string
+                  }
+                  Update: {
+                    "actor_id"?: string,"count"?: number,"created_at"?: string,"id"?: never,"kind"?: string,"read_at"?: string | null,"reply_id"?: number | null,"thread_id"?: number | null,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "notifications_actor_id_fkey"
+      columns: ["actor_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "notifications_reply_id_fkey"
+      columns: ["reply_id"]
+isOneToOne: false
+      referencedRelation: "replies"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "notifications_thread_id_fkey"
+      columns: ["thread_id"]
+isOneToOne: false
+      referencedRelation: "threads"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "notifications_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"profiles": {
                   Row: {
                     "avatar_color": string,"bio": string,"created_at": string,"full_name": string,"headline": string,"id": string,"is_admin": boolean,"is_moderator": boolean,"location": string,"post_count": number,"verified": boolean

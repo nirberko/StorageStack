@@ -7,9 +7,13 @@ import { Logo } from "@/components/Logo";
 import { NavLinks } from "@/components/NavLinks";
 import { SearchBox } from "@/components/SearchBox";
 import { UserMenu } from "@/components/UserMenu";
+import { NotificationBell } from "@/components/notifications/NotificationBell";
+import { countUnread } from "@/lib/notifications";
+import { createClient } from "@/lib/supabase/server";
 
 export async function SiteHeader() {
   const viewer = await getViewer();
+  const unread = viewer ? await countUnread(await createClient(), viewer.id) : 0;
   return (
     <HideOnLanding active={!viewer}>
       <HeaderShell
@@ -29,7 +33,10 @@ export async function SiteHeader() {
         }
         account={
           viewer ? (
-            <UserMenu id={viewer.id} name={viewer.profile.full_name} color={viewer.profile.avatar_color} isAdmin={viewer.profile.is_admin} />
+            <>
+              <NotificationBell userId={viewer.id} initialUnread={unread} />
+              <UserMenu id={viewer.id} name={viewer.profile.full_name} color={viewer.profile.avatar_color} isAdmin={viewer.profile.is_admin} />
+            </>
           ) : (
             <div style={{ display: "flex", gap: 6 }}>
               <Link className="m-btn m-btn-g m-hide-sm" href="/login">
