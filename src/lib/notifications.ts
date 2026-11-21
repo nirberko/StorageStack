@@ -11,12 +11,12 @@ export type NotificationItem = {
   created_at: string;
   thread_id: number | null;
   reply_id: number | null;
-  actor: { id: string; full_name: string; avatar_color: string } | null;
+  actor: { id: string; full_name: string; avatar_color: string; avatar_path: string | null } | null;
   thread: { title: string } | null;
 };
 
 export const NOTIFICATION_SELECT =
-  "id, kind, count, read_at, created_at, thread_id, reply_id, actor:profiles!notifications_actor_id_fkey(id, full_name, avatar_color), thread:threads(title)";
+  "id, kind, count, read_at, created_at, thread_id, reply_id, actor:profiles!notifications_actor_id_fkey(id, full_name, avatar_color, avatar_path), thread:threads(title)";
 
 export async function listNotifications(supabase: SupabaseClient<Database>, userId: string, limit: number) {
   const { data } = await supabase

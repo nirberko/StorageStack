@@ -101,7 +101,7 @@ export default async function AdminMembersPage({ searchParams }: { searchParams:
               const self = m.id === viewer.id;
               return (
                 <li key={m.id} className="a-row">
-                  <Avatar name={m.full_name} color={m.avatar_color} size={44} radius={14} fontSize={14} />
+                  <Avatar name={m.full_name} color={m.avatar_color} photo={m.avatar_path} size={44} radius={14} fontSize={14} />
                   <div style={{ flex: "1 1 220px", minWidth: 0, lineHeight: 1.35 }}>
                     <span style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
                       <Link href={`/u/${m.id}`} style={{ fontWeight: 800, fontSize: 15, color: "var(--ink)" }}>

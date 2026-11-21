@@ -10,7 +10,7 @@ import type { Author, Category, Thread } from "@/lib/types";
 export type ThreadCardData = Thread & {
   author: Author | null;
   category: Category | null;
-  repliers: { name: string; color: string }[];
+  repliers: { name: string; color: string; photo?: string | null }[];
 };
 
 /** One discussion in a list: who posted and when, the title, one line of the post, then its topic, replies and actions. */
@@ -20,7 +20,7 @@ export function ThreadCard({ thread: t, liked, saved }: { thread: ThreadCardData
   return (
     <article className="f-post">
       <div className="f-who">
-        <Avatar name={author?.full_name ?? "?"} color={author?.avatar_color ?? "#E6EBF3"} size={24} radius={12} fontSize={10} />
+        <Avatar name={author?.full_name ?? "?"} color={author?.avatar_color ?? "#E6EBF3"} photo={author?.avatar_path} size={24} radius={12} fontSize={10} />
         {author ? (
           <Link className="f-name" href={`/u/${author.id}`}>
             {author.full_name}

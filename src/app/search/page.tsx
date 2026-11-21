@@ -61,7 +61,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
             <div className="d-grid">
               {people.map((p) => (
                 <Link key={p.id} href={`/u/${p.id}`} className="m-card" style={{ padding: 18, display: "flex", gap: 12, alignItems: "center", color: "#0F1B2D" }}>
-                  <Avatar name={p.full_name} color={p.avatar_color} size={48} radius={15} fontSize={15} />
+                  <Avatar name={p.full_name} color={p.avatar_color} photo={p.avatar_path} size={48} radius={15} fontSize={15} />
                   <span style={{ lineHeight: 1.35, minWidth: 0 }}>
                     <span style={{ display: "flex", gap: 5, alignItems: "center", fontWeight: 800 }}>
                       {p.full_name}

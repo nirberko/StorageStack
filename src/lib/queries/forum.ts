@@ -5,20 +5,20 @@ import { AUTHOR_FIELDS, type Author, type Category } from "@/lib/types";
 
 type DB = SupabaseClient<Database>;
 
-export const THREAD_CARD_SELECT = `*, author:profiles!threads_author_id_fkey(${AUTHOR_FIELDS}), category:categories(*), replies(created_at, author:profiles!replies_author_id_fkey(full_name, avatar_color))`;
+export const THREAD_CARD_SELECT = `*, author:profiles!threads_author_id_fkey(${AUTHOR_FIELDS}), category:categories(*), replies(created_at, author:profiles!replies_author_id_fkey(full_name, avatar_color, avatar_path))`;
 
 type RawThread = Omit<ThreadCardData, "repliers"> & {
-  replies: { created_at: string; author: { full_name: string; avatar_color: string } | null }[];
+  replies: { created_at: string; author: { full_name: string; avatar_color: string; avatar_path: string | null } | null }[];
 };
 
 /** Shape a thread row (with embedded replies) into card data with up to 3 distinct recent repliers. */
 export function toCard(raw: RawThread): ThreadCardData {
   const seen = new Set<string>();
-  const repliers: { name: string; color: string }[] = [];
+  const repliers: ThreadCardData["repliers"] = [];
   for (const r of [...(raw.replies ?? [])].sort((a, b) => b.created_at.localeCompare(a.created_at))) {
     if (!r.author || seen.has(r.author.full_name)) continue;
     seen.add(r.author.full_name);
-    repliers.push({ name: r.author.full_name, color: r.author.avatar_color });
+    repliers.push({ name: r.author.full_name, color: r.author.avatar_color, photo: r.author.avatar_path });
     if (repliers.length === 3) break;
   }
   const rest: Partial<RawThread> = { ...raw };

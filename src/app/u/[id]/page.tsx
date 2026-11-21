@@ -129,7 +129,7 @@ export default async function ProfilePage({
             <rect width="520" height="300" fill="url(#uGlow)" />
           </svg>
           <span style={{ position: "relative", borderRadius: 30, boxShadow: "0 0 0 4px rgba(255,255,255,0.12)" }}>
-            <Avatar name={profile.full_name} color={profile.avatar_color} size={104} radius={30} fontSize={34} />
+            <Avatar name={profile.full_name} color={profile.avatar_color} photo={profile.avatar_path} size={104} radius={30} fontSize={34} />
           </span>
           <div style={{ position: "relative", flex: "1 1 420px", minWidth: 0 }}>
             <h1 style={{ margin: 0, display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>

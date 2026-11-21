@@ -5,7 +5,7 @@ import { useState, useTransition } from "react";
 import { createReply } from "@/app/actions/forum";
 import { Avatar } from "@/components/Avatar";
 
-export function ReplyComposer({ threadId, name, color }: { threadId: number; name: string; color: string }) {
+export function ReplyComposer({ threadId, name, color, photo }: { threadId: number; name: string; color: string; photo?: string | null }) {
   const router = useRouter();
   const [body, setBody] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -33,7 +33,7 @@ export function ReplyComposer({ threadId, name, color }: { threadId: number; nam
 
   return (
     <form onSubmit={submit} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-      <Avatar name={name} color={color} size={40} radius={13} fontSize={13} />
+      <Avatar name={name} color={color} photo={photo} size={40} radius={13} fontSize={13} />
       <div style={{ flex: 1, minWidth: 0 }}>
         <label htmlFor="reply-body" className="sr-only">
           Your reply

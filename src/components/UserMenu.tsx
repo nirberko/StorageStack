@@ -6,7 +6,7 @@ import { Avatar } from "@/components/Avatar";
 import { Icon } from "@/components/Icon";
 import { signOut } from "@/app/actions/auth";
 
-export function UserMenu({ id, name, color, isAdmin }: { id: string; name: string; color: string; isAdmin: boolean }) {
+export function UserMenu({ id, name, color, photo, isAdmin }: { id: string; name: string; color: string; photo?: string | null; isAdmin: boolean }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -40,7 +40,7 @@ export function UserMenu({ id, name, color, isAdmin }: { id: string; name: strin
         onClick={() => setOpen((o) => !o)}
         style={{ border: 0, background: "transparent", padding: 0, display: "flex" }}
       >
-        <Avatar name={name} color={color} size={40} radius={13} fontSize={13} />
+        <Avatar name={name} color={color} photo={photo} size={40} radius={13} fontSize={13} />
       </button>
       {open && (
         <div

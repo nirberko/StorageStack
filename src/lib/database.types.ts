@@ -181,14 +181,14 @@ isOneToOne: false
                   ]
                 },"profiles": {
                   Row: {
-                    "avatar_color": string,"bio": string,"created_at": string,"full_name": string,"headline": string,"id": string,"is_admin": boolean,"is_moderator": boolean,"location": string,"post_count": number,"verified": boolean
+                    "avatar_color": string,"avatar_path": string | null,"bio": string,"created_at": string,"full_name": string,"headline": string,"id": string,"is_admin": boolean,"is_moderator": boolean,"location": string,"post_count": number,"verified": boolean
                   }
                   ComputedFields: never
                   Insert: {
-                    "avatar_color"?: string,"bio"?: string,"created_at"?: string,"full_name"?: string,"headline"?: string,"id": string,"is_admin"?: boolean,"is_moderator"?: boolean,"location"?: string,"post_count"?: number,"verified"?: boolean
+                    "avatar_color"?: string,"avatar_path"?: string | null,"bio"?: string,"created_at"?: string,"full_name"?: string,"headline"?: string,"id": string,"is_admin"?: boolean,"is_moderator"?: boolean,"location"?: string,"post_count"?: number,"verified"?: boolean
                   }
                   Update: {
-                    "avatar_color"?: string,"bio"?: string,"created_at"?: string,"full_name"?: string,"headline"?: string,"id"?: string,"is_admin"?: boolean,"is_moderator"?: boolean,"location"?: string,"post_count"?: number,"verified"?: boolean
+                    "avatar_color"?: string,"avatar_path"?: string | null,"bio"?: string,"created_at"?: string,"full_name"?: string,"headline"?: string,"id"?: string,"is_admin"?: boolean,"is_moderator"?: boolean,"location"?: string,"post_count"?: number,"verified"?: boolean
                   }
                   Relationships: [
                     
@@ -325,7 +325,7 @@ isOneToOne: false
                            },
 "admin_members":
 { Args: { "p_filter"?: string,"p_limit"?: number,"p_offset"?: number,"p_query"?: string }; Returns: {
-              "avatar_color": string,"created_at": string,"email": string,"full_name": string,"headline": string,"id": string,"is_admin": boolean,"is_moderator": boolean,"last_sign_in_at": string,"post_count": number,"suspended": boolean,"total": number,"verified": boolean
+              "avatar_color": string,"avatar_path": string,"created_at": string,"email": string,"full_name": string,"headline": string,"id": string,"is_admin": boolean,"is_moderator": boolean,"last_sign_in_at": string,"post_count": number,"suspended": boolean,"total": number,"verified": boolean
             }[]
                            },
 "admin_set_suspended":

@@ -12,7 +12,7 @@ export function HomeProfile({ profile: p, facts, followers }: { profile: Profile
   return (
     <section className="hm-card hm-profile" aria-labelledby="hm-profile-title">
       <div className="hm-head">
-        <Avatar name={p.full_name} color={p.avatar_color} size={40} radius={20} fontSize={14} />
+        <Avatar name={p.full_name} color={p.avatar_color} photo={p.avatar_path} size={40} radius={20} fontSize={14} />
         <div style={{ minWidth: 0 }}>
           <h2 id="hm-profile-title">{p.full_name}</h2>
           <span className="hm-meta">

@@ -107,7 +107,7 @@ export default async function ThreadPage({ params }: { params: Promise<{ id: str
         <main style={{ flex: "999 1 640px", minWidth: 0, display: "flex", flexDirection: "column", gap: 16 }}>
           <article className="x-sec" style={thread.pinned ? { background: "#F3F9FD", borderColor: "#CDE7F4" } : undefined}>
             <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
-              <Avatar name={author?.full_name ?? "?"} color={author?.avatar_color ?? "#E6EBF3"} size={46} radius={15} fontSize={15} />
+              <Avatar name={author?.full_name ?? "?"} color={author?.avatar_color ?? "#E6EBF3"} photo={author?.avatar_path} size={46} radius={15} fontSize={15} />
               <span style={{ flex: 1, minWidth: 180, lineHeight: 1.35 }}>
                 <span style={{ display: "flex", alignItems: "center", gap: 6, fontWeight: 800, fontSize: 15 }}>
                   {author ? <Link href={`/u/${author.id}`}>{author.full_name}</Link> : "Former member"}
@@ -207,7 +207,7 @@ export default async function ThreadPage({ params }: { params: Promise<{ id: str
             <div style={{ marginTop: 10 }}>
               {replies.map((r) => (
                 <div key={r.id} id={`reply-${r.id}`} className="x-q" style={{ scrollMarginTop: 90, ...(r.is_answer ? { background: "#F5FBF8", margin: "0 -14px", padding: "20px 14px", borderRadius: 16 } : {}) }}>
-                  <Avatar name={r.author?.full_name ?? "?"} color={r.author?.avatar_color ?? "#E6EBF3"} size={40} radius={13} fontSize={13} />
+                  <Avatar name={r.author?.full_name ?? "?"} color={r.author?.avatar_color ?? "#E6EBF3"} photo={r.author?.avatar_path} size={40} radius={13} fontSize={13} />
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", fontSize: 14 }}>
                       <b>{r.author ? <Link href={`/u/${r.author.id}`}>{r.author.full_name}</Link> : "Former member"}</b>
@@ -245,7 +245,7 @@ export default async function ThreadPage({ params }: { params: Promise<{ id: str
 
             <div style={{ marginTop: 18, paddingTop: 20, borderTop: "1px solid #EEF1F5" }}>
               {viewer ? (
-                <ReplyComposer threadId={thread.id} name={viewer.profile.full_name} color={viewer.profile.avatar_color} />
+                <ReplyComposer threadId={thread.id} name={viewer.profile.full_name} color={viewer.profile.avatar_color} photo={viewer.profile.avatar_path} />
               ) : (
                 <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", background: "#F5F6FA", borderRadius: 16, padding: "16px 18px" }}>
                   <span style={{ flex: 1, minWidth: 220, fontSize: 14, lineHeight: 1.5, color: "#4A576B" }}>

@@ -35,7 +35,7 @@ export async function SiteHeader() {
           viewer ? (
             <>
               <NotificationBell userId={viewer.id} initialUnread={unread} />
-              <UserMenu id={viewer.id} name={viewer.profile.full_name} color={viewer.profile.avatar_color} isAdmin={viewer.profile.is_admin} />
+              <UserMenu id={viewer.id} name={viewer.profile.full_name} color={viewer.profile.avatar_color} photo={viewer.profile.avatar_path} isAdmin={viewer.profile.is_admin} />
             </>
           ) : (
             <div style={{ display: "flex", gap: 6 }}>

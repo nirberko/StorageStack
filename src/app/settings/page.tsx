@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { signOut } from "@/app/actions/auth";
 import { Avatar } from "@/components/Avatar";
 import { Icon } from "@/components/Icon";
+import { PhotoUpload } from "@/components/profile/PhotoUpload";
 import { ProfileForm } from "@/components/profile/ProfileForm";
 import { getViewer } from "@/lib/auth";
 
@@ -26,13 +27,16 @@ export default async function SettingsPage() {
             <p className="x-sub" style={{ marginBottom: 22 }}>
               Members see this on your posts and profile page.
             </p>
+            <div style={{ marginBottom: 22 }}>
+              <PhotoUpload userId={p.id} name={p.full_name} color={p.avatar_color} photo={p.avatar_path} />
+            </div>
             <ProfileForm profile={p} email={viewer.email} />
           </section>
         </main>
         <aside style={{ flex: "1 1 300px", maxWidth: "100%", display: "flex", flexDirection: "column", gap: 16 }}>
           <div className="m-card" style={{ padding: 20 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <Avatar name={p.full_name} color={p.avatar_color} size={52} radius={16} fontSize={16} />
+              <Avatar name={p.full_name} color={p.avatar_color} photo={p.avatar_path} size={52} radius={16} fontSize={16} />
               <span style={{ minWidth: 0, lineHeight: 1.35 }}>
                 <b style={{ display: "block", fontSize: 16 }}>{p.full_name}</b>
                 <span style={{ fontSize: 13, color: "#5E6B7E" }}>{p.headline || "No headline yet"}</span>

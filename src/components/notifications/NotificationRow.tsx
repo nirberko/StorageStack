@@ -22,7 +22,7 @@ export function NotificationRow({ n, onOpen }: { n: NotificationItem; onOpen?: (
   return (
     <Link href={href} className={`m-notif${unread ? " unread" : ""}`} onClick={() => onOpen?.(n)}>
       <span className="m-notif-face">
-        <Avatar name={name} color={n.actor?.avatar_color ?? "#E6EBF3"} size={38} radius={12} fontSize={12} />
+        <Avatar name={name} color={n.actor?.avatar_color ?? "#E6EBF3"} photo={n.actor?.avatar_path} size={38} radius={12} fontSize={12} />
         <span className={`m-notif-kind k-${n.kind}`}>
           <Icon name={KIND_ICON[n.kind] ?? "bell"} size={11} strokeWidth={2.6} />
         </span>

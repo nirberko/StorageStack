@@ -233,7 +233,7 @@ export default async function ForumsPage({ searchParams }: { searchParams: Promi
               <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                 {people.map((p) => (
                   <Link key={p.id} href={`/u/${p.id}`} style={{ display: "flex", alignItems: "center", gap: 10, color: "var(--ink)" }}>
-                    <Avatar name={p.full_name} color={p.avatar_color} size={32} radius={16} fontSize={12} />
+                    <Avatar name={p.full_name} color={p.avatar_color} photo={p.avatar_path} size={32} radius={16} fontSize={12} />
                     <span style={{ flex: 1, minWidth: 0, lineHeight: 1.35 }}>
                       <span style={{ display: "block", fontWeight: 600, fontSize: 14 }}>{p.full_name}</span>
                       <span style={{ display: "block", fontSize: 12, color: "var(--subtle)" }}>{p.headline}</span>
